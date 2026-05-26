@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jharkhand AR/VR Experiences</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Basic styles for dark/light mode and elements */
+        :root {
+            --background: #f1f5f9; /* slate-100 */
+            --surface: #ffffff; /* white */
+            --heading: #0f172a; /* slate-900 */
+            --subheading: #475569; /* slate-600 */
+        }
+
+        html.dark {
+            --background: #0f172a; /* slate-900 */
+            --surface: #1e293b; /* slate-800 */
+            --heading: #f1f5f9; /* slate-100 */
+            --subheading: #94a3b8; /* slate-400 */
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--subheading);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .bg-surface { background-color: var(--surface); }
+        .text-heading { color: var(--heading); }
+        .text-subheading { color: var(--subheading); }
+
+        /* Modal styles */
+        .ar-vr-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .ar-vr-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="shadow-lg sticky top-0 z-50 bg-surface">
+        <div class="container mx-auto px-4 py-4 text-center flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold tracking-wide text-heading">Immersive Journeys of Jharkhand</h1>
+                <p class="mt-1 text-subheading">Explore iconic sites through AR and VR</p>
+            </div>
+            <button id="theme-toggle" class="p-2 rounded-full transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 theme-icon">
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+        <section class="text-center mb-12">
+            <h2 class="text-3xl font-bold mb-2 text-heading">Discover Popular Places</h2>
+            <p class="max-w-2xl mx-auto text-subheading">
+                Take a virtual tour of the most beloved landmarks and natural wonders that Jharkhand has to offer.
+            </p>
+        </section>
+
+        <section class="mb-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <div class="bg-surface rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl group relative">
+                    <img src="Hundru Falls.jpeg" alt="Hundru Falls" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute top-2 left-2 z-20">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-white/90 text-slate-900">Waterfall</span>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="p-6 relative z-10">
+                        <h3 class="text-2xl font-semibold mb-2 text-heading">Hundru Falls</h3>
+                        <p class="text-xs mb-2 text-subheading flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-1"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+                            Ranchi District
+                        </p>
+                        <p class="text-sm mb-4 text-subheading">A breathtaking 360° virtual tour of the majestic Hundru Falls and its surrounding lush landscape.</p>
+                        <button class="launch-ar-vr-btn w-full bg-emerald-500 text-slate-900 font-bold py-3 px-4 rounded-full text-sm hover:bg-emerald-400 transition-colors shadow-lg" data-site="Hundru Falls" data-image-url="https://placehold.co/600x400/1e293b/a5f3fc?text=Hundru+Falls+VR" data-video-url="hundra fall.mp4">
+                            Explore in VR
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-surface rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl group relative">
+                    <img src="baidya nath.jpg" alt="Baidyanath Dham Temple" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute top-2 left-2 z-20">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-white/90 text-slate-900">Temple</span>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="p-6 relative z-10">
+                        <h3 class="text-2xl font-semibold mb-2 text-heading">Baidyanath Dham</h3>
+                        <p class="text-xs mb-2 text-subheading flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-1"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+                            Ranchi District
+                        </p>
+                        <p class="text-sm mb-4 text-subheading">An immersive journey through the sacred grounds of this ancient Jyotirlinga temple, revered by millions.</p>
+                        <button class="launch-ar-vr-btn w-full bg-emerald-500 text-slate-900 font-bold py-3 px-4 rounded-full text-sm hover:bg-emerald-400 transition-colors shadow-lg" data-site="Baidyanath Dham" data-image-url="https://placehold.co/600x400/1e293b/a5f3fc?text=Baidyanath+Dham+VR" data-video-url="baba baidyanath.mp4">
+                            Explore in VR
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-surface rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl group relative">
+                    <img src="belta national park.jpeg" alt="Betla National Park" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute top-2 left-2 z-20">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-white/90 text-slate-900">National Park</span>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="p-6 relative z-10">
+                        <h3 class="text-2xl font-semibold mb-2 text-heading">Betla National Park</h3>
+                        <p class="text-xs mb-2 text-subheading flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-1"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+                            Palamu District
+                        </p>
+                        <p class="text-sm mb-4 text-subheading">Go on a virtual safari and experience the diverse wildlife and lush flora of the park in stunning detail.</p>
+                        <button class="launch-ar-vr-btn w-full bg-emerald-500 text-slate-900 font-bold py-3 px-4 rounded-full text-sm hover:bg-emerald-400 transition-colors shadow-lg" data-site="Betla National Park" data-image-url="https://placehold.co/600x400/1e293b/a5f3fc?text=Betla+National+Park+VR" data-video-url="betla national park.mp4">
+                            Explore in VR
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-surface rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl group relative">
+                    <img src="dasam falls.jpg" alt="Dassam Falls" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute top-2 left-2 z-20">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-white/90 text-slate-900">Waterfall</span>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="p-6 relative z-10">
+                        <h3 class="text-2xl font-semibold mb-2 text-heading">Dassam Falls</h3>
+                        <p class="text-xs mb-2 text-subheading flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-1"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+                            Ranchi District
+                        </p>
+                        <p class="text-sm mb-4 text-subheading">Discover the mesmerizing multi-layered cascade of Dassam Falls and the tranquil ambiance of its surroundings. A truly captivating natural spectacle.</p>
+                        <button class="launch-ar-vr-btn w-full bg-emerald-500 text-slate-900 font-bold py-3 px-4 rounded-full text-sm hover:bg-emerald-400 transition-colors shadow-lg" data-site="Dassam Falls" data-image-url="https://placehold.co/600x400/1e293b/a5f3fc?text=Dassam+Falls+VR" data-video-url="dasam falls.mp4">
+                            Explore in VR
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-surface rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl group relative">
+                    <img src="parasnath hills.jpg" alt="Parasnath Hill" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute top-2 left-2 z-20">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-white/90 text-slate-900">Peak</span>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="p-6 relative z-10">
+                        <h3 class="text-2xl font-semibold mb-2 text-heading">Parasnath Hill</h3>
+                        <p class="text-xs mb-2 text-subheading flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-1"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+                            Giridih District
+                        </p>
+                        <p class="text-sm mb-4 text-subheading">A pilgrimage and trekking journey to the highest peak in Jharkhand, a holy site for Jains and Santals.</p>
+                        <button class="launch-ar-vr-btn w-full bg-emerald-500 text-slate-900 font-bold py-3 px-4 rounded-full text-sm hover:bg-emerald-400 transition-colors shadow-lg" data-site="Parasnath Hill" data-image-url="https://placehold.co/600x400/1e293b/a5f3fc?text=Parasnath+Hill+VR" data-video-url="parasnath hills.mp4">
+                            Explore in VR
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-surface rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl group relative">
+                    <img src="netarhat.jpg" alt="Netarhat" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute top-2 left-2 z-20">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-white/90 text-slate-900">Hill Station</span>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="p-6 relative z-10">
+                        <h3 class="text-2xl font-semibold mb-2 text-heading">Netarhat</h3>
+                        <p class="text-xs mb-2 text-subheading flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-1"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+                            Latehar District
+                        </p>
+                        <p class="text-sm mb-4 text-subheading">Experience the serene beauty of the "Queen of Chotanagpur," known for its breathtaking sunrises and sunsets.</p>
+                        <button class="launch-ar-vr-btn w-full bg-emerald-500 text-slate-900 font-bold py-3 px-4 rounded-full text-sm hover:bg-emerald-400 transition-colors shadow-lg" data-site="Netarhat" data-image-url="https://placehold.co/600x400/1e293b/a5f3fc?text=Netarhat+VR" data-video-url="netarhat hills.mp4">
+                            Explore in VR
+                        </button>
+                    </div>
+                </div>
+
+
+
+                <div class="bg-surface rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl group relative">
+                    <img src="rajappa temple.jpg" alt="Rajrappa Temple" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute top-2 left-2 z-20">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-white/90 text-slate-900">Temple</span>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="p-6 relative z-10">
+                        <h3 class="text-2xl font-semibold mb-2 text-heading">Rajrappa</h3>
+                        <p class="text-xs mb-2 text-subheading flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-1"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+                            Ramgarh District
+                        </p>
+                        <p class="text-sm mb-4 text-subheading">Explore the sacred Chhinnamasta Temple, a revered Shakti Peeth located at the confluence of two rivers.</p>
+                        <button class="launch-ar-vr-btn w-full bg-emerald-500 text-slate-900 font-bold py-3 px-4 rounded-full text-sm hover:bg-emerald-400 transition-colors shadow-lg" data-site="Rajrappa" data-image-url="https://placehold.co/600x400/1e293b/a5f3fc?text=Rajrappa+Temple+VR" data-video-url="rajrappa temple.mp4">
+                            Explore in VR
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-surface rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl group relative">
+                    <img src="ghatsila.jpg" alt="Ghatshila" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute top-2 left-2 z-20">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-white/90 text-slate-900">River</span>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="p-6 relative z-10">
+                        <h3 class="text-2xl font-semibold mb-2 text-heading">Ghatshila</h3>
+                        <p class="text-xs mb-2 text-subheading flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-1"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+                            Singhbhum District
+                        </p>
+                        <p class="text-sm mb-4 text-subheading">Discover the scenic beauty of this town on the banks of the Subarnarekha river, a popular tourist destination.</p>
+                        <button class="launch-ar-vr-btn w-full bg-emerald-500 text-slate-900 font-bold py-3 px-4 rounded-full text-sm hover:bg-emerald-400 transition-colors shadow-lg" data-site="Ghatshila" data-image-url="https://placehold.co/600x400/1e293b/a5f3fc?text=Ghatshila+VR" data-video-url="ghatshila.mp4">
+                            Explore in VR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- New Video Card Added Here -->
+                <div class="bg-surface rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl group relative">
+                    <img src="jonha falls.jpg" alt="Jonha Falls" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute top-2 left-2 z-20">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-white/90 text-slate-900">Waterfall</span>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="p-6 relative z-10">
+                        <h3 class="text-2xl font-semibold mb-2 text-heading">Jonha Falls</h3>
+                        <p class="text-xs mb-2 text-subheading flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-1"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+                            Ranchi District
+                        </p>
+                        <p class="text-sm mb-4 text-subheading">Witness the serene beauty of Jonha Falls, also known as Gautamdhara, as it cascades down a stunning rock face.</p>
+                        <button class="launch-ar-vr-btn w-full bg-emerald-500 text-slate-900 font-bold py-3 px-4 rounded-full text-sm hover:bg-emerald-400 transition-colors shadow-lg" data-site="Jonha Falls" data-image-url="https://placehold.co/600x400/1e293b/a5f3fc?text=Jonha+Falls+VR" data-video-url="jonha falls.mp4">
+                            Launch Experience
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <div id="ar-vr-modal" class="ar-vr-modal flex items-center justify-center">
+        <div class="relative rounded-xl shadow-2xl p-6 max-w-4xl mx-4 my-8 w-full bg-surface">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-subheading hover:text-heading transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <!-- Compass (recenter) -->
+            <button id="compass-btn" class="absolute top-4 left-4 text-subheading hover:text-heading transition-colors" title="Recenter">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8">
+                    <path d="M12 2a10 10 0 1010 10A10.011 10.011 0 0012 2zm3.535 7.05l-1.414 3.89a2 2 0 01-1.181 1.181l-3.89 1.414 1.414-3.89a2 2 0 011.181-1.181z"/>
+                </svg>
+            </button>
+            <!-- Fullscreen toggle -->
+            <button id="fullscreen-btn" class="absolute top-4 right-16 text-subheading hover:text-heading transition-colors" title="Fullscreen">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8">
+                    <path d="M7 3h4v2H9v2H7zm10 0v4h-2V5h-2V3zm-8 18H5v-4h2v2h2zm12-4v4h-4v-2h2v-2z"/>
+                </svg>
+            </button>
+            <h3 id="modal-title" class="text-3xl font-bold text-center mb-4 text-heading"></h3>
+            <div class="w-full rounded-xl mb-4 overflow-hidden bg-black">
+                <img id="modal-image" src="" alt="AR/VR Preview" class="w-full hidden">
+                <video id="modal-video" src="" class="w-full hidden" controls autoplay muted loop playsinline></video>
+            </div>
+            <p id="modal-description" class="text-center text-subheading"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('.theme-icon');
+            const sunIcon = `<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 7a5 5 0 100 10 5 5 0 000-10z"></path>`;
+            const moonIcon = `<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>`;
+
+            // Function to set theme
+            const setTheme = (isDark) => {
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                    themeIcon.innerHTML = sunIcon;
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    themeIcon.innerHTML = moonIcon;
+                    localStorage.setItem('theme', 'light');
+                }
+            };
+
+            // Initial theme setup
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const savedTheme = localStorage.getItem('theme');
+            setTheme(savedTheme ? savedTheme === 'dark' : prefersDark);
+
+            // Theme toggle event
+            themeToggle.addEventListener('click', () => {
+                setTheme(!document.documentElement.classList.contains('dark'));
+            });
+            
+            // Modal functionality
+            const modal = document.getElementById('ar-vr-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const launchButtons = document.querySelectorAll('.launch-ar-vr-btn');
+            const modalTitle = document.getElementById('modal-title');
+            const modalImage = document.getElementById('modal-image');
+            const modalVideo = document.getElementById('modal-video');
+            const modalDescription = document.getElementById('modal-description');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+            const compassBtn = document.getElementById('compass-btn');
+
+            launchButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const site = button.dataset.site;
+                    const imageUrl = button.dataset.imageUrl;
+                    const videoUrl = button.dataset.videoUrl;
+                    const description = button.parentElement.querySelector('p').textContent;
+
+                    modalTitle.textContent = site;
+                    modalDescription.textContent = description;
+
+                    if (videoUrl) {
+                        modalVideo.src = encodeURI(videoUrl);
+                        modalVideo.classList.remove('hidden');
+                        modalImage.classList.add('hidden');
+                        modalVideo.play();
+                    } else {
+                        modalImage.src = imageUrl;
+                        modalImage.classList.remove('hidden');
+                        modalVideo.classList.add('hidden');
+                    }
+                    modal.classList.add('show');
+                });
+            });
+
+            const closeModal = () => {
+                modal.classList.remove('show');
+                modalVideo.pause();
+                modalVideo.src = "";
+                modalImage.src = "";
+            };
+
+            // Fullscreen toggle handler for the shared video element
+            const isFullscreen = () => document.fullscreenElement || document.webkitFullscreenElement;
+            fullscreenBtn.addEventListener('click', async () => {
+                try {
+                    if (!isFullscreen()) {
+                        if (modalVideo.requestFullscreen) await modalVideo.requestFullscreen();
+                        else if (modalVideo.webkitRequestFullscreen) await modalVideo.webkitRequestFullscreen();
+                    } else {
+                        if (document.exitFullscreen) await document.exitFullscreen();
+                        else if (document.webkitExitFullscreen) await document.webkitExitFullscreen();
+                    }
+                } catch (err) {
+                    // No-op: some environments may block fullscreen without user gesture
+                }
+            });
+
+            // Compass button: recenter experience (seek to start and play)
+            compassBtn.addEventListener('click', () => {
+                if (!modalVideo.classList.contains('hidden')) {
+                    modalVideo.currentTime = 0;
+                    modalVideo.play();
+                }
+            });
+
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

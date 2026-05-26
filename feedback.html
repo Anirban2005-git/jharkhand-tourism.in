@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jharkhand Darshan | Executive Dashboard</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- ApexCharts for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!-- Lucide Icons for UI icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Inter, Lora, Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green-dark: #002d24;
+            --primary-green: #004d40;
+            --secondary-gold: #b28a38; /* Muted gold for a premium feel */
+            --light-bg: #f7f9f9;
+            --text-dark: #1f2927;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Lora', serif;
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+        .logo-font {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #aaa; }
+
+        .chart-card, .metric-card, .feedback-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .chart-card:hover, .metric-card:hover, .feedback-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,77,64,0.06);
+            border-color: #dce3e2;
+        }
+        /* Custom styles for feedback form */
+        .feedback-form-input {
+            width: 100%;
+            border-radius: 0.375rem;
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 0.75rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .feedback-form-input:focus {
+            outline: none;
+            border-color: var(--secondary-gold);
+            box-shadow: 0 0 0 2px rgba(178, 138, 56, 0.2);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Top Navigation Panel -->
+    <header class="fixed top-0 left-0 w-full bg-[--primary-green-dark] z-50 shadow-lg">
+        <div class="mx-auto flex items-center justify-between px-6 py-3">
+            <!-- Left side: Logo + Nav Links -->
+            <div class="flex items-center gap-10">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-white logo-font">Jharkhand Darshan</h1>
+                </div>
+                <nav class="hidden md:flex items-center gap-6">
+                    <a href="#" class="text-white font-semibold border-b-2 border-[--secondary-gold] pb-1 text-sm">Dashboard</a>
+                    <a href="#" class="text-gray-300 hover:text-white transition text-sm pb-1 border-b-2 border-transparent">Destinations</a>
+                    <a href="#" class="text-gray-300 hover:text-white transition text-sm pb-1 border-b-2 border-transparent">Partners</a>
+                    <a href="#" class="text-gray-300 hover:text-white transition text-sm pb-1 border-b-2 border-transparent">Bookings</a>
+                </nav>
+            </div>
+            <!-- Right side: User Actions -->
+            <div class="flex items-center space-x-4">
+                <button class="p-2 rounded-full hover:bg-black hover:bg-opacity-20 transition-colors">
+                    <i data-lucide="bell" class="w-5 h-5 text-gray-300"></i>
+                </button>
+                 <button class="p-2 rounded-full hover:bg-black hover:bg-opacity-20 transition-colors">
+                    <i data-lucide="settings" class="w-5 h-5 text-gray-300"></i>
+                </button>
+                <img src="https://placehold.co/40x40/004d40/ffffff?text=A" alt="Admin" class="w-10 h-10 rounded-full ring-2 ring-offset-2 ring-offset-[--primary-green-dark] ring-[--secondary-gold]">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6 lg:p-10 pt-24">
+        <header class="flex flex-wrap justify-between items-center mb-10 gap-4">
+            <div>
+                <h2 class="text-3xl">Executive Overview</h2>
+                <p class="text-[--text-muted]">A summary of tourism performance and sentiment.</p>
+            </div>
+        </header>
+
+        <!-- Section 1: Analytics Dashboard -->
+        <section id="analytics">
+            <h3 class="text-xl font-semibold mb-6">Key Performance Indicators</h3>
+
+            <!-- Key Metrics -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                <!-- Premium Metric Card 1: Total Visitors -->
+                <div class="metric-card">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-[--text-muted]">Total Visitors (30d)</p>
+                            <p class="text-3xl font-bold mt-2">12,450</p>
+                            <div class="flex items-center text-sm text-green-600 mt-1">
+                                <i data-lucide="arrow-up-right" class="w-4 h-4 mr-1"></i>
+                                <span>+12.5%</span>
+                            </div>
+                        </div>
+                        <div id="visitor-sparkline" class="w-24 h-12 -mr-4"></div>
+                    </div>
+                </div>
+                <!-- Premium Metric Card 2: Total Bookings -->
+                 <div class="metric-card">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-[--text-muted]">Total Bookings</p>
+                            <p class="text-3xl font-bold mt-2">3,120</p>
+                            <div class="flex items-center text-sm text-green-600 mt-1">
+                                <i data-lucide="arrow-up-right" class="w-4 h-4 mr-1"></i>
+                                <span>+8.2%</span>
+                            </div>
+                        </div>
+                        <div id="booking-sparkline" class="w-24 h-12 -mr-4"></div>
+                    </div>
+                </div>
+                <!-- Premium Metric Card 3: Total Revenue -->
+                 <div class="metric-card">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-[--text-muted]">Total Revenue</p>
+                            <p class="text-3xl font-bold mt-2">₹8,50,200</p>
+                            <div class="flex items-center text-sm text-red-600 mt-1">
+                                <i data-lucide="arrow-down-right" class="w-4 h-4 mr-1"></i>
+                                <span>-1.5%</span>
+                            </div>
+                        </div>
+                        <div id="revenue-sparkline" class="w-24 h-12 -mr-4"></div>
+                    </div>
+                </div>
+                <!-- Premium Metric Card 4: Avg. Satisfaction -->
+                 <div class="metric-card">
+                     <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-[--text-muted]">Avg. Satisfaction</p>
+                            <p class="text-3xl font-bold mt-2">4.6 <span class="text-[--secondary-gold]">★</span></p>
+                            <div class="flex items-center text-sm text-gray-500 mt-1">
+                                <i data-lucide="minus" class="w-4 h-4 mr-1"></i>
+                                <span>Stable</span>
+                            </div>
+                        </div>
+                        <div id="satisfaction-sparkline" class="w-24 h-12 -mr-4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <div class="chart-card lg:col-span-3">
+                    <h4 class="text-lg font-semibold mb-4">Tourist Traffic Trends</h4>
+                    <div id="tourist-traffic-chart"></div>
+                </div>
+                <div class="chart-card lg:col-span-2">
+                    <h4 class="text-lg font-semibold mb-4">Most Popular Destinations</h4>
+                    <div id="popular-destinations-chart"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Divider -->
+        <hr class="my-10 border-[--border-color]">
+
+        <!-- Section 2: AI-driven Feedback & Sentiment Analysis -->
+        <section id="sentiment-analysis">
+            <h3 class="text-xl font-semibold mb-6">AI Feedback & Sentiment Analysis</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <!-- Sentiment Breakdown -->
+                <div class="chart-card lg:col-span-2">
+                    <h4 class="text-lg font-semibold mb-4">Overall Sentiment</h4>
+                    <div id="sentiment-breakdown-chart"></div>
+                </div>
+
+                <!-- Feedback Submission Form -->
+                 <div class="chart-card lg:col-span-3">
+                    <h4 class="text-lg font-semibold mb-4">Submit Manual Feedback</h4>
+                    <form id="feedback-form" class="space-y-4">
+                        <div>
+                            <label for="userName" class="text-sm font-medium text-gray-700">User Name (Optional)</label>
+                            <input type="text" id="userName" class="mt-1 feedback-form-input" placeholder="e.g., Anjali P.">
+                        </div>
+                        <div>
+                            <label for="feedbackText" class="text-sm font-medium text-gray-700">Feedback</label>
+                            <textarea id="feedbackText" rows="4" class="mt-1 feedback-form-input" placeholder="Enter feedback details..." required></textarea>
+                        </div>
+                         <div>
+                            <button type="submit" class="w-full bg-[--primary-green] text-white font-semibold py-2 px-4 rounded-md hover:bg-[--primary-green-dark] transition-colors flex items-center justify-center gap-2">
+                                 <i data-lucide="send" class="w-4 h-4"></i>
+                                Submit Feedback
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Recent Feedback Feed -->
+                <div class="chart-card lg:col-span-5 mt-8">
+                    <h4 class="text-lg font-semibold mb-2">Recent Feedback</h4>
+                    <p class="text-sm text-[--text-muted] mb-4">Aggregated from platform reviews and social media.</p>
+                    <div class="space-y-4 max-h-[25rem] overflow-y-auto pr-2" id="feedback-feed">
+                        <!-- Feedback items will be injected here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            lucide.createIcons();
+
+            const mockFeedbackData = [
+                { source: 'Platform Review', user: 'Anjali P.', comment: 'The guide at Dassam Falls was incredibly knowledgeable. Made the trip memorable!', sentiment: 'Positive' },
+                { source: 'Twitter Mention', user: '@rohit_travels', comment: 'The road to Netarhat needs serious repairs. The journey was very uncomfortable.', sentiment: 'Negative' },
+                { source: 'Platform Review', user: 'Vikram S.', comment: 'Booking a homestay in a tribal village was a seamless experience. The family was so welcoming.', sentiment: 'Positive' },
+                { source: 'Facebook Comment', user: 'Priya Kumari', comment: 'Wish there were more dustbins near the Jonha Falls area. It was a bit littered.', sentiment: 'Negative' },
+                { source: 'Platform Review', user: 'Amit K.', comment: 'The accommodation was as described. Everything was clean and tidy. No complaints.', sentiment: 'Neutral' },
+                { source: 'Platform Review', user: 'Sunita M.', comment: 'The Sohrai art workshop was the highlight of our trip! An authentic and beautiful experience.', sentiment: 'Positive' }
+            ];
+
+            const feedbackFeedContainer = document.getElementById('feedback-feed');
+            const feedbackForm = document.getElementById('feedback-form');
+            const userNameInput = document.getElementById('userName');
+            const feedbackTextInput = document.getElementById('feedbackText');
+
+            // --- Function to create and return the HTML for a feedback item ---
+            function createFeedbackItemHTML(item) {
+                let sentimentBorder = '';
+                let sentimentText = '';
+                let sentimentIcon = '';
+
+                switch (item.sentiment) {
+                    case 'Positive':
+                        sentimentBorder = 'border-l-green-500';
+                        sentimentText = 'text-green-600';
+                        sentimentIcon = '<i data-lucide="thumbs-up" class="w-4 h-4"></i>';
+                        break;
+                    case 'Negative':
+                        sentimentBorder = 'border-l-red-500';
+                        sentimentText = 'text-red-600';
+                        sentimentIcon = '<i data-lucide="thumbs-down" class="w-4 h-4"></i>';
+                        break;
+                    case 'Neutral':
+                    default:
+                        sentimentBorder = 'border-l-gray-500';
+                        sentimentText = 'text-gray-600';
+                        sentimentIcon = '<i data-lucide="message-square" class="w-4 h-4"></i>';
+                        break;
+                }
+                
+                // Sanitize user input to prevent basic HTML injection
+                const safeUser = item.user.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                const safeComment = item.comment.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+
+                return `
+                    <div class="feedback-card p-4 border-l-4 ${sentimentBorder}">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-semibold text-sm text-gray-800">${safeUser}</p>
+                                <p class="text-xs text-gray-500">${item.source}</p>
+                            </div>
+                            <span class="flex items-center text-xs font-semibold ${sentimentText}">
+                                ${sentimentIcon}
+                            </span>
+                        </div>
+                        <p class="mt-3 text-gray-600 text-sm leading-relaxed">${safeComment}</p>
+                    </div>
+                `;
+            }
+
+            // --- Function to render feedback items ---
+            function renderFeedback(items) {
+                 feedbackFeedContainer.innerHTML = ''; // Clear existing items
+                 items.forEach(item => {
+                     const feedbackItemHTML = createFeedbackItemHTML(item);
+                     feedbackFeedContainer.innerHTML += feedbackItemHTML;
+                 });
+                 lucide.createIcons(); // Re-render icons after updating the DOM
+            }
+            
+            // --- Handle New Feedback Submission ---
+            feedbackForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent page reload
+
+                const userName = userNameInput.value.trim();
+                const feedbackText = feedbackTextInput.value.trim();
+
+                if (!feedbackText) return; // Don't submit empty feedback
+
+                // Simulate sentiment analysis for new feedback
+                const sentiments = ['Positive', 'Negative', 'Neutral'];
+                const randomSentiment = sentiments[Math.floor(Math.random() * sentiments.length)];
+
+                const newFeedback = {
+                    source: 'Manual Submission',
+                    user: userName || 'Anonymous', // Default to 'Anonymous' if name is empty
+                    comment: feedbackText,
+                    sentiment: randomSentiment
+                };
+
+                // Add the new feedback to the start of the data array
+                mockFeedbackData.unshift(newFeedback);
+
+                // Re-render the entire feedback list with the new item at the top
+                const newFeedbackItemHTML = createFeedbackItemHTML(newFeedback);
+                feedbackFeedContainer.insertAdjacentHTML('afterbegin', newFeedbackItemHTML);
+                lucide.createIcons();
+
+
+                // Clear the form fields
+                userNameInput.value = '';
+                feedbackTextInput.value = '';
+            });
+
+            // --- Initial Render of Mock Data ---
+            mockFeedbackData.forEach(item => {
+                 const feedbackItemHTML = createFeedbackItemHTML(item);
+                 feedbackFeedContainer.innerHTML += feedbackItemHTML;
+            });
+            lucide.createIcons();
+
+
+            const commonChartOptions = {
+                chart: { toolbar: { show: false }, zoom: { enabled: false }, },
+                dataLabels: { enabled: false },
+                stroke: { curve: 'smooth', width: 2 },
+            };
+            
+            // --- Sparkline Chart Options ---
+            const sparklineOptions = {
+                chart: { type: 'area', sparkline: { enabled: true } },
+                stroke: { curve: 'smooth', width: 2 },
+                fill: { opacity: 0.3 },
+                yaxis: { min: 0 },
+            };
+
+            const visitorSparkline = {
+                ...sparklineOptions,
+                series: [{ data: [30, 40, 35, 50, 49, 60, 70] }],
+                colors: ['#3b82f6']
+            };
+            new ApexCharts(document.querySelector("#visitor-sparkline"), visitorSparkline).render();
+
+            const bookingSparkline = {
+                ...sparklineOptions,
+                series: [{ data: [10, 15, 12, 18, 17, 22, 25] }],
+                colors: ['#22c55e']
+            };
+            new ApexCharts(document.querySelector("#booking-sparkline"), bookingSparkline).render();
+
+             const revenueSparkline = {
+                ...sparklineOptions,
+                series: [{ data: [50, 45, 48, 42, 40, 35, 33] }],
+                colors: ['#ef4444']
+            };
+            new ApexCharts(document.querySelector("#revenue-sparkline"), revenueSparkline).render();
+            
+            const satisfactionSparkline = {
+                ...sparklineOptions,
+                series: [{ data: [4.5, 4.6, 4.5, 4.7, 4.6, 4.6, 4.6] }],
+                colors: ['#8b5cf6'],
+                yaxis: { min: 4, max: 5 }
+            };
+            new ApexCharts(document.querySelector("#satisfaction-sparkline"), satisfactionSparkline).render();
+
+
+            // --- Main Chart Options ---
+            const trafficChartOptions = {
+                ...commonChartOptions,
+                chart: { ...commonChartOptions.chart, type: 'area', height: 350 },
+                series: [{ name: 'Visitors', data: [230, 280, 450, 380, 550, 500, 700, 720, 680, 850, 800, 950] }],
+                xaxis: { categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], labels: { style: { colors: '#6c757d' } } },
+                yaxis: { labels: { style: { colors: '#6c757d' } } },
+                fill: { type: "gradient", gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.1, stops: [0, 90, 100] } },
+                tooltip: { x: { format: 'MMM' } },
+                colors: ['#004d40']
+            };
+            new ApexCharts(document.querySelector("#tourist-traffic-chart"), trafficChartOptions).render();
+
+            const destinationsChartOptions = {
+                ...commonChartOptions,
+                chart: { ...commonChartOptions.chart, type: 'bar', height: 350 },
+                series: [{ name: 'Visits', data: [4500, 3800, 3200, 2900, 2500, 2100] }],
+                xaxis: { categories: ['Ranchi', 'Netarhat', 'Betla', 'Deoghar', 'Parasnath', 'Hazaribagh'], labels: { style: { colors: '#6c757d' } } },
+                yaxis: { labels: { style: { colors: '#6c757d' } } },
+                plotOptions: { bar: { horizontal: false, borderRadius: 4, columnWidth: '45%' } },
+                    colors: ['#22c55e', '#ef4444', '#a8a29e'],
+                    labels: ['Positive', 'Negative', 'Neutral'],
+                legend: { position: 'bottom', fontSize: '14px', markers: { radius: 12 }, labels: { colors: '#6c757d' } },
+                plotOptions: { pie: { donut: { labels: { show: true, total: { show: true, label: 'Total Reviews', color: '#6c757d', formatter: w => w.globals.seriesTotals.reduce((a, b) => a + b, 0) } } } } }
+            };
+            new ApexCharts(document.querySelector("#sentiment-breakdown-chart"), sentimentChartOptions).render();
+        });
+    </script>
+</body>
+</html>

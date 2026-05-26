@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Certification - Jharkhand Tourism</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="js/api.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+    <style>
+        :root {
+            --background: #f8fafc;
+            --foreground: #0f172a;
+            --card: #ffffff;
+            --card-foreground: #020617;
+            --muted: #f1f5f9;
+            --muted-foreground: #64748b;
+            --primary: #10b981;
+            --primary-foreground: #ffffff;
+            --secondary: #f97316;
+            --border: #e2e8f0;
+            --radius: 0.75rem;
+            --shadow-elevated: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin-inline: auto;
+            padding-inline: 1.5rem;
+        }
+
+        .section-padding {
+            padding-block: 5rem;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: #cbd5e1;
+        }
+
+        .auth-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .auth-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .auth-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--card-foreground);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--card-foreground);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #047857;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ea580c;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .success-message {
+            color: var(--primary);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .certificate-preview {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .certificate-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .certificate-content {
+            font-size: 1.125rem;
+            color: var(--card-foreground);
+            margin-bottom: 1rem;
+        }
+
+        .certificate-id {
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+            font-family: monospace;
+        }
+
+        .payment-section {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .payment-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .payment-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Digital Certification</h1>
+            <p class="hero-subtitle">
+                Issue and verify digital certificates for tourism services, guides, and cultural experiences in Jharkhand.
+            </p>
+        </div>
+    </section>
+
+    <main class="section-padding">
+        <div class="container">
+            <!-- Login Form -->
+            <div id="login-section" class="auth-container">
+                <div class="auth-card">
+                    <h2 class="auth-title">Admin Login</h2>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <div id="login-error" class="error-message hidden"></div>
+                    </form>
+                </div>
+
+                <div class="auth-card">
+                    <h2 class="auth-title">Issue Certificate</h2>
+                    <form id="certificate-form">
+                        <div class="form-group">
+                            <label for="recipient-name">Recipient Name</label>
+                            <input type="text" id="recipient-name" name="recipientName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="certificate-title">Certificate Title</label>
+                            <input type="text" id="certificate-title" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="certificate-notes">Notes</label>
+                            <textarea id="certificate-notes" name="notes" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Issue Certificate</button>
+                        <div id="certificate-error" class="error-message hidden"></div>
+                        <div id="certificate-success" class="success-message hidden"></div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Certificate Preview -->
+            <div id="certificate-preview" class="certificate-preview hidden">
+                <div class="certificate-title">Certificate of Achievement</div>
+                <div class="certificate-content">
+                    This is to certify that <strong id="preview-recipient">[Recipient Name]</strong><br>
+                    has successfully completed <strong id="preview-title">[Certificate Title]</strong><br>
+                    in the field of Jharkhand Tourism.
+                </div>
+                <div class="certificate-id" id="preview-id">Certificate ID: [Generated ID]</div>
+            </div>
+
+            <!-- Payment Section -->
+            <div id="payment-section" class="payment-section hidden">
+                <h3>Complete Payment</h3>
+                <p>Certificate issuance fee: <span class="payment-amount">₹500</span></p>
+                <button id="pay-button" class="btn btn-primary">Pay with Stripe</button>
+                <div id="payment-error" class="error-message hidden"></div>
+            </div>
+
+            <!-- Dashboard Link -->
+            <div id="dashboard-section" class="hidden" style="text-align: center; margin-top: 2rem;">
+                <a href="dashboard.html" class="btn btn-outline">Go to Dashboard</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginForm = document.getElementById('login-form');
+        const certificateForm = document.getElementById('certificate-form');
+        const payButton = document.getElementById('pay-button');
+        const loginSection = document.getElementById('login-section');
+        const certificatePreview = document.getElementById('certificate-preview');
+        const paymentSection = document.getElementById('payment-section');
+        const dashboardSection = document.getElementById('dashboard-section');
+
+        // Check if user is already logged in
+        if (window.tourismAPI.isAuthenticated()) {
+            showDashboard();
+        }
+
+        // Login form handler
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('login-error');
+
+            try {
+                const response = await window.tourismAPI.login(username, password);
+                localStorage.setItem('userData', JSON.stringify(response.user));
+                showDashboard();
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        // Certificate form handler
+        certificateForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const recipientName = document.getElementById('recipient-name').value;
+            const title = document.getElementById('certificate-title').value;
+            const notes = document.getElementById('certificate-notes').value;
+            const errorDiv = document.getElementById('certificate-error');
+            const successDiv = document.getElementById('certificate-success');
+
+            if (!window.tourismAPI.isAuthenticated()) {
+                errorDiv.textContent = 'Please login first to issue certificates.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const response = await window.tourismAPI.issueCertificate({
+                    recipientName,
+                    title,
+                    notes
+                });
+
+                // Show certificate preview
+                document.getElementById('preview-recipient').textContent = recipientName;
+                document.getElementById('preview-title').textContent = title;
+                document.getElementById('preview-id').textContent = `Certificate ID: ${response.certificate.uniqueId}`;
+                
+                certificatePreview.classList.remove('hidden');
+                paymentSection.classList.remove('hidden');
+                
+                // Store certificate data for payment
+                window.currentCertificate = response.certificate;
+                
+                errorDiv.classList.add('hidden');
+                successDiv.textContent = 'Certificate created successfully! Complete payment to finalize.';
+                successDiv.classList.remove('hidden');
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        // Payment handler with Razorpay
+        payButton.addEventListener('click', async () => {
+            if (!window.currentCertificate) {
+                alert('No certificate to pay for');
+                return;
+            }
+
+            try {
+                // Create Razorpay order
+                const response = await fetch('/api/payments/create-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        amount: 500, // Certificate fee in INR
+                        currency: 'INR',
+                        providerId: 1 // Default provider for certificates
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to create payment order');
+                }
+
+                const { order, paymentId } = await response.json();
+
+                // Initialize Razorpay
+                const options = {
+                    key: "rzp_test_your_key_id_here", // Replace with your actual Razorpay Key ID
+                    amount: order.amount,
+                    currency: order.currency,
+                    name: "Jharkhand Tourism",
+                    description: `Certificate: ${window.currentCertificate.title}`,
+                    order_id: order.id,
+                    handler: async function (response) {
+                        try {
+                            // Verify payment
+                            const verifyResponse = await fetch('/api/payments/verify-payment', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                },
+                                body: JSON.stringify({
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_signature: response.razorpay_signature,
+                                    paymentId: paymentId
+                                })
+                            });
+
+                            if (verifyResponse.ok) {
+                                alert('Payment successful! Certificate has been issued.');
+                                window.currentCertificate = null;
+                                certificateForm.reset();
+                                certificatePreview.classList.add('hidden');
+                                paymentSection.classList.add('hidden');
+                            } else {
+                                throw new Error('Payment verification failed');
+                            }
+                        } catch (error) {
+                            document.getElementById('payment-error').textContent = error.message;
+                            document.getElementById('payment-error').classList.remove('hidden');
+                        }
+                    },
+                    prefill: {
+                        name: window.currentCertificate.recipientName,
+                        email: "user@example.com"
+                    },
+                    theme: {
+                        color: "#059669"
+                    }
+                };
+
+                const rzp = new Razorpay(options);
+                rzp.open();
+
+            } catch (error) {
+                document.getElementById('payment-error').textContent = error.message;
+                document.getElementById('payment-error').classList.remove('hidden');
+            }
+        });
+
+        function showDashboard() {
+            loginSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
+        }
+    });
+    </script>
+</body>
+</html>

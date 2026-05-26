@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../Documents/dummy pragya"
+		},
+		{
+			"path": "../../Desktop/backend"
+		},
+		{
+			"path": "../../Downloads/dummy.sih/ARVR"
+		},
+		{
+			"path": "../../Downloads/bbb"
+		},
+		{
+			"path": "../../Downloads/place.photos4"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "dummy.sih"
+	}
+}

@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Jharkhand | Eco-Cultural Tourism</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="slideshow.js"></script>
+    <style>
+        /* Mute button for hero (appears inside hero, not in navbar) */
+        .hero-section .mute-btn {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            z-index: 40;
+            background: rgba(255,255,255,0.85);
+            border: 1px solid rgba(15,23,42,0.08);
+            color: #0f172a;
+            padding: 0.45rem 0.9rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(2,6,23,0.12);
+        }
+        .hero-section .mute-btn:hover { background: rgba(255,255,255,1); }
+    </style>
+<script>
+// --- Sentiment detection helpers ---
+function detectSentiment(text) {
+  var pos = /\b(good|great|excellent|amazing|love|wonderful|awesome|best|enjoy|happy|positive|fantastic|beautiful|nice|helpful|recommend|satisfied|liked|superb|delight|pleasant|perfect|must visit|thank you|thanks|welcoming|memorable|knowledgeable|seamless|family)\b/i;
+  var neg = /\b(bad|poor|worst|hate|terrible|awful|disappoint|negative|problem|issue|unhappy|not good|rude|dirty|unhelpful|expensive|boring|never|avoid|complain|waste|noisy|danger|unsafe|crowded|delay|late|unsatisfied|dislike|uncomfortable|repairs|serious)\b/i;
+  if (pos.test(text) && !neg.test(text)) return 'positive';
+  if (neg.test(text) && !pos.test(text)) return 'negative';
+  return 'neutral';
+}
+function sentimentLabel(sentiment) {
+  if (sentiment === 'positive') return '<span style="color:#22c55e;font-weight:600;">Positive</span>';
+  if (sentiment === 'negative') return '<span style="color:#ef4444;font-weight:600;">Negative</span>';
+  return '<span style="color:#64748b;font-weight:600;">Neutral</span>';
+}
+function sentimentBorder(sentiment) {
+  if (sentiment === 'positive') return '2px solid #22c55e';
+  if (sentiment === 'negative') return '2px solid #ef4444';
+  return '1px solid #e2e8f0';
+}
+// Format all existing feedback items in the feed to match the new card style and sentiment, and update sentiment graph
+function updateSentimentStats() {
+  var feedbackFeed = document.getElementById('feedback-feed');
+  var items = feedbackFeed ? feedbackFeed.querySelectorAll('.feedback-item') : [];
+  var pos = 0, neg = 0, neu = 0;
+  items.forEach(function(item) {
+    var sentimentText = item.querySelector('div[style*="align-self:flex-start"]');
+    if (sentimentText) {
+      if (sentimentText.textContent.includes('Positive')) pos++;
+      else if (sentimentText.textContent.includes('Negative')) neg++;
+      else neu++;
+    }
+  });
+  var sentimentChart = document.getElementById('sentiment-breakdown-chart');
+  if (sentimentChart) {
+    sentimentChart.innerHTML =
+      '<div style="display:flex;gap:1.5em;align-items:center;justify-content:center;font-size:1.1em;">' +
+        '<span style="color:#22c55e;">&#128077; Positive: <b>' + pos + '</b></span>' +
+        '<span style="color:#ef4444;">&#128078; Negative: <b>' + neg + '</b></span>' +
+        '<span style="color:#64748b;">&#128528; Neutral: <b>' + neu + '</b></span>' +
+      '</div>';
+  }
+}
+document.addEventListener('DOMContentLoaded', function() {
+    var feedbackFeed = document.getElementById('feedback-feed');
+    if (feedbackFeed) {
+        var items = Array.from(feedbackFeed.children);
+        items.forEach(function(item) {
+            if (!item.classList.contains('feedback-item')) {
+                var name = 'Anonymous';
+                var text = item.textContent.trim();
+                var initials = 'A';
+                var timeString = '';
+                var match = text.match(/^([^:]+):\s*(.*)$/);
+                if (match) {
+                    name = match[1].trim();
+                    text = match[2].trim();
+                    initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+                } else {
+                    initials = 'A';
+                }
+                var timestamp = '';
+                var small = item.querySelector('small, .timestamp, .date, .time');
+                if (small) {
+                    timestamp = small.textContent.trim();
+                    small.remove();
+                }
+                timeString = timestamp || '';
+                var sentiment = detectSentiment(text);
+                item.className = 'feedback-item';
+                item.style.display = 'flex';
+                item.style.alignItems = 'flex-start';
+                item.style.gap = '1rem';
+                item.style.background = '#fff';
+                item.style.border = sentimentBorder(sentiment);
+                item.style.borderRadius = '12px';
+                item.style.padding = '1.1em 1.2em';
+                item.style.marginBottom = '1.2em';
+                item.innerHTML =
+                    '<div style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:#f97316;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1em;">' + initials + '</div>' +
+                    '<div style="flex:1;">' +
+                        '<div style="font-weight:600;font-size:1em;color:#0f172a;">' + name + '</div>' +
+                        '<div style="color:#64748b;font-size:0.97em;margin:0.2em 0 0.5em 0;white-space:pre-line;">' + text.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>' +
+                        (timeString ? '<div style="font-size:0.85em;color:#94a3b8;">' + timeString + '</div>' : '') +
+                    '</div>' +
+                    '<div style="align-self:flex-start;text-align:right;min-width:90px;font-size:1em;padding-left:1em;">' + sentimentLabel(sentiment) + '</div>';
+            }
+        });
+        updateSentimentStats();
+    }
+    const ws = new WebSocket("ws://localhost:8000/ws/analytics");
+});
+// Feedback form logic: display submitted feedback in the Recent Feedback Feed with card format
+document.addEventListener('DOMContentLoaded', function() {
+    var feedbackForm = document.querySelector('.feedback-form');
+    var feedbackFeed = document.getElementById('feedback-feed');
+    if (feedbackForm && feedbackFeed) {
+        feedbackForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var userName = document.getElementById('userName').value.trim();
+            var feedbackText = document.getElementById('feedbackText').value.trim();
+            if (!feedbackText) return;
+            var sentiment = detectSentiment(feedbackText);
+            var initials = (userName ? userName : 'A').split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+            var now = new Date();
+            var timeString = now.toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true, day: '2-digit', month: 'short', year: '2-digit' });
+            var feedbackItem = document.createElement('div');
+            feedbackItem.className = 'feedback-item';
+            feedbackItem.style.display = 'flex';
+            feedbackItem.style.alignItems = 'flex-start';
+            feedbackItem.style.gap = '1rem';
+            feedbackItem.style.background = '#fff';
+            feedbackItem.style.border = sentimentBorder(sentiment);
+            feedbackItem.style.borderRadius = '12px';
+            feedbackItem.style.padding = '1.1em 1.2em';
+            feedbackItem.style.marginBottom = '1.2em';
+            feedbackItem.innerHTML =
+                '<div style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:#f97316;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1em;">' + initials + '</div>' +
+                '<div style="flex:1;">' +
+                    '<div style="font-weight:600;font-size:1em;color:#0f172a;">' + (userName ? userName : 'Anonymous') + '</div>' +
+                    '<div style="color:#64748b;font-size:0.97em;margin:0.2em 0 0.5em 0;white-space:pre-line;">' + feedbackText.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>' +
+                    '<div style="font-size:0.85em;color:#94a3b8;">' + timeString + '</div>' +
+                '</div>' +
+                '<div style="align-self:flex-start;text-align:right;min-width:90px;font-size:1em;padding-left:1em;">' + sentimentLabel(sentiment) + '</div>';
+            feedbackFeed.prepend(feedbackItem);
+            feedbackForm.reset();
+            updateSentimentStats();
+        });
+    }
+});
+</script>
+    <script src="script1.js"></script>
+    <script src="js/api.js"></script>
+    <link rel="stylesheet" href="main.css">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .scroll-down-indicator {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: bounceDown 2s infinite;
+        }
+        .scroll-down-indicator:hover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.1);
+        }
+        .scroll-down-indicator svg {
+            color: white;
+            stroke-width: 1.5;
+        }
+        @keyframes bounceDown {
+            0%, 100% { transform: translateY(0); opacity: 0.8; }
+            50% { transform: translateY(10px); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <section class="hero-section">
+            <nav class="navigation">
+                <div class="nav-container">
+                    <a href="main.html" class="nav-logo">Jharkhand Tourism</a>
+            
+                    <ul class="nav-links">
+                        <li><a href="#destinations-section" class="nav-link">Destinations</a></li>
+                        <li><a href="#" id="nav-dashboard-btn" class="nav-link">Dashboard</a></li>
+                        <li class="dropdown">
+                            <a href="#experiences" class="nav-link">Experiences <span style="font-size:0.8em;vertical-align:right;">&#9662;</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#revolutionary-features" class="nav-link">Revolutionary Features</a></li>
+                                <li><a href="transpotation.html" class="nav-link">Transportation</a></li>
+                                <li><a href="#marketplace-section" class="nav-link">Marketplace</a></li>
+                                <li><a href="interactivemap.html" class="nav-link">Interactive map</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#feedback-section" class="nav-link">Feedback</a></li>
+                        <li><a href="homestays.html" class="nav-link">Home Stays</a></li>
+                        <li><a href="signup.html" class="nav-link">Register</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+             
+            
+
+            <div class="hero-background">
+                <div class="slideshow-container" style="background: linear-gradient(135deg, #0f4c3a 0%, #1a5f4a 50%, #2d7a5f 100%);">
+                    <video id="hero-video" autoplay muted loop preload="auto" playsinline style="width:100%; height: 100vh; object-fit: cover;">
+                        <source src="Mvideo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <div class="hero-overlay"></div>
+            <button id="mute-btn" class="mute-btn">Unmute</button>
+            
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Discover the Heart of <span class="hero-title-highlight">Jharkhand</span>
+                </h1>
+                <p class="hero-subtitle">
+                   Experience the soul of nature through Nature, Culture and Sustainability.
+                </p>
+                <div class="hero-buttons">
+                    <a href="destination.html" class="btn btn-primary" style="display: inline-flex; align-items: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                        Explore Destinations
+                    </a>
+                    <a href="planner.html" class="btn btn-outline" style="display: inline-flex; align-items: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                        Plan Your Journey (AI Planner)
+                    </a>
+               
+                </div>
+                <div class="hero-stats">
+                    <div class="stat" style="text-align: center;">
+                        <span class="stat-number" style="font-size: 2rem; font-weight: 700; color: #facc15;">10+</span><br>
+                        <span class="stat-label" style="color: White;">Registered Users</span>
+                    </div>
+                    <div class="stat" style="text-align: center;">
+                        <span class="stat-number" style="font-size: 2rem; font-weight: 700; color: #60a5fa;">50+</span><br>
+                        <span class="stat-label" style="color: White;">Site Visits</span>
+                    </div>
+                    <div class="stat" style="text-align: center;">
+                        <span class="stat-number" style="font-size: 2rem; font-weight: 700; color: #4ade80;">11+</span><br>
+                        <span class="stat-label" style="color: White;">Popular Destinations</span>
+                    </div>
+                    <div class="stat" style="text-align: center;">
+                        <span class="stat-number" style="font-size: 2rem; font-weight: 700; color: #f97316;">50%</span><br>
+                        <span class="stat-label" style="color: White;">Customer Satisfaction</span>
+                    </div>
+                </div>
+            </div>
+             <div style="text-align:center; position: absolute; bottom: 30px; width: 100%; z-index: 5;">
+                <a href="#destinations-section" class="scroll-down-indicator" aria-label="Scroll Down">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                </a>
+            </div>
+        </section>
+        
+        </div>
+
+    <section id="destinations-section" class="section-padding bg-gradient">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-header-flex">
+                        <div class="section-header-center">
+                            <span class="badge">Popular Destinations</span>
+                            <h2 class="section-title">Iconic Places to Visit</h2>
+                        </div>
+                        <a href="destination.html" class="btn btn-outline explore-more-btn" id="explore-more-destinations">Explore More &rarr;</a>
+                    </div>
+                    <p class="section-description">From cascading waterfalls to ancient tribal settlements, explore Jharkhand's most treasured destinations.</p>
+                </div>
+                <div class="grid grid-cols-3">
+                    <div class="card">
+                        <div class="card-image-container">
+                            <img src="Hundru Falls.jpeg" alt="Hundru Falls" class="card-image">
+                            <span class="badge badge-on-image" style="--badge-bg: #3b82f6; --badge-color: #fff;">Natural Wonder</span>
+                        </div>
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                Hundru Falls
+                            </h3>
+                            <p class="card-description">Witness the magnificent 98-meter waterfall cascading down rocky cliffs, creating a mesmerizing natural spectacle.</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-footer">
+                                <div class="location-tag">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                    Ranchi District
+                                </div>
+                                <a href="#" class="card-link">Learn More &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-image-container">
+                            <img src="tribal.jpeg" alt="Tribal Dance" class="card-image">
+                            <span class="badge badge-on-image" style="--badge-bg: #f97316; --badge-color: #fff;">Cultural Experience</span>
+                        </div>
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                Tribal Heritage Villages
+                            </h3>
+                            <p class="card-description">Experience authentic tribal culture through traditional dances, festivals, and community interactions.</p>
+                        </div>
+                        <div class="card-content">
+                             <div class="card-footer">
+                                <div class="location-tag">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                    Multiple Villages
+                                </div>
+                                <a href="#" class="card-link">Explore &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                     
+                    
+                    <div class="card">
+                        <div class="card-image-container">
+                            <img src="belta national park.jpeg" alt="Betla National Park" class="card-image">
+                            <span class="badge badge-on-image" style="--badge-bg: #166534; --badge-color: #fff;">Wildlife Sanctuary</span>
+                        </div>
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                                Betla National Park
+                            </h3>
+                            <p class="card-description">Discover diverse wildlife including tigers, elephants, and rare bird species in this pristine forest ecosystem.</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-footer">
+                                <div class="location-tag">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                    Palamu District
+                                </div>
+                                <a href="#" class="card-link">Visit &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+
+    <section id="marketplace-section" class="section-padding bg-muted tribal-pattern">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-header-flex">
+                        <div class="section-header-center">
+                            <span class="badge">Local Marketplace</span>
+                            <h2 class="section-title">Authentic Tribal Crafts</h2>
+                        </div>
+                    </div>
+                    <p class="section-description">Support local artisans and take home genuine handicrafts that tell the story of Jharkhand's rich cultural heritage.</p>
+<style>
+.marketplace-header-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+.marketplace-header-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+#explore-more-marketplace {
+    box-shadow: 0 2px 8px rgba(249,115,22,0.10);
+    background: #f97316;
+    color: #fff;
+    border: none;
+    transition: background 0.2s;
+}
+#explore-more-marketplace:hover {
+    background: #d65a0a;
+    color: #fff;
+}
+@media (max-width: 600px) {
+    .marketplace-header-flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    #explore-more-marketplace {
+        width: 100%;
+        min-width: unset;
+    }
+}
+</style>
+                </div>
+
+                <div class="grid grid-cols-2 items-center gap-large">
+                    <div class="marketplace-content">
+                        <div class="feature-list-item">
+                            <div class="icon-wrapper" style="--icon-bg: #f973161a; --icon-color: #f97316;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 2.5l-3.5 3.5-3 3-2 10 10-2 3-3 3.5-3.5-7-7z"></path><path d="M12 7.5l7 7"></path></svg>
+                            </div>
+                            <div>
+                                 <div>
+                            <h3 class="feature-title">Handwoven Textiles</h3>
+                            <p class="feature-description">Traditional fabrics woven by skilled tribal artisans using ancient techniques passed down through generations.</p>
+                        </div>
+                            </div>
+                        </div>
+                        <div class="feature-list-item">
+                            <div class="icon-wrapper" style="--icon-bg: #1665341a; --icon-color: #166534;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"></path></svg>
+                            </div>
+                            
+                            <div>
+                                <h3 class="feature-title">Bamboo Crafts</h3>
+                                <p class="feature-description">Sustainable bamboo products including baskets, furniture, and decorative items crafted by local communities.</p>
+                            </div>
+                        </div>
+                         <div class="feature-list-item">
+                            <div class="icon-wrapper" style="--icon-bg: #a855f71a; --icon-color: #a855f7;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="feature-title">Tribal Jewelry</h3>
+                                <p class="feature-description">Authentic silver and brass ornaments featuring traditional designs and spiritual significance.</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary marketplace-btn" onclick="window.location.href='ribal.html'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 2.5l-3.5 3.5-3 3-2 10 10-2 3-3 3.5-3.5-7-7z"></path><path d="M12 7.5l7 7"></path></svg>
+                            Browse Tribal Marketplace
+                        </button>
+                    </div>
+                    <div class="marketplace-image-container">
+                        <img src="crafts.jpeg" alt="Tribal Crafts" class="marketplace-image">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        
+    <section id="revolutionary-features" class="section-padding">
+    <section id="transpotation-section"></section>
+            <div class="container">
+                <div class="section-header">
+                    <span class="badge">Revolutionary Features</span>
+                    <h2 class="section-title">AI-Powered Smart Tourism</h2>
+                    <p class="section-description">Experience next-generation features that make Jharkhand tourism smarter, safer, and more rewarding.</p>
+                </div>
+                
+                <div class="grid grid-cols-3">
+                    <a href="digitalanother.html" class="feature-card-link">
+                        <div class="card feature-card">
+                            <div class="card-image-container">
+                                <img src="ERC-twitter-post.png" alt="Eco Points Rewards" class="card-image">
+                            </div>
+                            <div class="card-header">
+                                <div class="feature-card-header">
+                                    <div class="icon-wrapper" style="--icon-bg: #22c55e1a; --icon-color: #22c55e;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2"></path><path d="M18 8V6a2 2 0 0 0-2-2h-4"></path><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M10 14h4"></path></svg>
+                                    </div>
+                                    <h3 class="card-title">Blockchain Enabled Guide Verification</h3>
+                                </div>
+                                <p class="card-description">Plan your perfect eco-friendly trip with personalized itineraries and local insights.</p>
+                            </div>
+                            <div class="card-content">
+                                <button class="btn btn-feature">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                    Explore Feature
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="ARVR.html" class="feature-card-link">
+                         <div class="card feature-card">
+                            <div class="card-image-container">
+                                <img src="AR pic.jpeg" alt="AR/VR Storytelling" class="card-image">
+                            </div>
+                            <div class="card-header">
+                                <div class="feature-card-header">
+                                    <div class="icon-wrapper" style="--icon-bg: #a855f71a; --icon-color: #a855f7;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                                    </div>
+                                    <h3 class="card-title">AR/VR Storytelling</h3>
+                                </div>
+                                <p class="card-description">Experience tribal legends and folklore through immersive AR/VR technology at historical sites and cultural landmarks.</p>
+                            </div>
+                            <div class="card-content">
+                                <button class="btn btn-feature">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                    Explore Feature
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="cultural events.html" class="feature-card-link">
+                         <div class="card feature-card">
+                            <div class="card-image-container">
+                                <img src="cc.jpg" alt="Cultural Calendar" class="card-image">
+                            </div>
+                            <div class="card-header">
+                                <div class="feature-card-header">
+                                    <div class="icon-wrapper" style="--icon-bg: #f973161a; --icon-color: #f97316;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    </div>
+                                    <h3 class="card-title">Cultural Calendar(Events)</h3>
+                                </div>
+                                <p class="card-description">Never miss authentic festivals and rituals with real-time updates on tribal celebrations and seasonal events.</p>
+                            </div>
+                            <div class="card-content">
+                                <button class="btn btn-feature">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                    Explore Feature
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+      
+        <!-- Dashboard removed from separate section and will be shown in-page above the hero when the user clicks the Dashboard nav button -->
+    <!-- In-page dashboard container (hidden by default) -->
+    <div id="inpage-dashboard" style="display:none;position:fixed;inset:0;z-index:9999;padding:24px;box-sizing:border-box;pointer-events:auto;">
+    </div>
+
+            <section id="feedback-section" class="section-padding bg-muted">
+                 <div class="container">
+                     <div class="section-header">
+                        <span class="badge">Visitor Insights</span>
+                        <h2 class="section-title">AI Feedback & Sentiment</h2>
+                        <p class="section-description">Analyze aggregated feedback from platform reviews and social media to understand visitor experience.</p>
+                    </div>
+
+                     <div class="dashboard-grid">
+                        <div class="card grid-span-2">
+                             <div class="card-header"><h3 class="card-title">Overall Sentiment</h3></div>
+                             <div class="card-content">
+                                <div id="sentiment-breakdown-chart"></div>
+                            </div>
+                        </div>
+                        <div class="card grid-span-3">
+                            <div class="card-header"><h3 class="card-title">Submit Manual Feedback</h3></div>
+                            <div class="card-content">
+                                <form class="feedback-form">
+                                    <div class="form-group">
+                                        <label for="userName">User Name (Optional)</label>
+                                        <input type="text" id="userName" placeholder="e.g., Anjali P.">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="feedbackText">Feedback</label>
+                                        <textarea id="feedbackText" rows="4" placeholder="Enter feedback details..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-secondary">Submit Feedback</button>
+                                </form>
+                            </div>
+                        </div>
+
+                         <div class="card grid-span-5">
+                             <div class="card-header"><h3 class="card-title">Recent Feedback Feed</h3></div>
+                             <div class="card-content">
+                                 <div class="feedback-feed" id="feedback-feed">
+                                     </div>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+            </section>
+
+
+ <section class="cta-section">
+        <div class="cta-overlay"></div>
+        <div class="container cta-content">
+            <h2 class="section-title cta-title">Start Your Jharkhand Adventure Today</h2>
+            <p class="section-description cta-description">Join thousands of travelers who have discovered the magic of sustainable eco-cultural tourism in Jharkhand.</p>
+            <div class="cta-buttons">
+                <a href="interactivemap.html" class="btn btn-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    Interactive maps 
+                </a>
+                <a href="homestays.html" class="btn btn-outline">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    Connect with Locals
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- <section class="cta-section">
+            </section>
+
+
+        <section id="help-faqs" class="section-padding">
+            <div class="container">
+                <h2 class="section-title">Help & FAQs</h2>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <h3 class="faq-question">How do I book a tour package?</h3>
+                        <p class="faq-answer">You can browse our tour packages under the "Destinations" or "Plan Your Trip" sections. Once you find a package you like, simply follow the booking instructions, fill in your details, and complete the payment to confirm your reservation.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question">What payment methods are accepted?</h3>
+                        <p class="faq-answer">We accept all major credit and debit cards, as well as net banking and UPI payments through our secure Razorpay gateway.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question">Can I cancel or modify my booking?</h3>
+                        <p class="faq-answer">Cancellation and modification policies vary depending on the package. Please refer to the specific terms and conditions of your booking confirmation. For assistance, you can contact our support team.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question">Who do I contact for support?</h3>
+                        <p class="faq-answer">For any questions or issues, you can reach out to our customer support team via email at `support@jharkhandtourism.com` or call us at `+91-9876543210`.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="privacy-policy" class="section-padding bg-muted">
+            <div class="container">
+                <h2 class="section-title">Privacy Policy</h2>
+                <div class="policy-content">
+                    <p>Your privacy is important to us. This policy explains how we collect, use, and protect your personal information.</p>
+                    <ul>
+                        <li><strong>Information We Collect</strong>: We collect information you provide directly to us, such as your name, email address, and phone number when you make a booking or contact us. We also collect basic usage data to improve our website and services.</li>
+                        <li><strong>How We Use Your Information</strong>: We use your information to process your bookings, communicate with you about your trip, and provide customer support. We may also use it to send you relevant updates and promotional offers, which you can opt out of at any time.</li>
+                        <li><strong>Information Sharing</strong>: We do not sell or rent your personal information to third parties. We may share your data with service providers like hotels and transport companies solely for the purpose of fulfilling your travel arrangements. We may also disclose information if required by law.</li>
+                        <li><strong>Data Security</strong>: We implement industry-standard security measures to protect your personal data from unauthorized access, use, or disclosure.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="terms-of-service" class="section-padding">
+            <div class="container">
+                <h2 class="section-title">Terms of Service</h2>
+                <div class="policy-content">
+                    <p>By using the Jharkhand Tourism platform, you agree to the following terms and conditions.</p>
+                    <ul>
+                        <li><strong>Bookings and Payments</strong>: All bookings are subject to availability. By confirming a booking, you agree to pay the full amount specified. All payments are processed through a third-party secure gateway.</li>
+                        <li><strong>Cancellations and Refunds</strong>: Our cancellation policy varies by tour package. Please check the specific terms of your booking for details on eligibility for refunds.</li>
+                        <li><strong>User Conduct</strong>: You agree to use our platform for lawful purposes only and to conduct yourself responsibly during your travels. Any damage to property or harm to others caused by you may result in legal action.</li>
+                        <li><strong>Intellectual Property</strong>: All content on this website, including text, logos, and images, is our property and is protected by copyright laws. You may not use this content without our express permission.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="responsible-tourism" class="section-padding bg-muted">
+            <div class="container">
+                <h2 class="section-title">Responsible Tourism</h2>
+                <div class="policy-content">
+                    <p>We are committed to promoting responsible and sustainable tourism practices in Jharkhand. We encourage all travelers to help us preserve the state’s rich natural and cultural heritage.</p>
+                    <ul>
+                        <li><strong>Respect Local Culture</strong>: Be mindful and respectful of local traditions, customs, and communities. Ask for permission before taking photographs of people.</li>
+                        <li><strong>Protect the Environment</strong>: Do not litter. Dispose of waste properly and minimize your use of plastics.</li>
+                        <li><strong>Support Local Communities</strong>: Patronize local businesses, stay in locally-owned accommodations, and purchase authentic handmade crafts to contribute directly to the local economy.</li>
+                        <li><strong>Conserve Resources</strong>: Be mindful of your water and energy consumption, especially in remote areas.</li>
+                    </ul>
+                </div>
+            </div>
+        </section> -->
+
+        <!-- <section id="sitemap" class="section-padding">
+            <div class="container">
+                <h2 class="section-title">Sitemap</h2>
+                <nav class="sitemap-nav">
+                    <ul>
+                        <li><a href="#destinations-section">Destinations</a></li>
+                        <li><a href="#marketplace-section">Marketplace</a></li>
+                        <li><a href="#plan-trip-section">Plan Your Trip</a></li>
+                        <li><a href="#feedback-section">Feedback</a></li>
+                        <li><a href="#help-faqs">Help & FAQs</a></li>
+                        <li><a href="#privacy-policy">Privacy Policy</a></li>
+                        <li><a href="#terms-of-service">Terms of Service</a></li>
+                        <li><a href="#responsible-tourism">Responsible Tourism</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </section> -->
+
+        <footer class="footer">
+            </footer>
+
+    </div>
+</body>
+</html>
+<style>
+.section-padding {
+    padding: 6rem 0;
+}
+
+.bg-muted {
+    background-color: #f8fafc; /* A light gray background */
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.policy-content ul {
+    margin-top: 1.5rem;
+    list-style-type: none;
+}
+
+.policy-content li {
+    margin-bottom: 0.75rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+.policy-content li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #3b82f6; /* Or another accent color */
+    font-weight: bold;
+}
+
+</style>
+   
+ 
+
+    <footer class="footer">
+        <div class="container footer-container">
+        <div class="footer-section footer-about">
+             <h3 class="footer-logo">Jharkhand Tourism</h3>
+            <p class="footer-description">
+                Promoting sustainable eco-cultural tourism. Discover the true heart of India with our pristine forests, rich tribal heritage, and breathtaking landscapes.
+            </p>
+            <div class="social-icons">
+                <a href="#" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                <a href="#" aria-label="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3.96v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+                <a href="#" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                <a href="#" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+            </div>
+        </div>
+        <div class="footer-section footer-links">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="destination.html">Destinations</a></li>
+                <li><a href="#navbar-section">Experiences</a></li>
+                <li><a href="ribal.html">Marketplace</a></li>
+                <li><a href="planner.html">Plan Your Trip</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="footer-section footer-links">
+            <h4>Support</h4>
+            <ul>
+                <li><a href="#help-faqs">Help & FAQs</a></li>
+                <li><a href="#privacy-policy">Privacy Policy</a></li>
+                <li><a href="#terms-of-service">Terms of Service</a></li>
+                <li><a href="#responsible-tourism">Responsible Tourism</a></li>
+                <li><a href="#sitemap">Sitemap</a></li>
+            </ul>
+        </div>
+        <div class="footer-section footer-contact">
+            <h4>Contact Info</h4>
+            <p>123 Tourism Plaza, Ranchi, Jharkhand, India</p>
+            <p><strong>Email:</strong> info@jharkhandtourism.gov</p>
+            <p><strong>Phone:</strong> +91 98765 43210</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Jharkhand Tourism. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Best-Looking Floating Chatbot Icon Button -->
+<a href="#" id="open-chat-btn" style="position:fixed;bottom:32px;right:32px;z-index:9999;background:linear-gradient(135deg,#22c55e 60%,#16a34a 100%);width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px 0 rgba(34,197,94,0.25),0 1.5px 8px 0 rgba(0,0,0,0.10);text-decoration:none;transition:box-shadow 0.3s;animation:glowChat 2s infinite alternate;">
+  <svg width="36" height="36" viewBox="0 0 24 24" fill="#fff" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="5" width="18" height="14" rx="7" fill="#22c55e" stroke="#fff" stroke-width="2.2"/>
+    <path d="M8 15c.7.7 2.1 1.2 4 1.2s3.3-.5 4-1.2" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="9" cy="11" r="1.2" fill="#fff"/>
+    <circle cx="12" cy="11" r="1.2" fill="#fff"/>
+    <circle cx="15" cy="11" r="1.2" fill="#fff"/>
+  </svg>
+</a>
+<style>
+@keyframes glowChat {
+  from { box-shadow: 0 8px 32px 0 rgba(34,197,94,0.25),0 1.5px 8px 0 rgba(0,0,0,0.10); }
+  to { box-shadow: 0 0 32px 8px #22c55e88,0 1.5px 8px 0 rgba(0,0,0,0.10); }
+}
+
+
+/* Video loading optimization */
+.slideshow-container {
+    background: linear-gradient(135deg, #0f4c3a 0%, #1a5f4a 50%, #2d7a5f 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.slideshow-container video {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.slideshow-container video.loaded {
+    opacity: 1;
+}
+</style>
+<!-- End Best Chatbot Icon -->
+
+<!-- Chatbot Popup -->
+<div id="chatbot-popup" style="display: none; position: fixed; bottom: 90px; right: 20px; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); border-radius: 15px; overflow: hidden;">
+    <iframe src="chatbot1.html" style="width: 400px; height: 600px; border: none; display: block;"></iframe>
+</div>
+
+<div class="slideshow-dots" style="display:none;"></div>
+
+<script>
+
+// Chatbot popup functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const openChatBtn = document.getElementById('open-chat-btn');
+    const chatbotPopup = document.getElementById('chatbot-popup');
+    
+    if (openChatBtn && chatbotPopup) {
+        openChatBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (chatbotPopup.style.display === 'none' || chatbotPopup.style.display === '') {
+                chatbotPopup.style.display = 'block';
+            } else {
+                chatbotPopup.style.display = 'none';
+            }
+        });
+
+        // Close when clicking anywhere outside the chatbot popup or button
+        document.addEventListener('click', function(e) {
+            const clickedInsidePopup = chatbotPopup.contains(e.target);
+            const clickedOpenButton = openChatBtn.contains(e.target);
+            const isVisible = chatbotPopup.style.display === 'block';
+            if (isVisible && !clickedInsidePopup && !clickedOpenButton) {
+                chatbotPopup.style.display = 'none';
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                chatbotPopup.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
+
+<!-- In-page dashboard CSS + JS -->
+<style>
+/* dashboard panel styles */
+.inpage-overlay { background: rgba(15,23,42,0.45); position:fixed; inset:0; z-index:9998; }
+#inpage-dashboard { display: none; }
+#inpage-dashboard .panel { background: #fff; border-radius: 12px; padding: 22px; box-shadow: 0 20px 60px rgba(2,6,23,0.45); height: calc(100vh - 48px); overflow:auto; }
+.panel .close-btn { float:right; background:#ef4444;color:#fff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer }
+.panel .metrics { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px }
+.panel .metric { background:#f8fafc;padding:12px;border-radius:10px;min-width:150px }
+.panel h2 { margin:0 0 6px 0 }
+.panel .small { color:#64748b }
+@media (max-width:900px){ #inpage-dashboard{ left:8px; right:8px; inset:8px;} .panel .metrics{flex-direction:column} }
+</style>
+
+<script>
+// Template and behavior for the in-page dashboard (richer layout + ApexCharts)
+const dashboardHTML = `
+    <div class="panel" role="dialog" aria-label="Executive Dashboard">
+        <button class="close-btn" id="close-inpage-dashboard">Close</button>
+        <div style="clear:both"></div>
+            <div style="display:flex;flex-direction:column;align-items:center;padding:8px 0 6px 0;">
+                <div class="badge" style="display:inline-block;margin-bottom:8px;">Analytics</div>
+                <h2 style="margin:6px 0 0 0; text-align:center;">Executive Dashboard</h2>
+                <p class="small" style="text-align:center;">A summary of tourism performance, key metrics, and visitor sentiment.</p>
+            </div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;">
+            <div class="card metric-card" style="flex:1;min-width:160px;background:#fff;padding:12px;border-radius:12px;">
+                <div class="metric-label">Total Visitors (30d)</div>
+                <div class="metric-value" id="dash-visitors">12,450</div>
+                <div class="metric-change positive">+12.5%</div>
+            </div>
+            <div class="card metric-card" style="flex:1;min-width:160px;background:#fff;padding:12px;border-radius:12px;">
+                <div class="metric-label">Total Bookings</div>
+                <div class="metric-value" id="dash-bookings">3,120</div>
+                <div class="metric-change positive">+8.2%</div>
+            </div>
+            <div class="card metric-card" style="flex:1;min-width:160px;background:#fff;padding:12px;border-radius:12px;">
+                <div class="metric-label">Total Revenue</div>
+                <div class="metric-value" id="dash-revenue">₹8.5L</div>
+                <div class="metric-change negative">-1.5%</div>
+            </div>
+            <div class="card metric-card" style="flex:1;min-width:160px;background:#fff;padding:12px;border-radius:12px;">
+                <div class="metric-label">Avg. Satisfaction</div>
+                <div class="metric-value" id="dash-sat">4.6 ★</div>
+                <div class="metric-change neutral">Stable</div>
+            </div>
+        </div>
+
+        <div style="display:flex;gap:18px;align-items:flex-start;margin-top:18px;flex-wrap:wrap;">
+            <div style="flex:2;min-width:320px;background:transparent;">
+                <div style="background:#fff;border-radius:12px;padding:14px;">
+                    <h3 style="margin:0 0 10px 0">Tourist Traffic Trends</h3>
+                    <div id="dash-traffic-chart" style="height:280px;"></div>
+                </div>
+            </div>
+
+                    <div style="flex:1;min-width:280px;">
+                        <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;">
+                            <h3 style="margin:0 0 10px 0">Most Popular Destinations</h3>
+                            <div id="dash-popular-chart" style="height:260px;"></div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+`;
+
+let dashboardTimer = null;
+let trafficChart = null;
+let popularChart = null;
+
+function openInpageDashboard(){
+    const el = document.getElementById('inpage-dashboard');
+    if(!el) return;
+    el.innerHTML = dashboardHTML;
+    el.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    document.getElementById('close-inpage-dashboard').addEventListener('click', closeInpageDashboard);
+    // small delay to allow DOM insertion before chart init
+    setTimeout(() => { startDashboardLive(); }, 80);
+}
+
+function closeInpageDashboard(){
+    const el = document.getElementById('inpage-dashboard');
+    if(!el) return;
+    el.style.display = 'none';
+    el.innerHTML = '';
+    document.body.style.overflow = '';
+    stopDashboardLive();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+    const navBtn = document.getElementById('nav-dashboard-btn');
+    if(navBtn) navBtn.addEventListener('click', function(e){ e.preventDefault(); openInpageDashboard(); window.scrollTo({top:0,behavior:'smooth'}); });
+});
+
+function initCharts(initialTraffic, initialPopular){
+    // Traffic area chart
+    const trafficOpts = {
+        chart: { type: 'area', height: 280, toolbar: { show: false } },
+        series: [{ name: 'Visitors', data: initialTraffic }],
+        xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'] },
+        stroke: { curve: 'smooth' },
+        colors: ['#10b981'],
+        fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0 } },
+        grid: { borderColor: '#eef2f6' }
+    };
+    const trafficEl = document.querySelector('#dash-traffic-chart');
+    if(trafficEl){ trafficChart = new ApexCharts(trafficEl, trafficOpts); trafficChart.render(); }
+
+    // Popular destinations bar chart
+    const popularOpts = {
+        chart: { type: 'bar', height: 260, toolbar: { show: false } },
+        series: [{ name: 'Visitors', data: initialPopular }],
+        xaxis: { categories: ['Ranchi','Netarhat','Betla','Deoghar','Parasnath','Hazaribagh'] },
+        plotOptions: { bar: { borderRadius: 6 } },
+        colors: ['#fb923c'],
+        grid: { borderColor: '#eef2f6' }
+    };
+    const popularEl = document.querySelector('#dash-popular-chart');
+    if(popularEl){ popularChart = new ApexCharts(popularEl, popularOpts); popularChart.render(); }
+}
+
+function startDashboardLive(){
+    if(dashboardTimer) return;
+        const visitorsEl = document.getElementById('dash-visitors');
+        const bookingsEl = document.getElementById('dash-bookings');
+        const revenueEl = document.getElementById('dash-revenue');
+        const satEl = document.getElementById('dash-sat');
+
+    // initial data sets (monthly) for traffic and popular destinations
+    let trafficData = [220, 300, 420, 380, 540, 600, 720, 740, 700, 820, 880, 960];
+    let popularData = [4500, 3700, 3100, 2900, 2400, 2000];
+
+    // init charts
+    initCharts(trafficData, popularData);
+
+    // initial DOM values
+    let visitors = 12450;
+    let bookings = 3120;
+    let revenue = 85; // from 8.5L
+    let sat = 4.6;
+
+
+    dashboardTimer = setInterval(()=>{
+        // update numbers
+        visitors += Math.floor(Math.random()*80);
+        bookings += Math.floor(Math.random()*20);
+        revenue += Math.random()*1.2;
+        sat += (Math.random()-0.48)*0.03; sat = Math.max(3.0, Math.min(5, parseFloat(sat.toFixed(2))));
+
+        if(visitorsEl) visitorsEl.textContent = visitors.toLocaleString('en-IN');
+        if(bookingsEl) bookingsEl.textContent = bookings.toLocaleString('en-IN');
+        if(revenueEl) revenueEl.textContent = '₹' + (Math.round(revenue)/10).toFixed(2) + 'L';
+        if(satEl) satEl.textContent = sat + ' ★';
+
+        // update charts with small random variations
+        trafficData = trafficData.map(v => Math.max(120, Math.round(v + (Math.random()-0.45)*50)));
+        popularData = popularData.map(v => Math.max(500, Math.round(v + (Math.random()-0.4)*200)));
+
+        if(trafficChart) trafficChart.updateSeries([{ data: trafficData }]);
+        if(popularChart) popularChart.updateSeries([{ data: popularData }]);
+    }, 2000);
+}
+
+function stopDashboardLive(){
+    if(dashboardTimer){ clearInterval(dashboardTimer); dashboardTimer=null; }
+    if(trafficChart){ try{ trafficChart.destroy(); }catch(e){} trafficChart=null; }
+    if(popularChart){ try{ popularChart.destroy(); }catch(e){} popularChart=null; }
+}
+</script>
+<script src="mute.js"></script>
+</body>
+</html>

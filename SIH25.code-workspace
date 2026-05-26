@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../Documents/dummy pragya"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "dummy pragya"
+	}
+}

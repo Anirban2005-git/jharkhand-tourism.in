@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jharkhand Tourism - Create Account</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="signup-card">
+            
+            <div class="form-section">
+                <div class="form-container">
+                    <div class="header">
+                        <svg class="header-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M12.75 3.03v.568c0 .334.148.65.405.864l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 01-1.161.886l-.143.048a1.107 1.107 0 00-.57 1.664l.143.258a1.125 1.125 0 01-.11.168l-2.13.219a1.125 1.125 0 01-.607-.534L9 12.75M12.75 3.031a9 9 0 00-8.862 12.872M12.75 3.031a9 9 0 016.69 14.036m0 0l-.177.177a3.375 3.375 0 00-4.773-4.773l-.177-.177m4.95 4.95l.177-.177a3.375 3.375 0 014.773 4.773l-.177.177m-4.95-4.95a3.375 3.375 0 00-4.773 4.773l.177.177" />
+                        </svg>
+                        <h1 class="header-title">Jharkhand Tourism</h1>
+                    </div>
+                    <h2 class="main-heading">Create Your Account</h2>
+                    <p class="sub-heading">Join us to explore the wonders of Jharkhand.</p>
+
+                    <!-- Signup Page Image -->
+                   
+
+                    <form id="signupForm">
+                        <div class="form-fields">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" id="name" placeholder="Alex Ray" required class="form-input" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" id="email" placeholder="explorer@example.com" required class="form-input" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" id="password" placeholder="••••••••" required class="form-input" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirm-password" class="form-label">Confirm Password</label>
+                                <input type="password" id="confirm-password" placeholder="••••••••" required class="form-input" />
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-signup">
+                            Create Account
+                        </button>
+
+                        <div class="divider">
+                            <div class="divider-line"></div>
+                            <span class="divider-text">OR</span>
+                            <div class="divider-line"></div>
+                        </div>
+
+                        <div class="social-login-buttons">
+                            <a href="google_signin.html" class="btn-social" style="display:flex;align-items:center;gap:8px;text-decoration:none;width:100%;margin-bottom:10px;">
+                                <img src="https://img.icons8.com/color/24/google-logo.png" alt="Google" class="social-icon"/>
+                                <span style="color:inherit;">Continue with Google</span>
+                            </a>
+                            <a href="facebook_signin.html" class="btn-social" style="display:flex;align-items:center;gap:8px;text-decoration:none;width:100%;">
+                                <img src="https://img.icons8.com/color/24/facebook-new.png" alt="Facebook" class="social-icon"/>
+                                <span style="color:inherit;">Continue with Facebook</span>
+                            </a>
+                        </div>
+                        
+                        
+                        <div class="login-link">
+                            <p>Already have an account? <a href="login.html">Log In</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="image-section">
+                <div style="position:relative;width:100%;height:100%;min-height:340px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;border-radius:18px;box-shadow:0 4px 24px 0 rgba(60,64,67,0.10);background:#fff;">
+                    <img src="login pg ph.jpg" alt="Signup Background" class="background-image" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:18px;position:absolute;top:0;left:0;" />
+                    <div class="image-overlay" style="position:absolute;bottom:0;left:0;width:100%;background:linear-gradient(0deg,rgba(0,0,0,0.45) 60%,rgba(0,0,0,0.0) 100%);color:#fff;padding:1.2em 1em 1em 1.2em;border-radius:0 0 18px 18px;">
+                        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;width:100%;">
+                            <h3 class="overlay-title" style="margin:0;font-size:2.3em;font-weight:800;line-height:1.15;">Your Jharkhand <br>Story Starts Here.</h3>
+                            <p class="overlay-description" style="margin:0.7em 0 0 0;font-size:1.35em;font-weight:500;">Join a community of explorers and nature lovers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <script src="signup.js"></script>
+</body>
+</html>

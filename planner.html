@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jharkhand Tourism - Elite Analytics & Planning Console</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* --- 1. Elite & Premium Variables --- */
+        :root {
+            --color-primary: #047857; /* Deeper Emerald Green */
+            --color-primary-dark: #065F46;
+            --color-primary-light: #D1FAE5;
+            --color-accent: #F59E0B; /* Amber/Gold Accent */
+            --color-secondary: #1E293B; /* Slate Darker */
+            --color-background: #F0F2F5; /* Softer, more premium gray */
+            --color-card: #FFFFFF;
+            --color-text-primary: #111827;
+            --color-text-secondary: #4B5563;
+            --color-border: #E5E7EB;
+            --color-red: #DC2626;
+            --radius: 0.75rem;
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+            --transition-speed: 0.3s;
+        }
+
+        /* --- 2. General Styles & Animations --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+        section { padding: 6rem 0; overflow: hidden; }
+        h1 { font-size: 3.75rem; font-weight: 800; letter-spacing: -2px; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        h2 { font-size: 2.75rem; font-weight: 800; text-align: center; margin-bottom: 1rem; letter-spacing: -1.5px; }
+        .section-subtitle { font-size: 1.2rem; color: var(--color-text-secondary); text-align: center; max-width: 700px; margin: 0 auto 4rem auto; line-height: 1.8; }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- 3. Header --- */
+        .main-header {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+            padding: 1.25rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .main-header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--color-primary-dark); }
+        .main-nav a { text-decoration: none; color: var(--color-text-secondary); font-weight: 600; margin-left: 2.5rem; transition: color var(--transition-speed) ease; position: relative; }
+        .main-nav a:after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 50%; background-color: var(--color-primary); transition: all 0.3s ease-out; }
+        .main-nav a:hover { color: var(--color-primary); }
+        .main-nav a:hover:after { width: 100%; left: 0; }
+
+        /* --- 4. Hero Section --- */
+        .hero-section {
+            padding: 9rem 0;
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1602497413636-c4a03496350b?q=80&w=2940&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+        }
+        .hero-section .section-subtitle { color: rgba(255, 255, 255, 0.9); margin-bottom: 2.5rem; font-size: 1.25rem; }
+        .btn-hero {
+            display: inline-block;
+            background-image: linear-gradient(to right, var(--color-primary), #059669);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 99px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 4px 15px rgba(4, 120, 87, 0.3);
+        }
+        .btn-hero:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(4, 120, 87, 0.4);
+        }
+
+        /* --- 5. AI Itinerary Planner Section --- */
+        .planner-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: start; }
+        .planner-card {
+            background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFC 100%);
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.05), 0 3px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--color-border);
+            transition: all 0.3s ease-in-out;
+        }
+        .planner-card:hover {
+             box-shadow: var(--shadow-lg);
+             transform: translateY(-4px);
+        }
+        .planner-card h3 { font-size: 1.85rem; margin-bottom: 0.5rem; letter-spacing: -0.5px; }
+        .planner-card p { color: var(--color-text-secondary); margin-bottom: 2.5rem; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .form-group { position: relative; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 2px solid var(--color-border);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--color-background);
+            transition: all var(--transition-speed) ease;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+            background-color: white;
+        }
+        .form-group textarea { min-height: 100px; resize: vertical; }
+        .interests-group { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+        .interest-btn {
+            background: var(--color-background);
+            border: 2px solid var(--color-border);
+            padding: 0.5rem 1.25rem;
+            border-radius: 99px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition-speed) ease;
+            user-select: none;
+        }
+        .interest-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--color-primary-light); }
+        .interest-btn.active {
+            background: var(--color-primary-light);
+            color: var(--color-primary-dark);
+            border-color: var(--color-primary);
+            font-weight: 700;
+        }
+        .btn-primary {
+            background-image: linear-gradient(to right, var(--color-primary), #059669);
+            color: white;
+            width: 100%;
+            padding: 1.1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            margin-top: 1.5rem;
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+        .itinerary-result-container { position: sticky; top: 120px; }
+        .itinerary-placeholder {
+            background-color: #F8FAFC;
+            border-radius: var(--radius);
+            padding: 3rem;
+            text-align: center;
+            border: 2px dashed var(--color-border);
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all var(--transition-speed) ease;
+        }
+        .itinerary-placeholder svg { color: #CBD5E1; margin-bottom: 1rem; width: 64px; height: 64px; }
+        .itinerary-placeholder h3 { font-size: 1.5rem; }
+        #generated-itinerary { display: none; }
+        
+        /* --- 6. Analytics Dashboard Section --- */
+        .analytics-section { background-color: var(--color-background); }
+        .dashboard-container {
+            background-color: var(--color-card);
+            border-radius: var(--radius);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.05), 0 3px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--color-border);
+            padding: 1.5rem;
+        }
+        .dashboard-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--color-border);
+            margin-bottom: 2.5rem;
+        }
+        .tab-link {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--color-text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+        }
+        .tab-link:hover { color: var(--color-text-primary); }
+        .tab-link.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+        .tab-content { display: none; padding: 0 1.5rem 1.5rem; animation: fadeIn 0.6s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .dashboard-card { background-color: #F8FAFC; border: 1px solid var(--color-border); padding: 2rem; border-radius: var(--radius); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .dashboard-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: var(--shadow-lg); border-color: var(--color-primary); }
+        .dashboard-card h3 { font-size: 1.25rem; margin-bottom: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.75rem; letter-spacing: -0.5px; }
+        
+        /* Overview Tab */
+        .impact-list li { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-weight: 600; font-size: 1.05rem; }
+        .progress-bar { height: 10px; background-color: var(--color-border); border-radius: 99px; overflow: hidden; width: 120px; }
+        .progress-bar div { height: 100%; background-image: linear-gradient(to right, var(--color-primary), #34D399); }
+
+        /* Destinations & Bookings Tab */
+        .list-item { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 0.5rem; border-bottom: 1px solid var(--color-border); transition: background-color 0.3s ease; border-radius: 0.5rem;}
+        .list-item:hover { background-color: #F8FAFC; }
+        .list-item:last-child { border-bottom: none; }
+        .list-item-main { display: flex; align-items: center; gap: 1.5rem; }
+        .list-item-rank { background: var(--color-primary-light); color: var(--color-primary-dark); width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; font-weight: 800; font-size: 1.25rem; }
+        .list-item h4 { font-weight: 700; font-size: 1.1rem; letter-spacing: -0.3px; }
+        .list-item p { color: var(--color-text-secondary); font-size: 0.95rem; }
+        .list-item-stat { text-align: right; }
+        .growth-badge { padding: 0.35rem 0.85rem; border-radius: 99px; font-weight: 700; font-size: 0.85rem; }
+        .growth-badge.positive { background-color: var(--color-primary-light); color: var(--color-primary-dark); }
+        .growth-badge.accent { background-color: #FEF3C7; color: #D97706; }
+        .booking-card { background-color: #F8FAFC; border: 1px solid var(--color-border); padding: 1.75rem; border-radius: var(--radius); margin-bottom: 1.5rem; transition: all 0.3s ease; }
+        .booking-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+        .booking-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .booking-card-header h4 { font-weight: 700; font-size: 1.25rem; }
+        .booking-card-header p { color: var(--color-text-secondary); font-size: 0.9rem; margin-top: -4px;}
+        .booking-card .price { font-size: 1.75rem; font-weight: 800; color: var(--color-primary); }
+        .booking-card-footer { display: flex; gap: 1.5rem; color: var(--color-text-secondary); font-size: 0.9rem; margin-top: 1.5rem; font-weight: 500;}
+        
+        /* Feedback Tab */
+        .stat-card-feedback { text-align: center; }
+        .stat-card-feedback .stat-value { font-size: 3.5rem; font-weight: 800; color: var(--color-primary-dark); }
+        .stat-card-feedback .stat-change { font-weight: 600; font-size: 1rem; }
+        .stat-change.positive { color: var(--color-primary-dark); }
+        .sentiment-bar { display: flex; height: 12px; border-radius: 99px; overflow: hidden; margin-bottom: 1.5rem; }
+        .sentiment-positive { background-color: var(--color-primary); }
+        .sentiment-neutral { background-color: #A8A29E; }
+        .sentiment-negative { background-color: var(--color-red); }
+        .feedback-themes-list li { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; font-weight: 600; font-size: 1.05rem; border-bottom: 1px solid var(--color-border); }
+        .feedback-themes-list li:last-child { border-bottom: none; }
+        .feedback-count { color: var(--color-text-secondary); font-weight: 700;}
+
+        /* --- 7. CTA Section --- */
+        .cta-section {
+            background-color: var(--color-secondary);
+            color: white;
+            text-align: center;
+        }
+        .cta-section h2 { color: white; }
+        .cta-section p { color: rgba(255,255,255,0.8); max-width: 600px; margin: 1rem auto 2.5rem auto; font-size: 1.1rem;}
+        
+        /* --- 8. Footer Section --- */
+        .footer { background: #111827; color: #9CA3AF; padding: 6rem 0 2rem 0; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
+        .footer h3 { color: white; font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.8px; }
+        .footer-brand h3 { font-size: 1.75rem; text-transform: none; letter-spacing: 0; }
+        .footer-brand p { max-width: 320px; margin-bottom: 1.5rem; }
+        .social-links a { color: #9CA3AF; margin-right: 1.5rem; transition: color var(--transition-speed) ease; }
+        .social-links a:hover { color: var(--color-primary); transform: scale(1.1); }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 1rem; }
+        .footer-links a { color: #9CA3AF; text-decoration: none; transition: color var(--transition-speed) ease; font-weight: 500;}
+        .footer-links a:hover { color: white; }
+        .footer-bottom { border-top: 1px solid #374151; padding-top: 2rem; text-align: center; font-size: 0.9rem; }
+
+        /* --- 9. Responsive Adjustments --- */
+        @media (max-width: 1024px) {
+            h1 { font-size: 3rem; }
+            .planner-layout, .footer-grid { grid-template-columns: 1fr; }
+            .itinerary-result-container { position: static; top: auto; }
+            .footer-grid { gap: 3rem; }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2.25rem; }
+            section { padding: 4rem 0; }
+            .form-row, .footer-grid, .dashboard-grid { grid-template-columns: 1fr; }
+            .main-header .container { flex-direction: column; gap: 1rem; }
+            .main-nav a { margin: 0 1rem; }
+            .dashboard-tabs { flex-wrap: wrap; justify-content: center;}
+            .tab-link { padding: 0.75rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+
+        <section id="planner" class="planner-section fade-in-section">
+            <div class="container">
+                <h2>AI-Powered Itinerary Planner</h2>
+                <p class="section-subtitle">Generate bespoke, data-driven travel plans based on real-time analytics and traveler preferences.</p>
+                
+                <div class="planner-layout">
+                    <div class="planner-card">
+                        <h3>Trip Configuration</h3>
+                        <p>Define parameters to generate a strategic itinerary.</p>
+                        <form id="itinerary-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="travel-dates">Travel Dates</label>
+                                    <input type="text" id="travel-dates" placeholder="Select Date Range">
+                                </div>
+                                <div class="form-group">
+                                    <label for="duration">Duration (Days)</label>
+                                    <select id="duration">
+                                        <option>3 Days</option>
+                                        <option>5 Days</option>
+                                        <option>7 Days</option>
+                                        <option>10+ Days</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="travelers">Traveler Profile</label>
+                                    <select id="travelers">
+                                        <option>Solo Traveler</option>
+                                        <option>Couple</option>
+                                        <option>Family with Children</option>
+                                        <option>Large Group</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="budget">Budget Tier</label>
+                                    <select id="budget">
+                                        <option>Economy</option>
+                                        <option>Standard</option>
+                                        <option>Premium</option>
+                                        <option>Luxury</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Key Interests</label>
+                                <div class="interests-group">
+                                    <button type="button" class="interest-btn active">Nature & Wildlife</button>
+                                    <button type="button" class="interest-btn active">Tribal Culture</button>
+                                    <button type="button" class="interest-btn">Adventure Sports</button>
+                                    <button type="button" class="interest-btn">Photography</button>
+                                    <button type="button" class="interest-btn">Handicrafts</button>
+                                    <button type="button" class="interest-btn">Spiritual Sites</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="more-info">Additional Directives & Notes</label>
+                                <textarea id="more-info" placeholder="e.g., focus on accessibility, include off-beat locations..."></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary" id="generate-btn">Generate Strategic Itinerary</button>
+                        </form>
+                    </div>
+                    
+                    <div class="itinerary-result-container">
+                        <div class="itinerary-placeholder" id="itinerary-placeholder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <h3>Awaiting Itinerary Configuration</h3>
+                            <p>Please input trip parameters to generate a plan.</p>
+                        </div>
+                        <div id="generated-itinerary" class="planner-card" style="min-height: 600px;">
+                            <h3>Generated Itinerary: 5-Day Ranchi Expedition</h3>
+                            <p style="margin-bottom: 1.5rem;">Profile: Nature & Tribal Culture Focus | Budget: Standard</p>
+                             <div><strong>Day 1:</strong> Arrival & Cultural Immersion</div>
+                             <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 1rem;">Arrival at Birsa Munda Airport. Transfer to hotel. Afternoon visit to the Tribal Research Institute Museum for foundational cultural context.</p>
+                             <div><strong>Day 2:</strong> Aquatic Landscapes</div>
+                             <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 1rem;">Full-day excursion to Hundru Falls and Jonha Falls. Focus on photographic opportunities and understanding the region's geography.</p>
+                             <div><strong>Day 3:</strong> Heartland Exploration</div>
+                             <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 1rem;">Guided tour of a local tribal village near Khunti. Engage with artisans and observe traditional dokra art. Evening visit to Jagannath Temple.</p>
+                             <div><strong>Day 4:</strong> Scenic Vistas & Engineering</div>
+                             <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 1rem;">Drive to Patratu Valley. Analyze the scenic viewpoints and the Patratu Dam. Optional boating activity on the reservoir.</p>
+                             <div><strong>Day 5:</strong> Departure & Debrief</div>
+                             <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 1rem;">Final breakfast. Optional visit to local handicraft markets for souvenir sourcing before departure from Ranchi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- 1. Interest buttons in the planner ---
+            const interestButtons = document.querySelectorAll('.interest-btn');
+            interestButtons.forEach(button => {
+                button.addEventListener('click', () => button.classList.toggle('active'));
+            });
+
+            // --- 2. Form Submission simulation ---
+            const itineraryForm = document.getElementById('itinerary-form');
+            itineraryForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const generateBtn = document.getElementById('generate-btn');
+                const placeholder = document.getElementById('itinerary-placeholder');
+                const generatedItinerary = document.getElementById('generated-itinerary');
+
+                generateBtn.textContent = 'Generating...';
+                generateBtn.disabled = true;
+
+                setTimeout(() => {
+                    placeholder.style.display = 'none';
+                    generatedItinerary.style.display = 'block';
+                    generatedItinerary.style.animation = 'fadeIn 0.5s ease-in-out';
+                    generateBtn.textContent = 'Generate Strategic Itinerary';
+                    generateBtn.disabled = false;
+                }, 1500);
+            });
+
+            // --- 3. Fade-in sections on scroll ---
+            const sections = document.querySelectorAll('.fade-in-section');
+            const sectionObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            sections.forEach(section => sectionObserver.observe(section));
+
+            // --- 4. Dashboard Tabs functionality ---
+            const tabs = document.querySelectorAll('.tab-link');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = document.getElementById(tab.dataset.tab);
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    target.classList.add('active');
+                });
+            });
+
+            // --- 5. Animated Counter for Stats ---
+            const counterObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        const target = +el.dataset.value;
+                        const duration = 2000;
+                        const stepTime = 20;
+                        let current = 0;
+                        const step = (target / duration) * stepTime;
+                        
+                        const timer = setInterval(() => {
+                            current += step;
+                            if (current >= target) {
+                                clearInterval(timer);
+                                el.textContent = el.dataset.value.includes('.') ? target.toFixed(1) + '/5' : target + '%';
+                            } else {
+                                el.textContent = el.dataset.value.includes('.') ? current.toFixed(1) + '/5' : Math.round(current) + '%';
+                            }
+                        }, stepTime);
+                        
+                        observer.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.5 });
+            document.querySelectorAll('.stat-value[data-value]').forEach(stat => counterObserver.observe(stat));
+
+            // --- 6. Live Visitor Chart (Chart.js) ---
+            const ctx = document.getElementById('visitorChart').getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(4, 120, 87, 0.6)');
+            gradient.addColorStop(1, 'rgba(4, 120, 87, 0)');
+
+            const visitorChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                    datasets: [{
+                        label: 'Visitors (in Thousands)',
+                        data: [180, 220, 250, 230, 280, 310],
+                        backgroundColor: gradient,
+                        borderColor: 'rgba(4, 120, 87, 1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: 'rgba(4, 120, 87, 1)',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        tension: 0.4,
+                        fill: true,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                             grid: {
+                                color: '#E5E7EB',
+                                borderDash: [5, 5],
+                            },
+                        },
+                        x: {
+                             grid: {
+                                display: false,
+                            },
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false,
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

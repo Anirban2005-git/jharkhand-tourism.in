@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultural Events in Jharkhand</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --card: #ffffff;
+            --border: #e5e7eb;
+            --card-foreground: #1f2937;
+            --muted-foreground: #6b7280;
+            --primary: #059669;
+            --primary-foreground: #ffffff; /* Added for nav */
+            --muted: #f1f5f9; /* Added for nav */
+            --radius: 0.75rem; /* Added for nav */
+            --light-primary-bg: #e6fef7;
+            --shadow-elevated: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; margin: 0; color: #333; }
+        body.modal-open { overflow: hidden; }
+
+        /* --- 1. CONSISTENT NAVIGATION BAR --- */
+        .navigation {
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1001; /* Higher than modal overlay */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .nav-container { max-width: 1200px; margin-inline: auto; padding-inline: 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-size: 1.5rem; font-weight: 800; color: var(--primary-foreground); text-decoration: none; }
+        .nav-links { list-style: none; display: flex; gap: 1.5rem; margin:0; padding: 0; }
+        .nav-link { color: var(--primary-foreground); text-decoration: none; font-weight: 500; padding: 0.5rem 1rem; border-radius: 0.375rem; transition: background-color 0.3s; }
+        .nav-link:hover { background-color: rgba(255, 255, 255, 0.1); }
+        .dropdown { position: relative; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background-color: var(--card); border-radius: var(--radius); box-shadow: 0 4px 6px rgba(0,0,0,0.1); list-style: none; padding: 0.5rem; min-width: 180px; }
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu a { display: block; padding: 0.5rem 1rem; color: var(--card-foreground); text-decoration: none; border-radius: 0.375rem; }
+        .dropdown-menu a:hover { background-color: var(--muted); }
+        
+        .container { max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+        .section-padding { padding-top: 4rem; padding-bottom: 4rem; margin-top: 68px; /* Offset for fixed nav */ }
+        .section-header { text-align: center; margin-bottom: 2rem; }
+        .badge { display: inline-block; padding: 0.375rem 1rem; background-color: #fee2e2; color: #b91c1c; border-radius: 9999px; font-weight: 500; font-size: 0.875rem; margin-bottom: 1rem; }
+        .section-title { font-size: 2.25rem; font-weight: 700; margin: 0 0 0.75rem 0; color: #111827; }
+        .section-description { font-size: 1.125rem; color: #4b5563; max-width: 600px; margin: 0 auto; }
+        .search-and-filter { max-width: 800px; margin: 0 auto 3rem auto; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+        .search-bar { background-color: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.5rem 1rem; width: 100%; display: flex; align-items: center; gap: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .search-bar input { border: none; outline: none; width: 100%; font-size: 1rem; padding: 0.5rem 0; background: transparent; }
+        .grid { display: grid; gap: 2rem; }
+        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .card { background-color: var(--card); border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; transition: box-shadow 0.5s ease, transform 0.5s ease, opacity 0.3s ease; display: flex; flex-direction: column; }
+        .card:hover { box-shadow: var(--shadow-elevated); transform: translateY(-5px); }
+        .card-image-container { position: relative; height: 16rem; overflow: hidden; }
+        .card-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
+        .card:hover .card-image { transform: scale(1.1); }
+        .badge-on-image { position: absolute; top: 1rem; left: 1rem; background-color: var(--badge-bg, #3b82f6); color: var(--badge-color, #fff); border: none; padding: 0.375rem 1rem; border-radius: 9999px; font-weight: 500; font-size: 0.875rem; }
+        .card-header { padding: 1.5rem; flex-grow: 1; }
+        .card-title { display: flex; align-items: center; gap: 0.5rem; font-size: 1.25rem; font-weight: 700; color: var(--card-foreground); margin: 0 0 0.5rem 0; }
+        .card-description { color: var(--muted-foreground); margin: 0; line-height: 1.6; }
+        .card-content { padding: 0 1.5rem 1.5rem; }
+        .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
+        .location-tag { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--muted-foreground); }
+        .card-link { font-size: 0.875rem; font-weight: 600; color: var(--primary); text-decoration: none; transition: color 0.3s; cursor: pointer; }
+        .card-link:hover { color: #047857; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(31, 41, 55, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 1rem; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content { background-color: var(--card); border-radius: 1rem; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); transform: scale(0.95); transition: transform 0.3s ease; }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-header { position: relative; padding: 2rem; border-bottom: 1px solid var(--border); }
+        .modal-badge { display: inline-block; padding: 0.375rem 1rem; border-radius: 9999px; font-weight: 500; font-size: 0.875rem; margin-bottom: 1rem; background-color: var(--badge-bg, #e0f2fe); color: var(--badge-color, #0284c7); }
+        .modal-title { font-size: 2rem; font-weight: 700; color: var(--card-foreground); margin: 0; }
+        .modal-close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: #f3f4f6; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.2s; }
+        .modal-close-btn:hover { background-color: #e5e7eb; }
+        .modal-close-btn svg { width: 24px; height: 24px; color: #4b5563; }
+        .modal-body { display: grid; grid-template-columns: 1fr; gap: 2rem; padding: 2rem; }
+        .modal-image { width: 100%; height: 300px; object-fit: cover; border-radius: 0.75rem; }
+        .modal-details h4 { font-size: 1.125rem; font-weight: 600; color: var(--card-foreground); margin-top: 0; margin-bottom: 0.5rem; border-left: 3px solid var(--primary); padding-left: 0.75rem; }
+        .modal-details p, .modal-details ul { color: var(--muted-foreground); line-height: 1.7; margin: 0 0 1.5rem 0; }
+        .modal-details ul { padding-left: 1.5rem; }
+        .modal-details li { margin-bottom: 0.5rem; }
+        @media (max-width: 1024px) { .grid-cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 640px) { .grid-cols-3 { grid-template-columns: repeat(1, minmax(0, 1fr)); } .modal-title { font-size: 1.5rem; } .modal-header, .modal-body { padding: 1.5rem; } }
+        @media (min-width: 768px) { .modal-body { grid-template-columns: 1fr 1fr; align-items: start; } }
+    </style>
+</head>
+<body>
+
+    
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge">Cultural Events</span>
+                <h2 class="section-title">Experience Jharkhand's Festivals</h2>
+                <p class="section-description">Immerse yourself in the vibrant traditions, music, and celebrations of the local tribal communities.</p>
+            </div>
+            <div class="search-and-filter">
+                <div class="search-bar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path></svg>
+                    <input type="text" id="event-search-input" placeholder="Search for festivals or events...">
+                </div>
+            </div>
+            <div class="grid grid-cols-3" id="events-grid">
+                <div class="card">
+                    <div class="card-image-container"><img src="Sarhul Festival.jpg" alt="People celebrating Sarhul Festival" class="card-image"><span class="badge badge-on-image">Cultural Event</span></div>
+                    <div class="card-header"><h3 class="card-title">Sarhul Festival</h3><p class="card-description">Experience a vibrant spring festival celebrated by tribal communities with dancing and drumming.</p></div>
+                    <div class="card-content"><div class="card-footer"><div class="location-tag"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Ranchi, Khunti Villages</div><a class="card-link" data-title="Sarhul Festival" data-image="Sarhul Festival.jpg" data-badge="Cultural Event" data-badge-bg="#e0f2fe" data-badge-color="#0284c7" data-significance="Sarhul is the most popular tribal festival in Jharkhand, celebrating the new year and the advent of spring. It is a worship of the village deity who is considered the protector of the tribes. The Sal trees hold a special place as it is believed the deity resides in them." data-when="Spring season (March/April), during the Hindu month of Chaitra." data-highlights="Worship of Sal trees and their blossoms;Traditional music with Dhol, Nagada, and Mandar;Vibrant processions of men and women in traditional attire;Ritualistic offerings and distribution of 'Hadia' (rice beer).">Explore &rarr;</a></div></div>
+                </div>
+                <div class="card">
+                    <div class="card-image-container"><img src="karma two.jpg" alt="Karma Festival" class="card-image"><span class="badge badge-on-image">Cultural Event</span></div>
+                    <div class="card-header"><h3 class="card-title">Karma Festival</h3><p class="card-description">A vibrant tribal harvest festival involving worship of the Karma tree, traditional music, and fairs.</p></div>
+                    <div class="card-content"><div class="card-footer"><div class="location-tag"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Across Jharkhand</div><a class="card-link" data-title="Karma Festival" data-image="karma two.jpg" data-badge="Cultural Event" data-badge-bg="#e0f2fe" data-badge-color="#0284c7" data-significance="The Karma festival is dedicated to the worship of Karam-Devta, the god of power, youth, and youthfulness. Devotees pray for a rich harvest and good fortune. It symbolizes the strong bond between the tribal communities and nature." data-when="August/September, on the 11th day of the moon in the month of Bhadra." data-highlights="Bringing a branch of the Karam tree to the village;Fasting by young, unmarried girls;Folk songs and dances narrating the legend of Karma;Group dancing around the Karam branch throughout the night.">Explore &rarr;</a></div></div>
+                </div>
+                <div class="card">
+                    <div class="card-image-container"><img src="tusu parab.jpg" alt="Tusu Festival celebrations" class="card-image"><span class="badge badge-on-image" style="--badge-bg: #ef4444; --badge-color: #fff;">Folk Festival</span></div>
+                    <div class="card-header"><h3 class="card-title">Tusu Festival / Makar Sankranti</h3><p class="card-description">Celebrated by young girls with folk songs; fairs are held along riverbanks with unique crafts.</p></div>
+                    <div class="card-content"><div class="card-footer"><div class="location-tag"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Singhbhum, Ranchi</div><a class="card-link" data-title="Tusu Festival / Makar Sankranti" data-image="tusu parab.jpg" data-badge="Folk Festival" data-badge-bg="#fee2e2" data-badge-color="#dc2626" data-significance="Tusu is a folk harvest festival celebrated during the winter on Makar Sankranti. It is primarily a festival for unmarried girls, who worship the Tusu idol and pray for a suitable groom. The festival culminates with the immersion of idols in rivers." data-when="Winter season, during Makar Sankranti (mid-January)." data-highlights="Colourful idols of the goddess Tusu made by girls;Singing of folk songs dedicated to Tusu;Grand fairs (melas) organized on river banks;Immersion of Tusu idols with great fanfare.">Explore &rarr;</a></div></div>
+                </div>
+                <div class="card">
+                    <div class="card-image-container"><img src="shorai.jpg" alt="Sohrai tribal painting on a wall" class="card-image"><span class="badge badge-on-image" style="--badge-bg: #f97316; --badge-color: #fff;">Harvest Festival</span></div>
+                    <div class="card-header"><h3 class="card-title">Sohrai Festival</h3><p class="card-description">A tribal harvest festival coinciding with Diwali, featuring Sohrai paintings and cattle worship rituals.</p></div>
+                    <div class="card-content"><div class="card-footer"><div class="location-tag"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Hazaribagh, Santhal Pargana</div><a class="card-link" data-title="Sohrai Festival" data-image="shorai.jpg" data-badge="Harvest Festival" data-badge-bg="#ffedd5" data-badge-color="#f97316" data-significance="Sohrai is a major harvest festival celebrated after the cultivation of rice. It is also a festival of cattle worship, expressing gratitude to the animal partners in agriculture. The walls of houses are cleaned and decorated with intricate mural paintings known as Sohrai art." data-when="October/November, right after Diwali." data-highlights="Elaborate Sohrai paintings on the walls of mud houses;Worship and bathing of cattle in ponds;Offering sacrifices to deities to protect livestock;Lighting of earthen lamps in cattle sheds and homes.">Explore &rarr;</a></div></div>
+                </div>
+                <div class="card">
+                    <div class="card-image-container"><img src="chhath puja.jpg" alt="Devotees performing Chhath Puja rituals in a river" class="card-image"><span class="badge badge-on-image" style="--badge-bg: #8b5cf6; --badge-color: #fff;">Religious Festival</span></div>
+                    <div class="card-header"><h3 class="card-title">Chhath Puja</h3><p class="card-description">A major religious festival, popular in urban and rural Jharkhand, with rituals at rivers for the Sun God.</p></div>
+                    <div class="card-content"><div class="card-footer"><div class="location-tag"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Ranchi, Deoghar, Dhanbad</div><a class="card-link" data-title="Chhath Puja" data-image="chhath puja.jpg" data-badge="Religious Festival" data-badge-bg="#ede9fe" data-badge-color="#7c3aed" data-significance="Chhath Puja is an ancient Hindu festival dedicated to the Sun God, Surya, and his sister Chhathi Maiya. Devotees thank them for sustaining life on earth and request the granting of certain wishes. It is one of the most eco-friendly religious festivals." data-when="October/November, six days after Diwali." data-highlights="Rigorous four-day observance including holy bathing and fasting;Preparation of prasad, especially Thekua, on traditional earthen stoves;Offering prayers (Arghya) to the setting and rising sun;Large gatherings of devotees on the banks of rivers and ponds.">Explore &rarr;</a></div></div>
+                </div>
+                <div class="card">
+                    <div class="card-image-container"><img src="foundation day.png" alt="Cultural performance on Jharkhand Foundation Day" class="card-image"><span class="badge badge-on-image" style="--badge-bg: #10b981; --badge-color: #fff;">State Event</span></div>
+                    <div class="card-header"><h3 class="card-title">Jharkhand Foundation Day</h3><p class="card-description">Statehood day celebration on Nov 15th with grand cultural programs, parades, and exhibitions.</p></div>
+                    <div class="card-content"><div class="card-footer"><div class="location-tag"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Ranchi (Morabadi Ground)</div><a class="card-link" data-title="Jharkhand Foundation Day" data-image="foundation day.png" data-badge="State Event" data-badge-bg="#d1fae5" data-badge-color="#059669" data-significance="Celebrated on November 15th, the birth anniversary of the legendary tribal freedom fighter Birsa Munda, this day marks the formation of Jharkhand as a separate state in 2000. It's a day of pride, showcasing the state's achievements and rich cultural heritage." data-when="Annually on November 15th." data-highlights="Grand parade and cultural events at Morabadi Ground in Ranchi;Showcasing of tribal dances, music, and art forms;Inauguration of new government schemes and projects;Exhibitions by various government departments and artisans.">Explore &rarr;</a></div></div>
+                </div>
+                <div class="card">
+                    <div class="card-image-container"><img src="shravan mela.jpg" alt="Pilgrims during Shrawani Mela" class="card-image"><span class="badge badge-on-image" style="--badge-bg: #d946ef; --badge-color: #fff;">Pilgrimage</span></div>
+                    <div class="card-header"><h3 class="card-title">Shrawani Mela (Bol Bam Yatra)</h3><p class="card-description">Lakhs of pilgrims walk with Ganga water to offer at the Baidyanath temple in this pilgrimage fair.</p></div>
+                     <div class="card-content"><div class="card-footer"><div class="location-tag"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Deoghar (Baidyanath Dham)</div><a class="card-link" data-title="Shrawani Mela (Bol Bam Yatra)" data-image="shravan mela.jpg" data-badge="Pilgrimage" data-badge-bg="#f5d0fe" data-badge-color="#a855f7" data-significance="This month-long festival is one of the largest religious congregations in India. Devotees, known as 'Kanwariyas', fetch holy water from the Ganges river at Sultanganj in Bihar and walk a 105 km journey barefoot to offer it to Lord Shiva at the Baidyanath Jyotirlinga temple in Deoghar." data-when="During the Hindu month of Shravan (July-August)." data-highlights="Massive pilgrimage of saffron-clad devotees;The 'Kanwar' journey, a test of faith and endurance;Continuous chanting of 'Bol Bam' along the route;Vibrant fair with stalls selling religious items and local food.">Explore &rarr;</a></div></div>
+                </div>
+                <div class="card">
+                    <div class="card-image-container"><img src="rath yatra.jpg" alt="Rath Yatra chariot procession" class="card-image"><span class="badge badge-on-image" style="--badge-bg: #0ea5e9; --badge-color: #fff;">Cultural Fair</span></div>
+                    <div class="card-header"><h3 class="card-title">Rath Yatra</h3><p class="card-description">Grand chariot procession of Lord Jagannath, which attracts large gatherings for cultural fairs.</p></div>
+                     <div class="card-content"><div class="card-footer"><div class="location-tag"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Ranchi, Saraikela</div><a class="card-link" data-title="Rath Yatra" data-image="rath yatra.jpg" data-badge="Cultural Fair" data-badge-bg="#dbeafe" data-badge-color="#2563eb" data-significance="The Rath Yatra in Ranchi is the second largest in the country after Puri. It involves a grand procession where the idols of Lord Jagannath, his brother Balabhadra, and sister Subhadra are taken on a magnificent chariot from the Jagannath Temple to their aunt's residence (Mausi Bari)." data-when="June/July, during the Hindu month of Ashadha." data-highlights="Pulling of the massive, decorated chariot by thousands of devotees;A nine-day long fair at the Mausi Bari with rides, food stalls, and shops;Large gatherings and festive atmosphere;The return journey, known as 'Ghoti Yatra'.">Explore &rarr;</a></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal-overlay" id="event-modal"><div class="modal-content"><div class="modal-header"><span id="modal-badge" class="modal-badge"></span><h2 id="modal-title" class="modal-title"></h2><button class="modal-close-btn" id="modal-close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4148L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg></button></div><div class="modal-body"><img id="modal-image" src="" alt="Event Image" class="modal-image"><div class="modal-details"><h4>Significance</h4><p id="modal-significance"></p><h4>When It's Celebrated</h4><p id="modal-when"></p><h4>Key Highlights</h4><ul id="modal-highlights"></ul></div></div></div></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('event-search-input');
+            const cards = document.querySelectorAll('#events-grid .card');
+            function searchEvents() {
+                const searchTerm = searchInput.value.toLowerCase();
+                cards.forEach(card => {
+                    const title = card.querySelector('.card-title').textContent.toLowerCase();
+                    const description = card.querySelector('.card-description').textContent.toLowerCase();
+                    if (title.includes(searchTerm) || description.includes(searchTerm)) { card.style.display = 'flex'; } else { card.style.display = 'none'; }
+                });
+            }
+            searchInput.addEventListener('input', searchEvents);
+            const modalOverlay = document.getElementById('event-modal'), modalCloseBtn = document.getElementById('modal-close'), exploreLinks = document.querySelectorAll('.card-link');
+            const modal = { title: document.getElementById('modal-title'), badge: document.getElementById('modal-badge'), image: document.getElementById('modal-image'), significance: document.getElementById('modal-significance'), when: document.getElementById('modal-when'), highlights: document.getElementById('modal-highlights') };
+            const openModal = (data) => {
+                modal.title.textContent = data.title; modal.badge.textContent = data.badge; modal.badge.style.backgroundColor = data.badgeBg; modal.badge.style.color = data.badgeColor; modal.image.src = data.image; modal.image.alt = data.title; modal.significance.textContent = data.significance; modal.when.textContent = data.when;
+                modal.highlights.innerHTML = '';
+                data.highlights.split(';').forEach(item => { if(item.trim() !== '') { const li = document.createElement('li'); li.textContent = item.trim(); modal.highlights.appendChild(li); } });
+                document.body.classList.add('modal-open'); modalOverlay.classList.add('active');
+            };
+            const closeModal = () => { document.body.classList.remove('modal-open'); modalOverlay.classList.remove('active'); };
+            exploreLinks.forEach(link => { link.addEventListener('click', function(e) { e.preventDefault(); openModal(this.dataset); }); });
+            modalCloseBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+            document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+        });
+    </script>
+</body>
+</html>

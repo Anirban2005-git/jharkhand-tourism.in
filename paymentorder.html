@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jharkhand Tourism - Payment Order</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="js/api.js"></script>
+    <style>
+        :root {
+    --primary-color: #1a43a0;
+    --secondary-color: #3f68d1;
+    --background-color: #f0f2f5;
+    --card-background: #ffffff;
+    --text-color: #333;
+    --light-text-color: #666;
+    --border-color: #e0e0e0;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+}
+
+body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+            padding: 20px;
+    color: var(--text-color);
+}
+
+.container {
+    background-color: var(--card-background);
+    padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    width: 100%;
+            max-width: 900px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+header {
+    text-align: center;
+            margin-bottom: 40px;
+}
+
+h1 {
+            font-size: 2.5rem;
+    color: var(--primary-color);
+            margin-bottom: 10px;
+            font-weight: 800;
+}
+
+        .subtitle {
+            font-size: 1.1rem;
+    color: var(--light-text-color);
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .back-button:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+            margin-bottom: 30px;
+}
+
+@media (min-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.form-section {
+            background-color: #f8fafc;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+}
+
+.form-section h2 {
+            font-size: 1.4rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+            font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+            color: var(--text-color);
+}
+
+        input, select, textarea {
+    width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+}
+
+        input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(63, 104, 209, 0.1);
+        }
+
+        .payment-details-section {
+            background-color: #f0f9ff;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid var(--success-color);
+            margin-bottom: 30px;
+        }
+
+        .payment-details-section h2 {
+            color: var(--success-color);
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+}
+
+.cta-button {
+    width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+            border-radius: 12px;
+    font-size: 1.1rem;
+            font-weight: 600;
+    cursor: pointer;
+            transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(26, 67, 160, 0.3);
+}
+
+.cta-button:active {
+    transform: translateY(0);
+}
+
+        .cta-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+}
+
+#output {
+    margin-top: 30px;
+            padding: 30px;
+            border-radius: 12px;
+    transition: all 0.5s ease;
+    opacity: 0;
+            max-height: 0;
+    overflow: hidden;
+}
+
+        #output.show {
+            opacity: 1;
+            max-height: 600px;
+        }
+
+        #output.success {
+            background-color: #f0fdf4;
+            border: 2px solid var(--success-color);
+            color: #166534;
+        }
+
+        #output.error {
+            background-color: #fef2f2;
+            border: 2px solid var(--error-color);
+            color: #991b1b;
+}
+
+#output h3 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}                                                                                      
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-item .label {
+            font-weight: 600;
+            color: var(--light-text-color);
+        }
+
+        .summary-item .value {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background-color: #fef2f2;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid var(--error-color);
+        }
+
+        .success-message {
+            background-color: #f0fdf4;
+            color: #166534;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid var(--success-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+}                                                                                      
+</style>
+</head>
+<body>
+    <div class="container">
+        <a href="digitalanother.html" class="back-button">
+            ← Back to Services
+        </a>
+        
+        <header>
+            <h1>Payment Order</h1>
+            <p class="subtitle">Complete your booking payment securely with Razorpay</p>
+        </header>
+
+        <form id="paymentForm">
+            <div class="form-grid">
+                <div class="form-section">
+                    <h2>Customer Details</h2>
+                    <div class="form-group">
+                        <label for="customerName">Full Name</label>
+                        <input type="text" id="customerName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerEmail">Email Address</label>
+                        <input type="email" id="customerEmail" placeholder="your.email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone">Phone Number</label>
+                        <input type="tel" id="customerPhone" placeholder="+91 98765 43210" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Service Details</h2>
+                    <div class="form-group">
+                        <label for="serviceName">Service Type</label>
+                        <select id="serviceName" required>
+                            <option value="">Select a service</option>
+                            <option value="Tour Guide Service">Tour Guide Service</option>
+                            <option value="Homestay Booking">Homestay Booking</option>
+                            <option value="Cultural Workshop">Cultural Workshop</option>
+                            <option value="Eco Tourism Package">Eco Tourism Package</option>
+                            <option value="Transportation">Transportation</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="providerName">Service Provider</label>
+                        <input type="text" id="providerName" placeholder="Provider name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingDate">Booking Date</label>
+                        <input type="date" id="bookingDate" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-details-section">
+                <h2>Payment Details</h2>
+                <div class="form-group">
+                    <label for="amount">Amount (INR)</label>
+                    <input type="number" id="amount" step="0.01" placeholder="500.00" required>
+                </div>
+                <div class="form-group">
+                    <label for="purpose">Purpose of Payment</label>
+                    <textarea id="purpose" rows="3" placeholder="Describe the purpose of this payment..." required></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="cta-button" id="submitBtn">
+                <span id="btnText">Proceed to Payment</span>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <span>Processing...</span>
+                </div>
+            </button>
+        </form>
+
+        <div id="output"></div>
+    </div>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('paymentForm');
+    const outputDiv = document.getElementById('output');
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const loading = document.getElementById('loading');
+
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('bookingDate').setAttribute('min', today);
+
+            form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+                // Show loading state
+                showLoading(true);
+                
+                try {
+                    // Get form data
+                    const formData = {
+                        customerName: document.getElementById('customerName').value,
+                        customerEmail: document.getElementById('customerEmail').value,
+                        customerPhone: document.getElementById('customerPhone').value,
+                        serviceName: document.getElementById('serviceName').value,
+                        providerName: document.getElementById('providerName').value,
+                        bookingDate: document.getElementById('bookingDate').value,
+                        amount: parseFloat(document.getElementById('amount').value),
+                        purpose: document.getElementById('purpose').value
+                    };
+
+                    // Validate amount
+                    if (formData.amount <= 0) {
+                        throw new Error('Amount must be greater than 0');
+                    }
+
+                    // Check if backend is available
+                    const healthCheck = await fetch('/api/health');
+                    if (!healthCheck.ok) {
+                        throw new Error('Backend server is not available. Please try again later.');
+                    }
+
+                    // Create Razorpay order
+                    const orderResponse = await fetch('/api/payments/create-order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            amount: formData.amount * 100, // Convert to paise
+                            currency: 'INR',
+                            receipt: `receipt_${Date.now()}`,
+                            notes: {
+                                service: formData.serviceName,
+                                provider: formData.providerName,
+                                customer: formData.customerName,
+                                email: formData.customerEmail,
+                                phone: formData.customerPhone,
+                                bookingDate: formData.bookingDate,
+                                purpose: formData.purpose
+                            }
+                        })
+                    });
+
+                    const orderData = await orderResponse.json();
+                    
+                    if (!orderData.success) {
+                        throw new Error(orderData.message || 'Failed to create payment order');
+                    }
+
+                    // Configure Razorpay options (using mock for testing)
+                    const options = {
+                        key: "rzp_test_mock_key", // Mock key for testing
+                        amount: orderData.data.amount,
+                        currency: orderData.data.currency,
+                        name: "Jharkhand Tourism",
+                        description: formData.serviceName,
+                        order_id: orderData.data.id,
+                        prefill: {
+                            name: formData.customerName,
+                            email: formData.customerEmail,
+                            contact: formData.customerPhone
+                        },
+                        notes: {
+                            service: formData.serviceName,
+                            provider: formData.providerName,
+                            bookingDate: formData.bookingDate
+                        },
+                        theme: {
+                            color: "#1a43a0"
+                        },
+                        handler: async function(response) {
+                            try {
+                                // Verify payment
+                                const verifyResponse = await fetch('/api/payments/verify-payment', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_payment_id: response.razorpay_payment_id,
+                                        razorpay_signature: response.razorpay_signature
+                                    })
+                                });
+
+                                const verifyData = await verifyResponse.json();
+                                
+                                if (verifyData.success) {
+                                    displaySuccess(verifyData.data, formData);
+                                } else {
+                                    throw new Error(verifyData.message || 'Payment verification failed');
+                                }
+                            } catch (error) {
+                                console.error('Payment verification error:', error);
+                                displayError('Payment verification failed: ' + error.message);
+                            }
+                        },
+                        modal: {
+                            ondismiss: function() {
+                                showLoading(false);
+                            }
+                        }
+                    };
+
+                    // For testing, simulate Razorpay checkout
+                    if (options.key === "rzp_test_mock_key") {
+                        // Mock payment flow for testing
+                        const mockPayment = {
+                            razorpay_order_id: orderData.data.id,
+                            razorpay_payment_id: `pay_${Date.now()}`,
+                            razorpay_signature: `mock_signature_${Date.now()}`
+                        };
+                        
+                        // Simulate payment success after 2 seconds
+                        setTimeout(async () => {
+                            try {
+                                const verifyResponse = await fetch('/api/payments/verify-payment', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify(mockPayment)
+                                });
+
+                                const verifyData = await verifyResponse.json();
+                                
+                                if (verifyData.success) {
+                                    displaySuccess(verifyData.data, formData);
+                                } else {
+                                    throw new Error(verifyData.message || 'Payment verification failed');
+                                }
+                            } catch (error) {
+                                console.error('Payment verification error:', error);
+                                displayError('Payment verification failed: ' + error.message);
+                            }
+                        }, 2000);
+                        
+                        // Show loading message
+                        showLoading(true);
+                        document.getElementById('btnText').textContent = 'Processing Payment...';
+                        
+                    } else {
+                        // Real Razorpay checkout
+                        const rzp = new Razorpay(options);
+                        rzp.open();
+                    }
+
+                } catch (error) {
+                    console.error('Payment error:', error);
+                    displayError(error.message);
+                } finally {
+                    showLoading(false);
+                }
+            });
+
+            function showLoading(show) {
+                if (show) {
+                    submitBtn.disabled = true;
+                    btnText.style.display = 'none';
+                    loading.style.display = 'flex';
+                } else {
+                    submitBtn.disabled = false;
+                    btnText.style.display = 'block';
+                    loading.style.display = 'none';
+                }
+            }
+
+            function displaySuccess(paymentData, formData) {
+                const successHTML = `
+                    <h3>✅ Payment Successful!</h3>
+                    <div class="success-message">
+                        <strong>Payment ID:</strong> ${paymentData.razorpayPaymentId}<br>
+                        <strong>Order ID:</strong> ${paymentData.razorpayOrderId}
+            </div>
+            <div class="summary-item">
+                        <span class="label">Customer:</span>
+                        <span class="value">${formData.customerName}</span>
+            </div>
+            <div class="summary-item">
+                        <span class="label">Email:</span>
+                        <span class="value">${formData.customerEmail}</span>
+            </div>
+            <div class="summary-item">
+                        <span class="label">Phone:</span>
+                        <span class="value">${formData.customerPhone}</span>
+            </div>
+            <div class="summary-item">
+                        <span class="label">Service:</span>
+                        <span class="value">${formData.serviceName}</span>
+            </div>
+            <div class="summary-item">
+                        <span class="label">Provider:</span>
+                        <span class="value">${formData.providerName}</span>
+            </div>
+            <div class="summary-item">
+                        <span class="label">Booking Date:</span>
+                        <span class="value">${new Date(formData.bookingDate).toLocaleDateString()}</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Amount:</span>
+                        <span class="value">₹${formData.amount.toFixed(2)} INR</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">Payment Time:</span>
+                        <span class="value">${new Date().toLocaleString()}</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Purpose:</span>
+                        <span class="value">${formData.purpose}</span>
+            </div>
+        `;
+                
+                outputDiv.innerHTML = successHTML;
+                outputDiv.className = 'show success';
+                
+                // Reset form
+                form.reset();
+                
+                // Scroll to output
+                outputDiv.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            function displayError(message) {
+                const errorHTML = `
+                    <h3>❌ Payment Failed</h3>
+                    <div class="error-message">
+                        ${message}
+                    </div>
+                `;
+                
+                outputDiv.innerHTML = errorHTML;
+                outputDiv.className = 'show error';
+                
+                // Scroll to output
+                outputDiv.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+</script>
+</body>
+</html>

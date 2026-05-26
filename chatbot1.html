@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jharkhand Darshan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: transparent;
+            margin: 0;
+            padding: 0;
+        }
+        /* Custom scrollbar */
+        #chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        #chat-messages::-webkit-scrollbar-track {
+            background: #064e3b;
+        }
+        #chat-messages::-webkit-scrollbar-thumb {
+            background: #34d399;
+            border-radius: 3px;
+        }
+        #chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+        /* Typing indicator animation */
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: #6ee7b7;
+            display: inline-block;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .typing-indicator span:nth-of-type(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-of-type(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
+        
+        /* Voice Assistant Animation */
+        .voice-assistant {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 180px;
+            height: 180px;
+            background: #e8f4f8;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            opacity: 0;
+            transform: scale(0);
+            overflow: hidden;
+        }
+        
+        .voice-assistant.active {
+            opacity: 1;
+            transform: scale(1);
+            animation: pulse 2s infinite;
+        }
+        
+        .voice-assistant.listening {
+            animation: listening 1s infinite;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        
+        @keyframes listening {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .assistant-face {
+            width: 100px;
+            height: 100px;
+            background: #ffcc99;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 20px;
+            box-shadow: inset 0 -3px 8px rgba(0, 0, 0, 0.1);
+            z-index: 3;
+        }
+        
+        .assistant-eyes {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 8px;
+        }
+        
+        .eye {
+            width: 16px;
+            height: 16px;
+            background: #2c3e50;
+            border-radius: 50%;
+            animation: blink 3s infinite;
+            position: relative;
+        }
+        
+        .eye::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 3px;
+            width: 5px;
+            height: 5px;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        @keyframes blink {
+            0%, 90%, 100% { transform: scaleY(1); }
+            95% { transform: scaleY(0.1); }
+        }
+        
+        .assistant-nose {
+            width: 6px;
+            height: 8px;
+            background: #e0a76d;
+            border-radius: 50%;
+            margin-bottom: 8px;
+        }
+        
+        .assistant-mouth {
+            width: 30px;
+            height: 8px;
+            background: #e74c3c;
+            border-radius: 0 0 15px 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .assistant-body {
+            position: absolute;
+            bottom: 0;
+            width: 180px;
+            height: 100px;
+            background: #3498db;
+            border-radius: 0 0 90px 90px;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        
+        .assistant-arms {
+            position: absolute;
+            bottom: 60px;
+            left: 0;
+            width: 180px;
+            height: 30px;
+            z-index: 2;
+        }
+        
+        .assistant-arms::before,
+        .assistant-arms::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 50px;
+            background: #ffcc99;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .assistant-arms::before {
+            left: 20px;
+            transform: rotate(-15deg);
+        }
+        
+        .assistant-arms::after {
+            right: 20px;
+            transform: rotate(15deg);
+        }
+        
+        .assistant-mouth.speaking {
+            animation: speak 0.5s infinite alternate;
+        }
+        
+        @keyframes speak {
+            0% { transform: scaleY(1); }
+            100% { transform: scaleY(0.7); }
+        }
+        
+        .speech-bubble {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 8px 12px;
+            border-radius: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            max-width: 250px;
+            word-wrap: break-word;
+            opacity: 0;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            z-index: 10;
+        }
+        
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 10px solid transparent;
+            border-top-color: white;
+        }
+        
+        .speech-bubble.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Chatbot Container -->
+    <div class="w-full max-w-lg h-[600px] flex flex-col bg-gray-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-green-500/50">
+
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-emerald-800 to-green-800 text-white p-4 flex items-center justify-between rounded-t-2xl shadow-lg flex-shrink-0">
+            <div class="flex items-center space-x-3">
+                 <!-- Bot Avatar -->
+                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center ring-2 ring-white/50">
+                    <svg class="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 id="chat-title" class="text-xl font-bold">Jharkhand Darshan</h1>
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse"></span>
+                        <p id="chat-status" class="text-sm text-green-200">Online</p>
+                    </div>
+                </div>
+            </div>
+            <div id="language-switcher" class="flex flex-wrap justify-end gap-1 max-w-[150px]">
+                <button onclick="setLanguage('en')" class="text-xs font-semibold bg-white/10 px-2 py-1 rounded-md hover:bg-white/20 transition-colors">EN</button>
+                <button onclick="setLanguage('hi')" class="text-xs font-semibold bg-white/10 px-2 py-1 rounded-md hover:bg-white/20 transition-colors">HI</button>
+                <button onclick="setLanguage('bn')" class="text-xs font-semibold bg-white/10 px-2 py-1 rounded-md hover:bg-white/20 transition-colors">BN</button>
+                <button onclick="setLanguage('sat')" class="text-xs font-semibold bg-white/10 px-2 py-1 rounded-md hover:bg-white/20 transition-colors">SAT</button>
+                <button onclick="setLanguage('ta')" class="text-xs font-semibold bg-white/10 px-2 py-1 rounded-md hover:bg-white/20 transition-colors">TA</button>
+                <button onclick="setLanguage('te')" class="text-xs font-semibold bg-white/10 px-2 py-1 rounded-md hover:bg-white/20 transition-colors">TE</button>
+            </div>
+        </header>
+
+        <!-- Chat Messages Area -->
+        <main id="chat-messages" class="flex-1 p-6 overflow-y-auto bg-black/20 space-y-4">
+            <!-- Messages will be appended here -->
+        </main>
+        
+        <!-- Typing Indicator Placeholder -->
+        <div id="typing-indicator-container" class="px-6 pb-2 hidden bg-black/20">
+             <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center flex-shrink-0">
+                   <svg class="w-6 h-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                   </svg>
+                </div>
+                <div class="bg-gray-700 text-white p-3 rounded-lg rounded-bl-none max-w-xs typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <footer class="p-4 bg-gray-900/50 border-t border-green-500/30 rounded-b-2xl flex-shrink-0">
+            <div class="flex items-center space-x-2">
+                <button id="dictate-btn" class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition-transform transform hover:scale-105 disabled:bg-slate-400" title="Start Dictation">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                    </svg>
+                </button>
+                <input type="text" id="user-input" placeholder="Ask about your trip..." class="w-full px-4 py-3 border border-green-500/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-shadow bg-gray-800/80 text-white placeholder-gray-400">
+                <button id="send-btn" class="bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition-transform transform hover:scale-105 disabled:bg-slate-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                    </svg>
+                </button>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Voice Assistant -->
+    <div id="voice-assistant" class="voice-assistant">
+        <div class="assistant-face">
+            <div class="assistant-eyes">
+                <div class="eye"></div>
+                <div class="eye"></div>
+            </div>
+            <div class="assistant-nose"></div>
+            <div class="assistant-mouth"></div>
+        </div>
+        <div class="assistant-body"></div>
+        <div class="assistant-arms"></div>
+        <div id="speech-bubble" class="speech-bubble"></div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const typingIndicator = document.getElementById('typing-indicator-container');
+        const chatTitle = document.getElementById('chat-title');
+        const chatStatus = document.getElementById('chat-status');
+        const dictateBtn = document.getElementById('dictate-btn');
+        const voiceAssistant = document.getElementById('voice-assistant');
+        const speechBubble = document.getElementById('speech-bubble');
+        const assistantMouth = document.querySelector('.assistant-mouth');
+
+        let currentLanguage = 'en';
+        let isListening = false;
+        let recognition = null;
+        let speechSynthesis = window.speechSynthesis;
+
+        const translations = {
+            en: {
+                title: 'Jharkhand Darshan', status: 'Online', placeholder: 'Ask about your trip...',
+                welcome: "Johar! Welcome to Jharkhand Darshan, your official travel guide. How can I assist you? You can ask me anything or select a topic to begin.",
+                quickReplies: ['Explore Destinations', 'Local Culture', 'Cuisine Guide', 'Travel Info'],
+                followUp: "Tell me your dates, starting city, budget, and what you enjoy (nature, temples, heritage). I’ll plan a route, stays, and transport.",
+                responses: {
+                    greeting: "Johar! Welcome to Jharkhand Darshan. How can I assist you in planning your journey today?",
+                    destinations: "Jharkhand is home to breathtaking destinations. Are you interested in the majestic waterfalls of Ranchi, the serene hills of Netarhat, or the sacred temples of Deoghar?",
+                    culture: "The state's culture is vibrant and diverse. You can explore traditional Sohrai and Khovar paintings, witness the intricate metalwork of Dokra art, or find beautiful bamboo crafts.",
+                    transport: "Getting around Jharkhand is convenient. Major cities have good rail and road connectivity. For local travel, taxis and auto-rickshaws are widely available.",
+                    food: "The local cuisine offers a unique culinary experience. We recommend trying traditional dishes such as Dhuska, Rugra, and Litti Chokha.",
+                    thanks: "You're most welcome. Is there anything else I can help you with for your trip?",
+                    people: "Jharkhand's people are mainly tribal and non-tribal communities. Major tribes include Santhal, Munda, Oraon, Ho, Kharia; each with unique languages, dances (Jhumair, Paiki), festivals (Sarhul, Karma) and crafts. They live in picturesque villages, warmly welcome guests, and preserve age-old traditions.",
+                    tribes: "Key tribes: Santhal (largest, great musicians), Munda (agriculturalists, speak Mundari), Oraon (expert farmers, Kurukh language), Ho (iron smelters), Kharia. All celebrate Karma, Sarhul, Sohrai with vibrant dances, drum beats, and local brew Handia.",
+                    festivals: "Top tribal festivals: Sarhul (spring sal to Sal tree), Karma (monsoon gratitude), Sohrai (harvest, cattle painted), Mage Parab (ancestor worship), Jitia (children's welfare). Hindu festivals: Holi, Diwali, Chhath. Witness colorful dances, drums, local brew Handia, and community feasts.",
+                    crafts: "Famous crafts: Dokra (lost-wax metal casting) – bell metal animal figures, Sohrai & Khovar mural paintings on mud walls, bamboo basketry, terracotta pottery, Paitkar scroll paintings, iron & wood work. Buy at local haats or state emporiums.",
+                    wildlife: "Betla National Park (Palamu) hosts tigers, elephants, sloth bears, leopards, deer. Dalma Wildlife Sanctuary near Jamshedpur shelters elephants. Hazaribagh Sanctuary has nilgai, sambar. Birdwatch at Topchanchi & Parasnath lakes. Best time: Oct-Mar.",
+                    waterfalls: "Must-see: Hundru Falls (45m, Ranchi), Jonha Falls (cascading, Gautam Dhara), Dassam Falls (Kanchi, 10th), Panchghagh Falls (five streams, Khunti), Hirni Falls (dense forest, Netarhat plateau). Carry snacks, visit monsoon for peak flow.",
+                    hills: "Netarhat 'Queen of Chotanagpur' – sunrise, pine & sal forests, cool climate. Tagore Hill Ranchi – panoramic view, museum. Canary Hill Hazaribagh – sunset, lake. Trikut Hill Deoghar – ropeway, temples. Ideal for picnics, short treks, photography.",
+                    temples: "Deoghar Baidyanath Dham – one of 12 Jyotirlingas, huge Shravani Mela. Ranchi Jagannath Temple – Kalinga style. Itkhori Mahadev – ancient Buddhist link. Maluti terracotta temples – 72 small Gupta-style shrines. Rajrappa Chhinnamasta – Shakti peeth at river confluence.",
+                    history: "Ancient: Mesolithic tools, rock paintings (Isko, Khunti). Medieval: Nagvanshi kings built palaces (Navratangarh). British: Raksel Rajas, Palamu forts. Tribal revolts: Tilka Manjhi 1784, Birsa Munda 1899-1900. Post-2000: Jharkhand carved from Bihar.",
+                    climate: "Tropical; summer 35-40°C (Mar-Jun), monsoon 1000-1200mm (Jun-Sep), winter 5-20°C (Nov-Feb). Best travel: Oct-Feb (cool, dry) & Mar-Apr (spring). Carry light cotton summer, woollens winter, rainwear monsoon.",
+                    safety: "Safe for tourists. Respect tribal customs (ask before photos). Avoid venturing deep inside forests without guide. Carry water, first-aid. Mobile coverage good near towns; patchy inside sanctuaries. Emergency: dial 112.",
+                    fallback: "I can only provide information related to tourism in Jharkhand. Please ask about destinations, culture, food, or transportation."
+                }
+            },
+            hi: {
+                title: 'झारखंड दर्शन', status: 'ऑनलाइन', placeholder: 'अपनी यात्रा के बारे में पूछें...',
+                welcome: "जोहार! झारखंड दर्शन में आपका स्वागत है, आपका आधिकारिक यात्रा गाइड। मैं आपकी कैसे सहायता कर सकता हूं? आप मुझसे कुछ भी पूछ सकते हैं या शुरू करने के लिए कोई विषय चुन सकते हैं।",
+                quickReplies: ['गंतव्य खोजें', 'स्थानीय संस्कृति', 'व्यंजन गाइड', 'यात्रा जानकारी'],
+                followUp: "अपनी तारीखें, शुरुआती शहर, बजट और पसंद (प्रकृति/मंदिर/विरासत) बताएं। मैं रूट, ठहराव और परिवहन सुझाऊँगा।",
+                responses: {
+                    greeting: "जोहार! झारखंड दर्शन में आपका स्वागत है। आज मैं आपकी यात्रा की योजना बनाने में कैसे सहायता कर सकता हूँ?",
+                    destinations: "झारखंड लुभावने स्थलों का घर है। क्या आप रांची के राजसी झरनों, नेतरहाट की शांत पहाड़ियों, या देवघर के पवित्र मंदिरों में रुचि रखते हैं?",
+                    culture: "राज्य की संस्कृति जीवंत और विविध है। आप पारंपरिक सोहराई और खोवर चित्रों का पता लगा सकते हैं, डोकरा कला के जटिल धातु शिल्प को देख सकते हैं, या सुंदर बांस शिल्प पा सकते हैं।",
+                    transport: "झारखंड में घूमना सुविधाजनक है। प्रमुख शहरों में अच्छी रेल और सड़क कनेक्टिविटी है। स्थानीय यात्रा के लिए, टैक्सी और ऑटो-रिक्शा व्यापक रूप से उपलब्ध हैं।",
+                    food: "स्थानीय व्यंजन एक अनूठा पाक अनुभव प्रदान करता है। हम झारखंड के प्रामाणिक स्वाद के लिए धुस्का, रुगड़ा और लिट्टी चोखा जैसे पारंपरिक व्यंजनों को आज़माने की सलाह देते हैं।",
+                    thanks: "आपका बहुत-बहुत स्वागत है। क्या मैं आपकी यात्रा के लिए और कुछ मदद कर सकता हूँ?",
+                    people: "झारखंड के लोग मुख्य रूप से आदिवासी और गैर-आदिवासी समुदाय हैं। प्रमुख जनजातियाँ: संथाल, मुंडा, उराँव, हो, खड़िया; हर एक की अलग भाषा, नृत्य (झुमैर, पैकी), त्योहार (सरहुल, कर्म) और शिल्प हैं। वे सुंदर गाँवों में रहते हैं, मेहमानों का दिल से स्वागत करते हैं और पुरानी परंपराओं को संजोए रखते हैं।",
+                    tribes: "मुख्य जनजातियाँ: संथाल (सबसे बड़ी, शानदार संगीतकार), मुंडा (कृषक, मुंडारी बोलते हैं), उराँव (माहिर किसान, कुरुख भाषा), हो (लोहा घालने वाले), खड़िया। सभी कर्म, सरहुल, सोहराई को रंगारंग नृत्य, ढोल की थाप और हंडिया देशी शराब के साथ मनाते हैं।",
+                    festivals: "प्रमुख आदिवासी त्योहार: सरहुल (वसंत में साल वृक्ष को समर्पित), कर्म (वर्षा ऋतु में कृतज्ञता), सोहराई (फसल कटाई, सजे हुए मवेशी), माघे परब (पूर्वजों की पूजा), जितिया (बच्चों की भलाई)। हिंदू पर्व: होली, दिवाली, छठ। रंग-बिरंगे नृत्य, ढोल, हंडिया और सामुदायिक भोजन का आनंद लें।",
+                    crafts: "प्रसिद्ध शिल्प: डोकरा (खोया-मोम धातु ढालाई) – घंट धातु पशु मूर्तियाँ, सोहराई और खोवर भित्ति चित्र, बांस की टोकरी, टेराकोटा मिट्टी के बर्तन, पैटकर चित्र, लोहा-लकड़ी का काम। स्थानीय हाट या राज्य उद्योग भंडार से खरीदें।",
+                    wildlife: "बेतला राष्ट्रीय उद्यान (पलामू) में बाघ, हाथी, स्लॉथ भालू, तेंदुआ, हिरण। जमशेदपुर के पास दलमा अभयारण्य में हाथी। हजारीबाग अभयारण्य में नीलगाय, सांभर। टोपचांची व पारसनाथ झीलों में पक्षी देखें। सर्वोत्तम समय: अक्तूबर-मार्च।",
+                    waterfalls: "अवश्य देखें: हुंडरू जलप्रपात (45मी, रांची), जोन्हा झरना (कैस्केड, गौतम धारा), दशम जलप्रपात (कंची, दसवाँ), पंचघाघ झरना (पाँच धाराएँ, खूँटी), हिरणी जलप्रपात (घना जंगल, नेतरहाट पठार)। नाश्ता ले जाएँ, चरम प्रवाह के लिए मानसून में जाएँ।",
+                    hills: "नेतरहाट 'छोटानागपुर की रानी' – सूर्योदय, देवदार व साल वन, ठंडा मौसम। रांची का टैगोर हिल – सबसे ऊँचा दृश्य, संग्रहालय। हजारीबाग का कैनरी हिल – सूर्यास्त, झील। देवघर का त्रिकुट पहाड़ – रोपवे, मंदिर। पिकनिक, छोटी ट्रेकिंग, फोटोग्राफी के लिए बढ़िया।",
+                    temples: "देवघर बैधनाथ धाम – 12 ज्योतिर्लिंगों में से एक, विशाल श्रावणी मेला। रांची जगन्नाथ मंदिर – कलिंग शैली। इटखोरी महादेव – प्राचीन बौद्ध जुड़ाव। मालूटी टेराकोटा मंदिर – 72 छोटे गुप्त-शैली मंदिर। राजरप्पा छिन्नमस्तिका – नदी संगम पर शक्तिपीठ।",
+                    history: "प्राचीन: मेसोलिथिक औज़ार, चित्रशिला (इस्को, खूँटी)। मध्यकाल: नागवंशी राजाओं ने किले-महल बनाए (नवरतनगढ़)। अंग्रेज़: राकसेल राजाओं, पलामू के किले। आदिवासी विद्रोह: तिलका मांझी 1784, बिरसा मुंडा 1899-1900। 2000 के बाद: झारखंड को बिहार से अलग किया गया।",
+                    climate: "उष्णकटिबंधीय; गर्मी 35-40°C (मार्च-जून), मानसून 1000-1200मिमी (जून-सितंबर), सर्दी 5-20°C (नवंबर-फरवरी)। सर्वोत्तम यात्रा: अक्तूबर-फरवरी (ठंडा, शुष्क) और मार्च-अप्रैल (वसंत)। गर्मी में हल्का सूती, सर्दी में ऊनी, मानसून में रेनकोट लें।",
+                    safety: "पर्यटकों के लिए सुरक्षित। आदिवासी परंपराओं का सम्मान करें (फ़ोटो से पहले पूछें)। गाइड के बिना जंगलों के भीतर न जाएँ। पानी, प्राथमिक चिकित्सा रखें। शहरों में मोबाइल कवरेज अच्छा; अभयारण्यों में कम। आपातकाल: 112 डायल करें।",
+                    fallback: "मैं केवल झारखंड में पर्यटन से संबंधित जानकारी प्रदान कर सकता हूं। कृपया स्थलों, संस्कृति, भोजन या परिवहन के बारे में पूछें।"
+                }
+            },
+            bn: {
+                title: 'ঝাড়খণ্ড দর্শন', status: 'অনলাইন', placeholder: 'আপনার ভ্রমণ সম্পর্কে জিজ্ঞাসা করুন...',
+                welcome: 'জোহার! ঝাড়খণ্ড দর্শনে আপনাকে স্বাগত। আমি আপনাকে কিভাবে সাহায্য করতে পারি? আপনি একটি বিষয় জিজ্ঞাসা বা নির্বাচন করতে পারেন।',
+                quickReplies: ['গন্তব্যগুলি', 'স্থানীয় সংস্কৃতি', 'খাদ্য নির্দেশিকা', 'ভ্রমণ তথ্য'],
+                followUp: "আপনার তারিখ, শুরুর শহর, বাজেট এবং পছন্দ (প্রকৃতি/মন্দির/ঐতিহ্য) বলুন। আমি রুট, থাকা ও পরিবহন সাজাব।",
+                responses: {
+                    greeting: "জোহার! ঝাড়খণ্ড দর্শনে আপনাকে স্বাগত। আজ আমি আপনার যাত্রার পরিকল্পনায় কিভাবে সাহায্য করতে পারি?",
+                    destinations: "ঝাড়খণ্ডে মনোরম গন্তব্যস্থল রয়েছে। আপনি কি রাঁচির জলপ্রপাত, নেতারহাটের পাহাড়, নাকি দেওঘরের মন্দিরে আগ্রহী?",
+                    culture: "রাজ্যের সংস্কৃতি অত্যন্ত প্রাণবন্ত। আপনি ঐতিহ্যবাহী সোহরাই এবং খোভার চিত্রাঙ্কন, ডোকরা শিল্পের কাজ এবং সুন্দর বাঁশের কারুশিল্প দেখতে পারেন।",
+                    transport: "ঝাড়খণ্ডে যাতায়াত বেশ সুবিধাজনক। প্রধান শহরগুলি রেল এবং সড়ক দ্বারা ভালোভাবে সংযুক্ত। স্থানীয় ভ্রমণের জন্য ট্যাক্সি এবং অটোরিকশা পাওয়া যায়।",
+                    food: "স্থানীয় খাবার এক অসাধারণ অভিজ্ঞতা। আমরা আপনাকে धुस्কা, रुगड़ा এবং लिट्टी चोखा-এর মতো ঐতিহ্যবাহী খাবার চেখে দেখার পরামর্শ দিই।",
+                    thanks: "আপনাকে অনেক ধন্যবাদ। আমি কি আপনার যাত্রার জন্য আর কোনো সাহায্য করতে পারি?",
+                    people: "ঝাড়খণ্ডের মানুষ প্রধানত আদিবাসী ও অ-আদিবাসী সম্প্রদায়। প্রধান উপজাতিগুলি: সাঁওতাল, মুণ্ডা, উড়াওঁ, হো, খড়িয়া; প্রত্যেকেরই অনন্য ভাষা, নাচ (ঝুমাইর, পাইকি), উৎসব (সরহুল, করম) এবং শিল্প রয়েছে। তারা সুন্দর গ্রামে বাস করে, অতিথিদের আন্তরিকভাবে স্বাগত জানায় এবং প্রাচীন ঐতিহ্য সংরক্ষণ করে।",
+                    tribes: "প্রধান উপজাতিগুলি: সাঁওতাল (বৃহত্তম, দুর্দান্ত সঙ্গীতশিল্পী), মুণ্ডা (কৃষক, মুণ্ডারি ভাষায় কথা বলে), উড়াওঁ (দক্ষ কৃষক, কুরুখ ভাষা), হো (লোহা গলানো), খড়িয়া। সবাই করম, সরহুল, সোহরাই উৎসব উদযাপন করে রঙিন নাচ, ঢোলের বাজনা এবং স্থানীয় হাড়িয়া মদ দিয়ে।",
+                    festivals: "শীর্ষ আদিবাসী উৎসব: সরহুল (বসন্তে সাল গাছকে উৎসর্গ), করম (বর্ষাকালে কৃতজ্ঞতা), সোহরাই (ফসল কাটা, গরু আঁকা), মাঘে পরব (পূর্বপুরুষের পূজা), জিতিয়া (শিশুদের কল্যাণ)। হিন্দু উৎসব: দোল, দীপাবলি, ছঠ। রঙিন নাচ, ঢোল, হাড়িয়া এবং সম্প্রদায়ভিত্তিক ভোজের স্বাদ নিন।",
+                    crafts: "বিখ্যাত শিল্প: ডোকরা (হারানো-মোম ধাতু ঢালাই) – ঘণ্ট ধাতু পশু মূর্তি, সোহরাই ও খোভার প্রাচীর চিত্রকর্ম, বাঁশের ঝুড়ি, টেরাকোটা মৃৎশিল্প, পৈটকর স্ক্রোল চিত্রকর্ম, লোহা ও কাঠের কাজ। স্থানীয় হাট বা রাজ্য উদ্যোগ ভবন থেকে কিনুন।",
+                    wildlife: "বेतলা জাতীয় উদ্যান (পলামু) বাঘ, হাতি, স্লথ ভালুক, চিতা, হরিণ আছে। জমশেদপুরের কাছে দলমা অভয়ারণ্য হাতিদের আশ্রয় দেয়। হাজারীবাগ অভয়ারণ্য নীলগাই, সাম্বার আছে। টপচাঁচি ও পারসনাথ হ্রদে পাখি দেখুন। সেরা সময়: অক্টোবর-মার্চ।",
+                    waterfalls: "অবশ্যই দেখুন: হুণ্ড্রু জলপ্রপাত (৪৫মি, রাঁচি), জনহা জলপ্রপাত (ধারাবাহিক, গৌতম ধারা), দশম জলপ্রপাত (কাঁচি, দশম), পঞ্চঘাঘ জলপ্রপাত (পাঁচ স্রোত, খুণ্টি), হিরনি জলপ্রপাত (ঘন জঙ্গল, নেতারহাট মালভূমি)। খাবার নিয়ে যান, সর্বোচ্চ প্রবাহের জন্য বর্ষাকালে যান।",
+                    hills: "নেতারহাট 'ছোটানাগপুরের রাণী' – সূর্যোদয়, পাইন ও সাল বন, শীতল আবহাওয়া। রাঁচির ট্যাগোর হিল – সর্বোচ্চ দৃশ্য, জাদুঘর। হাজারীবাগ ক্যানারি হিল – সূর্যাস্ত, হ্রদ। দেওঘর ত্রিকুট পাহাড় – রোপওয়ে, মন্দির। পিকনিক, ছোট ট্রেকিং, ফটোগ্রাফির জন্য আদর্শ।",
+                    temples: "দেওঘর বৈদ্যনাথ ধাম – ১২ জ্যোতির্লিঙ্গের একটি, বিশাল শ্রাবণী মেলা। রাঁচি জগন্নাথ মন্দির – কলিঙ্গ শৈলী। ইটখোরি মহাদেব – প্রাচীন বৌদ্ধ সংযোগ। মালুটি টেরাকোটা মন্দির – ৭২টি ছোট গুপ্ত-শৈলী মন্দির। রাজরাপ্পা ছিন্নমস্তা – নদী সংগমে শক্তিপীঠ।",
+                    history: "প্রাচীন: মেসোলিথিক সরঞ্জাম, শিলা চিত্রকর্ম (ইস্কো, খুণ্টি)। মধ্যযুগ: নাগবংশী রাজারা প্রাসাদ (নবরত্নগড়) তৈরি করেন। ব্রিটিশ: রাকসেল রাজারা, পলামু দুর্গ। উপজাতি বিদ্রোহ: তিলকা মাঝি ১৭৮৪, বিরসা মুন্ডা ১৮৯৯-১৯০০। ২০০০-এর পর: ঝাড়খণ্ডকে বিহার থেকে আলাদা করা হয়।",
+                    climate: "উষ্ণমণ্ডলীয়; গরম ৩৫-৪০°সে (মার্চ-জুন), বর্ষা ১০০০-১২০০মিমি (জুন-সেপ্টেম্বর), শীত ৫-২০°সে (নভেম্বর-ফেব্রুয়ারি)। সেরা ভ্রমণ: অক্টোবর-ফেব্রুয়ারি (ঠান্ডা, শুষ্ক) ও মার্চ-এপ্রিল (বসন্ত)। গরমে হালকা সুতি, শীতে উলেন, বর্ষায় রেনকোট নিন।",
+                    safety: "পর্যটকদের জন্য নিরাপদ। উপজাতি রীতিনীতির সম্মান করুন (ছবি তোলার আগে জিজ্ঞাসা করুন)। গাইড ছাড়া জঙ্গলের গভীরে যাবেন না। পানি, ফার্স্ট এইড রাখুন। শহরের কাছে মোবাইল কভারেজ ভালো; অভয়ারণ্যের ভিতরে কম। জরুরি: ১১২ ডায়াল করুন।",
+                    fallback: "আমি শুধু ঝাড়খণ্ডের পর্যটন সম্পর্কিত তথ্য দিতে পারি। অনুগ্রহ করে গন্তব্য, সংস্কৃতি, খাবার বা পরিবহন সম্পর্কে জিজ্ঞাসা করুন।"
+                }
+            },
+            sat: { // Santali (Romanized)
+                title: 'Jharkhand Nepel', status: 'Online', placeholder: 'Abenah׳ yatra babot kuli me...',
+                welcome: 'Johar! Jharkhand Darshan re sagun daram. Ched leka te goṛo daṛe abena? Aap ben kichhu kuli daṛe āh se ek ṭī বিষয় ben bachao daṛe āh.',
+                quickReplies: ['Senoh׳ jāgā', 'Thānik saṁskṛti', 'Jom guide', 'Yatra jaankari'],
+                followUp: "Tarik, starting city, budget ār pasand kahen (nature/mandir/heritage). Āmi ruta, rahāb ār parivahan sajāb.",
+                responses: {
+                    greeting: "Johar! Jharkhand Darshan re sagun daram. Tehen abenah׳ yatra plan re che leka te goṛo daṛe abena?",
+                    destinations: "Jharkhand re aneko sundor jāgā menah׳ ā. Aaben ki Ranchi rā waterfall, Netarhat rā buru, se Deoghar rā mandir re interested menah׳ bena?",
+                    culture: "Noā rāj rā saṁskṛti khub jīot menah׳ ā. Aap ben Sohrai ār Khovar painting, Dokra art, ār sundor bããs rā kārigori ńel daṛe āh.",
+                    transport: "Jharkhand re calācalāḱ suvidhājanak ge. Mukhya śahar rail ār saṛak dwārā bhଲ bhāb re joṛāo menah׳ ā.",
+                    food: "Thānik jom ek anokha anubhav ceṭāh׳ ā. Āliṅ Dhuska, Rugra, ār Litti Chokha lekan paramparik jom try lāgiṭ salah׳ emoh׳ aliṅ.",
+                    thanks: "Aḍi aḍi sārhāo. Ār ched goṛo darken abenah׳ yatra lāgiṭ?",
+                    people: "Jharkhand rā horo khub thānik jati ār aka jati samuday menah׳ ā. Mukhya jāti: Santhal, Munda, Oraon, Ho, Kharia; saben rā alag alag bhasa, nach (Jhumair, Paiki), parab (Sarhul, Karma) ār kārigori menah׳ ā. Aaṅ horo sundar disom re rahkate, mehman rā dil se sagun daṛkate, ār purkhi parampara rā bachāo korate menah׳ ā. ",
+                    tribes: "Mukhya jāti: Santhal (sab se bada, darun git-pat kar), Munda (kisan, Mundari bhasa bolkan), Oraon (chala kisan, Kurukh bhasa), Ho (lōhā galāo), Kharia. Saben Karma, Sarhul, Sohrai parab nach, dhol ār desi Handia daru re manate menah׳ ā.",
+                    festivals: "Top jāti parab: Sarhul (basanta Sal gaṛ rā samarpit), Karma (barsā ritu rā dhanyabad), Sohrai (fasal katni, goṛ lipan), Mage Parab (purkha rā puja), Jitia (bacche rā bhalo). Hindu parab: Holi, Diwali, Chhath. Rangi nach, dhol, Handia ār samuday bhoj rā anand le. ",
+                    crafts: "Lokpriya kārigori: Dokra (khōyā-mōm lōhā ḍhāl) – ghant lōhā janwar murti, Sohrai ār Khovar diwar citrakāri, bããs rā daura, terracotta mṛttik bāran, Paitkar scroll citrakāri, lōhā ār lakṛi kārya. Thānik hāṭ se kinate. ",
+                    wildlife: "Betla Rāṣṭrīy Udyān (Palamu) rā sher, hāthi, sloth bhālū, citā, hiran. Jamshedpur rā najīk Dalma Abhyārany hāthi rā ashray dey. Hazaribagh Abhyārany rā nilgai, sāmbhar. Topchanchi ār Parasnath jhil rā pakṣi dekhkate. Sabsē bhalo samay: Oct-Mar. ",
+                    waterfalls: "Anivārya dekhkate: Hundru Jalprapat (45m, Ranchi), Jonha Jalprapat (cascade, Gautam Dhara), Dassam Jalprapat (Kanchi, 10th), Panchghagh Jalprapat (pānc dhārā, Khunti), Hirni Jalprapat (ghana jangal, Netarhat plateau). Nāstā lē jāh, monsoon rā peak flow lāgiṭ. ",
+                    hills: "Netarhat 'Chotanagpur rā Rāṇi' – sunrise, pine ār sal jangal, thanda jalvāyū. Ranchi rā Tagore Hill – sab se unchā dṛśya, sangrahalay. Hazaribagh rā Canary Hill – sunset, jhil. Deoghar rā Trikut Hill – ropeway, mandir. Picnic, chotā trekking, photography lāgiṭ accha. ",
+                    temples: "Deoghar Baidyanath Dham – 12 Jyotirlinga rā ek, bara Shravani Mela. Ranchi Jagannath Mandir – Kalinga style. Itkhori Mahadev – purkha Bauddh jōṛ. Maluti terracotta mandir – 72 chotā Gupta-style mandir. Rajrappa Chhinnamasta – Shakti peeth nadi sangam re. ",
+                    history: "Purkha: Mesolithic auzaar, rock citrakāri (Isko, Khunti). Madhyayug: Nagvanshi rājā rā mahal (Navratangarh) banāo. British: Raksel Raja, Palamu kila. Jāti bidroh: Tilka Manjhi 1784, Birsa Munda 1899-1900. 2000 pichhe: Jharkhand Bihar se alag kari ke dewa gelēk. ",
+                    climate: "Ushṇakṭibandhiya; garmi 35-40°C (March-June), monsoon 1000-1200mm (June-Sept), sardī 5-20°C (Nov-Feb). Bhalo yatra: Oct-Feb (thanda, sukh) ār March-April (basanta). Garmi re halka cotton, sardī re woollen, monsoon re raincoat rakh. ",
+                    safety: "Paryatakon lāgiṭ surakṣit. Jāti paramparā rā ādar kar (photo rā agō puchh). Bina guide rā jangal bhītarkate nā jāh. Pāni, first-aid rakh. Shahar rā najīk mobile coverage accha; abhyārany bhītarkate kam. Emergency: 112 dial kar. ",
+                    fallback: "Iṅ sirf Jharkhand rā paryatan sambandhit jānakāri em daṛe āh. Dayākāte jāgā, saṁskṛti, jom, se parivahan bāre te kuli me."
+                }
+            },
+            ta: {
+                title: 'ஜார்க்கண்ட் தர்ஷன்', status: 'ஆன்லைனில்', placeholder: 'உங்கள் பயணம் பற்றி கேளுங்கள்...',
+                welcome: 'ஜோஹர்! ஜார்க்கண்ட் தர்ஷனுக்கு வரவேற்கிறோம். நான் உங்களுக்கு எப்படி உதவ முடியும்? நீங்கள் எதையும் கேட்கலாம் அல்லது தொடங்க ஒரு தலைப்பைத் தேர்ந்தெடுக்கலாம்.',
+                quickReplies: ['இடங்களைக் கண்டறியவும்', 'உள்ளூர் கலாச்சாரம்', 'உணவு வழிகாட்டி', 'பயணத் தகவல்'],
+                followUp: "உங்கள் தேதிகள், தொடக்க நகரம், பட்ஜெட் மற்றும் விருப்பம் (இயற்கை/கோவில்/பாரம்பரியம்) சொல்லுங்கள். நான் பாதை, தங்குமிடம், போக்குவரத்து திட்டமிடுவேன்.",
+                responses: {
+                    greeting: "ஜோஹர்! ஜார்க்கண்ட் தர்ஷனுக்கு வரவேற்கிறோம். இன்று உங்கள் பயணத்தைத் திட்டமிடுவதில் நான் எப்படி உதவ முடியும்?",
+                    destinations: "ஜார்க்கண்டில் அற்புதமான இடங்கள் உள்ளன. ராஞ்சியின் நீர்வீழ்ச்சிகள், நேதர்ஹாட்டின் மலைகள் அல்லது தியோகரின் கோயில்களில் நீங்கள் ஆர்வமாக உள்ளீர்களா?",
+                    culture: "மாநிலத்தின் கலாச்சாரம் மிகவும் துடிப்பானது. நீங்கள் பாரம்பரிய சோஹ்ராய் மற்றும் கோவர் ஓவியங்கள், டோக்ரா கலை மற்றும் அழகான மூங்கில் கைவினைப்பொருட்களைக் காணலாம்.",
+                    transport: "ஜார்க்கண்டில் பயணம் செய்வது வசதியானது. முக்கிய நகரங்கள் ரயில் மற்றும் சாலை வழியாக நன்கு இணைக்கப்பட்டுள்ளன. உள்ளூர் பயணங்களுக்கு டாக்சிகள் மற்றும் ஆட்டோக்கள் உள்ளன.",
+                    food: "உள்ளூர் உணவு ஒரு தனித்துவமான அனுபவத்தை அளிக்கிறது. உண்மையான சுவைக்காக துஸ்கா, ருக்ரா மற்றும் லிட்டி சோக்கா போன்ற பாரம்பரிய உணவுகளை முயற்சிக்க பரிந்துரைக்கிறோம்.",
+                    thanks: "மிக்க நன்றி. உங்கள் பயணத்திற்கு வேறு ஏதாவது உதவி தேவையா?",
+                    people: "ஜார்க்கண்டின் மக்கள் முக்கியமாக பழங்குடியினர் மற்றும் பழங்குடியல்லாத சமூகங்களைச் சேர்ந்தவர்கள். முக்கிய பழங்குடிகள்: சாந்தால், முண்டா, ஒராவோன், ஹோ, காரியா; ஒவ்வொருவருக்கும் தனித்துவமான மொழிகள், நடனங்கள் (ஜுமைர், பைகி), திருவிழாக்கள் (சர்ஹுல், கர்மா) மற்றும் கைவினைகள் உள்ளன. அவர்கள் அழகான கிராமங்களில் வாழ்கிறார்கள், விருந்தினர்களை உள்ளத்திலிருந்து வரவேற்கிறார்கள் மற்றும் பழமையான மரபுகளை பாதுகாக்கிறார்கள். ",
+                    tribes: "முக்கிய பழங்குடிகள்: சாந்தால் (பெரியது, அற்புதமான இசைக்கலைஞர்கள்), முண்டா (விவசாயிகள், முண்டாரி மொழி பேசுகிறார்கள்), ஒராவோன் (திறமையான விவசாயிகள், குருகு மொழி), ஹோ (இரும்பு உருக்கும்), காரியா. அனைவரும் கர்மா, சர்ஹுல், சோஹ்ராய் திருவிழாக்களை வண்ணமயமான நடனங்கள், தப்பாட்டம் மற்றும் உள்ளூர் ஹாண்டியா மதுவுடன் கொண்டாடுகிறார்கள். ",
+                    festivals: "முக்கிய பழங்குடி திருவிழாக்கள்: சர்ஹுல் (வசந்த காலத்தில் சால் மரத்திற்கு அர்ப்பணிப்பு), கர்மா (மழைக்கால நன்றி), சோஹ்ராய் (அறுவடை, மாடுகள் வரையப்படும்), மாகே பரப் (முன்னோர்கள் வழிபாடு), ஜிதியா (குழந்தைகள் நலன்). இந்து திருவிழாக்கள்: ஹோலி, தீபாவளி, சத்த். வண்ணமயமான நடனங்கள், தப்பாட்டம், ஹாண்டியா மற்றும் சமூக விருந்துகளை அனுபவிக்கவும். ",
+                    crafts: "பிரபலமான கைவினைகள்: டோக்ரா (இழந்த-மெழுகு உலோக வார்ப்பு) – கடலை உலோக விலங்கு சிலைகள், சோஹ்ராய் மற்றும் கோவர் சுவர் ஓவியங்கள், பாம்பு கூடைகள், டெரகோட்டா மண் பாத்திரங்கள், பைட்கர் உருட்டு ஓவியங்கள், இரும்பு மற்றும் மர வேலைகள். உள்ளூர் சந்தைகள் அல்லது மாநில எம்போரியங்களில் வாங்கவும். ",
+                    wildlife: "பெட்லா தேசிய பூங்கா (பலாமு) புலிகள், யானைகள், ஸ்லாத் கரடிகள், சிறுத்தைகள், மான்கள் உள்ளன. ஜம்ஷெட்பூருக்கு அருகிலுள்ள டால்மா வனவிலங்கு சரணாலயம் யானைகளுக்கு அடைக்கலம் அளிக்கிறது. ஹசாரிபாக் சரணாலயத்தில் நீல்காய், சாம்பார் உள்ளன. டாப்சாஞ்சி மற்றும் பாரசநாத் ஏரிகளில் பறவைகளை காணலாம். சிறந்த நேரம்: அக்டோபர்-மார்ச். ",
+                    waterfalls: "அவசியம் பார்க்கவும்: ஹுண்ட்ரு நீர்வீழ்ச்சி (45மீ, ராஞ்சி), ஜோன்ஹா நீர்வீழ்ச்சி (தடாகம், கௌதம் தாரா), தசம் நீர்வீழ்ச்சி (காஞ்சி, 10வது), பஞ்ச்காக் நீர்வீழ்ச்சி (ஐந்து நீரோடைகள், குன்டி), ஹிர்னி நீர்வீழ்ச்சி (அடர்ந்த காடுகள், நேதர்ஹாட் மலைநாட்டு). சிற்றுண்டிகள் எடுத்துச் செல்லவும், உச்சியில் ஓடும் நீருக்காக பருவமழை காலத்தில் செல்லவும். ",
+                    hills: "நேதர்ஹாட் 'சோடாநாக்பூரின் ராணி' – சூரிய உதயம், பைன் மற்றும் சால் காடுகள், குளிர்ந்த காலநிலை. ராஞ்சியின் தாகூர் மலை – பனோரமிக் காட்சி, அருங்காட்சியகம். ஹசாரிபாக் கானரி மலை – சூரிய அஸ்தமனம், ஏரி. தியோகர் த்ரிகூட் மலை – ரோப்வே, கோயில்கள். சிற்றுண்டி, குறுகிய நடைபயிற்சி, புகைப்படத்திற்கு சிறந்தது. ",
+                    temples: "தியோகர் பைத்யநாத் தாம் – 12 ஜ்யோதிர்லிங்கங்களில் ஒன்று, பெரிய ஷ்ராவணி மேளா. ராஞ்சி ஜகன்நாத் கோயில் – கலிங்க பாணி. இட்ஹோரி மகாதேவ் – பண்டைய புத்த மத தொடர்பு. மாலுட்டி டெரகோட்டா கோயில்கள் – 72 சிறிய குப்தா பாணி கோயில்கள். ராஜ்ரப்பா சின்னமஸ்தா – ஆறு கூட்டமைப்பில் சக்தி பீடம். ",
+                    history: "பண்டைய: மெசோலிதிக் கருவிகள், பாறை ஓவியங்கள் (இஸ்கோ, குன்டி). நடுக்கால: நாகவம்சி ராஜாக்கள் அரண்மனைகள் (நவரத்னகார்) கட்டினார்கள். பிரிட்டிஷ்: ராக்செல் ராஜாக்கள், பலாமு கோட்டைகள். பழங்குடி கிளர்ச்சிகள்: தில்கா மான்ஜி 1784, பீர்சா முண்டா 1899-1900. 2000 க்கு பிறகு: ஜார்க்கண்ட் பிகாரிலிருந்து பிரிக்கப்பட்டது. ",
+                    climate: "வெப்பமண்டல; கோடை 35-40°C (மார்ச்-ஜூன்), பருவமழை 1000-1200மிமீ (ஜூன்-செப்டம்பர்), குளிர்காலம் 5-20°C (நவம்பர்-பிப்ரவரி). சிறந்த பயண நேரம்: அக்டோபர்-பிப்ரவரி (குளிர்ந்த, உலர்ந்த) மற்றும் மார்ச்-ஏப்ரல் (வசந்தம்). கோடையில் லேசான பருத்தி, குளிர்காலத்தில் கம்பளி, பருவமழையில் மழைக்கோட் எடுத்துச் செல்லவும். ",
+                    safety: "சுற்றுலா பயணிகளுக்கு பாதுகாப்பானது. பழங்குடி மரபுகளை மதிக்கவும் (புகைப்படம் எடுப்பதற்கு முன் கேட்கவும்). வழிகாட்டி இல்லாமல் காடுகளின் ஆழத்திற்கு செல்ல வேண்டாம். தண்ணீர், முதலுதவி கிட் எடுத்துச் செல்லவும். நகரங்களில் மொபைல் கவரேஜ் நன்றாக உள்ளது; சரணாலயங்களில் குறைவாக உள்ளது. அவசரம்: 112 ஐ டயல் செய்யவும். ",
+                    fallback: "என்னால் ஜார்க்கண்ட் சுற்றுலா தொடர்பான தகவல்களை மட்டுமே வழங்க முடியும். தயவுசெய்து இடங்கள், கலாச்சாரம், உணவு அல்லது போக்குவரத்து பற்றி கேட்கவும்."
+                }
+            },
+            te: {
+                title: 'జార్ఖండ్ దర్శన్', status: 'ఆన్‌లైన్‌లో', placeholder: 'మీ పర్యటన గురించి అడగండి...',
+                welcome: 'జోహార్! జార్ఖండ్ దర్శన్‌కు స్వాగతం. నేను మీకు ఎలా సహాయపడగలను? మీరు ఏదైనా అడగవచ్చు లేదా ప్రారంభించడానికి ఒక అంశాన్ని ఎంచుకోవచ్చు.',
+                quickReplies: ['గమ్యస్థానాలను అన్వేషించండి', 'స్థానిక సంస్కృతి', 'వంటకాల గైడ్', 'ప్రయాణ సమాచారం'],
+                followUp: "మీ తేదీలు, ప్రారంభ నగరం, బడ్జెట్, ఇష్టాలు (ప్రకృతి/ఆలయాలు/వారసత్వం) చెప్పండి. నేను రూట్, ఉండే చోటు, రవాణా ప్లాన్ చేస్తాను.",
+                responses: {
+                    greeting: "జోహార్! జార్ఖండ్ దర్శన్‌కు స్వాగతం. ఈ రోజు మీ ప్రయాణాన్ని ప్లాన్ చేయడంలో నేను మీకు ఎలా సహాయపడగలను?",
+                    destinations: "జార్ఖండ్‌లో అద్భుతమైన గమ్యస్థానాలు ఉన్నాయి. మీకు రాంచీ జలపాతాలు, నేతర్‌హాట్ కొండలు లేదా దేవ్‌ఘర్ దేవాలయాలపై ఆసక్తి ఉందా?",
+                    culture: "రాష్ట్ర సంస్కృతి చాలా ఉత్సాహంగా ఉంటుంది. మీరు సాంప్రదాయ సోహ్రాయ్ మరియు ఖోవర్ పెయింటింగ్స్, డోక్రా కళ మరియు అందమైన వెదురు చేతిపనులను చూడవచ్చు.",
+                    transport: "జార్ఖండ్‌లో ప్రయాణించడం సౌకర్యవంతంగా ఉంటుంది. ప్రధాన నగరాలు రైలు మరియు రహదారి ద్వారా బాగా అనుసంధానించబడి ఉన్నాయి. స్థానిక ప్రయాణానికి టాక్సీలు మరియు ఆటోలు అందుబాటులో ఉన్నాయి.",
+                    food: "స్థానిక వంటకాలు ఒక ప్రత్యేకమైన అనుభవాన్ని అందిస్తాయి. నిజమైన రుచి కోసం మేము ధుస్కా, రుగ్రా మరియు లిట్టి చోఖా వంటి సాంప్రదాయ వంటకాలను ప్రయత్నించమని సిఫార్సు చేస్తున్నాము.",
+                    thanks: "మీకు చాలా ధన్యవాదాలు. మీ పర్యటనకు నేను ఇంకా ఏదైనా సహాయం చేయగలనా?",
+                    people: "జార్ఖండ్ ప్రజలు ప్రధానంగా ఆదివాసీ మరియు అనాదివాసీ సముదాయాలు. ప్రధాన తెగలు: సంథాల్, ముండా, ఒరావోన్, హో, ఖరియా; ప్రతి ఒక్కరికి ప్రత్యేకమైన భాషలు, నృత్యాలు (ఝుమైర్, పైకి), పండుగలు (సర్హుల్, కర్మా) మరియు కళలు ఉన్నాయి. వారు అందమైన గ్రామాల్లో నివసిస్తారు, అతిథులను హృదయపూర్వకంగా స్వాగతిస్తారు మరియు పురాతన సంప్రదాయాలను కాపాడతారు. ",
+                    tribes: "ప్రధాన తెగలు: సంథాల్ (పెద్దది, అద్భుతమైన సంగీతకారులు), ముండా (వ్యవసాయదారులు, ముండారి భాష మాట్లాడతారు), ఒరావోన్ (నైపుణ్యమైన రైతులు, కురుఖ్ భాష), హో (ఇనుపు కరిగించేవారు), ఖరియా. అందరూ కర్మా, సర్హుల్, సోహ్రాయ్ పండుగలను రంగురంగుల నృత్యాలు, డ్రమ్ వాయిద్యాలు మరియు స్థానిక హాండియా మద్యంతో జరుపుకుంటారు. ",
+                    festivals: "ప్రధాన ఆదివాసీ పండుగలు: సర్హుల్ (వసంత కాలంలో సాల్ చెట్టును అంకితం చేయడం), కర్మా (వర్షాకాలంలో కృతజ్ఞత), సోహ్రాయ్ (పంట కోత, ఆవులను చిత్రించడం), మాఘే పరబ్ (పూర్వీకుల పూజ), జితియా (పిల్లల సంక్షేమం). హిందూ పండుగలు: హోలి, దీపావళి, ఛత్. రంగురంగుల నృత్యాలు, డ్రమ్ వాయిద్యాలు, హాండియా మరియు సామూహిక విందులను ఆస్వాదించండి. ",
+                    crafts: "ప్రసిద్ధ కళలు: డోక్రా (కోల్పోయిన మైనపు లోహం కరిగించడం) – గంట లోహ జంతువుల విగ్రహాలు, సోహ్రాయ్ మరియు ఖోవార్ గోడ చిత్రకళలు, బాంబూ సంచులు, టెరాకోటా మట్టి పాత్రలు, పైట్కర్ స్క్రోల్ చిత్రకళలు, ఇనుపు మరియు చెక్క పనులు. స్థానిక హాట్లలో లేదా రాష్ట్ర ఎంపోరియంలలో కొనుగోలు చేయండి. ",
+                    wildlife: "బెట్లా జాతీయ ఉద్యానవనం (పలాము) లో పులులు, ఏనుగలు, స్లోత్ ఎలుగుబంట్లు, చిరుతలు, జింకలు ఉన్నాయి. జంషెడ్పూర్ దగ్గర దల్మా వన్యప్రాణి అభయారణ్యం ఏనుగలకు ఆశ్రయం ఇస్తుంది. హజారీబాగ్ అభయారణ్యంలో నీల్గాయ్, సాంబార్ ఉన్నాయి. టాప్చాంచి మరియు పారస్నాథ్ సరస్సులలో పక్షులను చూడవచ్చు. ఉత్తమ సమయం: అక్టోబర్-మార్చ్. ",
+                    waterfalls: "తప్పక చూడండి: హుండ్రూ జలపాతం (45మీ, రాంచీ), జోన్హా జలపాతం (వరుస, గౌతమ్ ధారా), దస్సామ్ జలపాతం (కాంచీ, 10వ), పంచ్ఘాగ్ జలపాతం (ఐదు ప్రవాహాలు, ఖుంటి), హిర్ని జలపాతం (అడవి, నేతర్హాట్ మైదానం). స్నాక్స్ తీసుకెళ్లండి, గరిష్ఠ ప్రవాహం కోసం వర్షాకాలంలో వెళ్లండి. ",
+                    hills: "నేతర్హాట్ 'చోటానాగ్పూర్ రాణి' – సూర్యోదయం, పైన్ మరియు సాల్ అడవులు, చల్లని వాతావరణం. రాంచీ టాగోర్ హిల్ – ప్యానోరమిక్ దృశ్యం, మ్యూజియం. హజారీబాగ్ కానరీ హిల్ – సూర్యాస్తమయం, సరస్సు. దేవ్ఘర్ త్రికూట్ హిల్ – రోప్‌వే, ఆలయాలు. పిక్నిక్, చిన్న ట్రెక్కింగ్, ఫోటోగ్రఫీకి అద్భుతమైనవి. ",
+                    temples: "దేవ్ఘర్ బైద్యనాథ్ ధామ్ – 12 జ్యోతిర్లింగాలలో ఒకటి, పెద్ద శ్రావణి మేళా. రాంచీ జగన్నాథ్ ఆలయం – కలింగ శైలి. ఇట్ఖోరి మహాదేవ్ – ప్రాచీన బౌద్ధ సంబంధం. మాలుటి టెర్రాకోటా ఆలయాలు – 72 చిన్న గుప్త శైలి ఆలయాలు. రాజ్రప్పా ఛిన్నమస్తా – నదీ సంగమంలో శక్తి పీఠం. ",
+                    history: "ప్రాచీన: మెసోలిథిక్ పరికరాలు, రాత చిత్రకళలు (ఇస్కో, ఖుంటి). మధ్యయుగ: నాగవంశీ రాజులు కోటలు (నవరత్నగఢ్) నిర్మించారు. బ్రిటిష్: రాక్సెల్ రాజులు, పలాము కోటలు. ఆదివాసీ తిరుగుబాట్లు: తిల్కా మాంఝీ 1784, బిర్సా ముండా 1899-1900. 2000 తర్వాత: ఝార్ఖండ్‌ను బీహార్ నుండి వేరు చేశారు. ",
+                    climate: "ఉష్ణమండల; వేసవి 35-40°C (మార్చి-జూన్), వర్షాకాలం 1000-1200మిమీ (జూన్-సెప్టెంబర్), శీతాకాలం 5-20°C (నవంబర్-ఫిబ్రవరి). ఉత్తమ ప్రయాణం: అక్టోబర్-ఫిబ్రవరి (చల్లని, పొడి) మరియు మార్చి-ఏప్రిల్ (వసంతం). వేసవిలో తేలికపాటి కాటన్, శీతాకాలంలో Woollen, వర్షాకాలంలో రెయిన్‌కోట్ తీసుకెళ్లండి. ",
+                    safety: "పర్యాటకులకు సురక్షితమైనది. ఆదివాసీ సంప్రదాయాలను గౌరవించండి (ఫోటోలు తీయడానికి ముందు అడగండి). గైడ్ లేకుండా అడవుల లోతుల్లోకి వెళ్లవద్దు. నీరు, ప్రథమ చికిత్స కిట్ తీసుకెళ్లండి. పట్టణాల వద్ద మొబైల్ కవరేజ్ మంచిది; అభయారణ్యాల లోపల తక్కువ. అత్యవసరం: 112 డయల్ చేయండి. ",
+                    fallback: "నేను కేవలం జార్ఖండ్ పర్యాటకానికి సంబంధించిన సమాచారాన్ని మాత్రమే అందించగలను. దయచేసి గమ్యస్థానాలు, సంస్కృతి, ఆహారం లేదా రవాణా గురించి అడగండి."
+                }
+            }
+        };
+
+        const setLanguage = (lang) => {
+            currentLanguage = lang;
+            const t = translations[lang];
+            chatTitle.innerText = t.title;
+            chatStatus.innerText = t.status;
+            userInput.placeholder = t.placeholder;
+            
+            // Update voice recognition language
+            if (recognition) {
+                recognition.lang = currentLanguage === 'en' ? 'en-US' : 
+                                 currentLanguage === 'hi' ? 'hi-IN' : 
+                                 currentLanguage === 'bn' ? 'bn-IN' : 
+                                 currentLanguage === 'ta' ? 'ta-IN' : 
+                                 currentLanguage === 'te' ? 'te-IN' : 'en-US';
+            }
+            
+            chatMessages.innerHTML = '';
+            setTimeout(() => {
+                appendMessage(t.welcome, 'bot', t.quickReplies);
+            }, 200);
+        };
+        
+        const scrollToBottom = () => {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+        
+        const handleQuickReply = (text) => {
+            const quickReplyContainer = document.getElementById('quick-replies');
+            if (quickReplyContainer) {
+                quickReplyContainer.remove();
+            }
+            appendMessage(text, 'user');
+            triggerBotResponse(text);
+        };
+        
+        const appendMessage = (message, sender, options = []) => {
+            const messageContainer = document.createElement('div');
+            const messageWrapper = document.createElement('div');
+            messageWrapper.className = `flex items-start space-x-3 ${sender === 'user' ? 'justify-end' : ''}`;
+            
+            let messageBubbleHtml;
+            if (sender === 'bot') {
+                messageBubbleHtml = `
+                    <div class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                        </svg>
+                    </div>
+                    <div class="bg-gray-700 text-white p-3 rounded-lg rounded-bl-none max-w-xs md:max-w-md">
+                        <p class="text-sm">${message}</p>
+                    </div>`;
+            } else {
+                messageBubbleHtml = `
+                    <div class="bg-gradient-to-r from-emerald-600 to-green-600 text-white p-3 rounded-lg rounded-br-none max-w-xs md:max-w-md">
+                        <p class="text-sm">${message}</p>
+                    </div>`;
+            }
+            messageWrapper.innerHTML = messageBubbleHtml;
+            messageContainer.appendChild(messageWrapper);
+
+            if (sender === 'bot' && options.length > 0) {
+                const quickReplyContainer = document.createElement('div');
+                quickReplyContainer.id = 'quick-replies';
+                quickReplyContainer.className = 'flex justify-start gap-2 mt-2 ml-12 flex-wrap';
+                
+                options.forEach(optionText => {
+                    const button = document.createElement('button');
+                    button.textContent = optionText;
+                    button.className = 'px-3 py-1 bg-gray-800/80 border border-green-400 text-green-300 rounded-full text-sm hover:bg-green-500 hover:text-white transition-colors';
+                    button.onclick = () => handleQuickReply(optionText);
+                    quickReplyContainer.appendChild(button);
+                });
+                messageContainer.appendChild(quickReplyContainer);
+            }
+            
+            chatMessages.appendChild(messageContainer);
+            scrollToBottom();
+        };
+
+        const getBotResponse = (input) => {
+            const lowerInput = input.toLowerCase();
+            const r = translations[currentLanguage].responses;
+            const t = translations[currentLanguage];
+            const checkKeywords = (keys) => keys.some(key => lowerInput.includes(key));
+            const outside = ['delhi','new delhi','mumbai','bombay','pune','goa','kerala','rajasthan','jaipur','udaipur','jodhpur','gujarat','ahmedabad','surat','bengaluru','bangalore','mysore','tamil nadu','chennai','madurai','kanyakumari','kolkata','west bengal','assam','meghalaya','sikkim','nagaland','manipur','mizoram','tripura','arunachal','punjab','himachal','kashmir','ladakh','hyderabad','telangana','andhra pradesh','odisha','bhubaneswar','cuttack','bihar','patna','uttar pradesh','lucknow','varanasi','noida','gurgaon','haryana','chandigarh'];
+            const broad = ['tell me','something','guide','help','plan','trip','travel','recommend','suggest'];
+            if (outside.some(k => lowerInput.includes(k))) return { text: 'Sorry, I can provide information only related to Jharkhand.', category: 'decline' };
+            if (checkKeywords(['hello', 'hi', 'johar', 'नमस्ते', 'जोहार', 'জোহার', 'வணக்கம்', 'నమస్కారం'])) return { text: r.greeting, category: 'greeting' };
+            if (broad.some(k => lowerInput.includes(k))) return { text: t.welcome, category: 'overview' };
+            if (checkKeywords(['destination', 'place', 'visit', 'explore', 'गंतव्य', 'গন্তব্য', 'இடம்', 'గమ్యస్థానం'])) return { text: r.destinations, category: 'destinations' };
+            if (checkKeywords(['culture', 'artisan', 'craft', 'संस्कृति', 'সংস্কৃতি', 'கலாச்சாரம்', 'సంస్కృతి'])) return { text: r.culture, category: 'culture' };
+            if (checkKeywords(['transport', 'travel', 'get around', 'transportation', 'transports', 'travelling', 'travels', 'परिवहन', 'यात्रा', 'পরিবহন', 'போக்குவரத்தు', 'రవాణా'])) return { text: r.transport, category: 'transport' };
+            if (checkKeywords(['people','population','demographics','community'])) return { text: r.people, category: 'people' };
+            if (checkKeywords(['tribal','tribe','tribes'])) return { text: r.tribes, category: 'tribes' };
+            if (checkKeywords(['festival','festivals','fair','celebration'])) return { text: r.festivals, category: 'festivals' };
+            if (checkKeywords(['craft','crafts','handicraft','handloom','artisan'])) return { text: r.crafts, category: 'crafts' };
+            if (checkKeywords(['wildlife','animal','bird','sanctuary','national park'])) return { text: r.wildlife, category: 'wildlife' };
+            if (checkKeywords(['waterfall','waterfalls','lake','river'])) return { text: r.waterfalls, category: 'waterfalls' };
+            if (checkKeywords(['hill','hills','mountain','mountains'])) return { text: r.hills, category: 'hills' };
+            if (checkKeywords(['temple','temples','pilgrimage','religious'])) return { text: r.temples, category: 'temples' };
+            if (checkKeywords(['history','historical','ancient','medieval'])) return { text: r.history, category: 'history' };
+            if (checkKeywords(['climate','weather','temperature','season','monsoon','summer','winter'])) return { text: r.climate, category: 'climate' };
+            if (checkKeywords(['safety','safe','security','precaution'])) return { text: r.safety, category: 'safety' };
+            if (checkKeywords(['people','tribal','tribe','population','demographics','community','village','life','lifestyle','custom','tradition','heritage','history','festival','fair','celebration','art','craft','handloom','handicraft','music','dance','language','dialect','food','cuisine','dish','recipe','ingredient','spice','meal','breakfast','lunch','dinner','snack','sweet','drink','waterfall','lake','river','mountain','hill','forest','park','sanctuary','reserve','wildlife','animal','bird','flora','fauna','trek','hike','trail','route','road','train','bus','taxi','auto','rickshaw','connectivity','timing','schedule','distance','time','weather','climate','temperature','season','monsoon','summer','winter','best time','hotel','resort','guest house','dharamshala','lodge','camp','homestay','accommodation','stay','room','tariff','price','budget','cost','ticket','entry fee','permit','guide','tour','package','itinerary','map','direction','location','address','pincode','contact','phone','email','website','review','rating','experience','tip','advice','safety','precaution','do and don\'t','must visit','top','famous','popular','hidden gem','offbeat','secret','lesser known','unique','special','interesting','amazing','beautiful','scenic','picturesque','serene','peaceful','spiritual','religious','pilgrimage','temple','church','mosque','gurudwara','monastery','ashram','shrine','math','mutt'])) return { text: r.fallback, category: 'fallback' };
+            if (checkKeywords(['food', 'eat', 'cuisine', 'भोजन', 'खाना', 'খাবার', 'உணவு', 'వంటకం'])) return { text: r.food, category: 'food' };
+            if (checkKeywords(['thank', 'धन्यवाद', 'ধন্যবাদ', 'நன்றి', 'ధన్యవాదాలు'])) return { text: r.thanks, category: 'thanks' };
+            // For any Jharkhand-related query not caught above, provide a helpful answer instead of fallback
+            return { text: "Jharkhand is a beautiful state with rich tribal culture, stunning waterfalls, dense forests, and vibrant festivals. Feel free to ask about destinations, culture, food, or travel tips!", category: 'fallback' };
+        };
+
+        const triggerBotResponse = (message) => {
+            typingIndicator.classList.remove('hidden');
+scrollToBottom();
+
+            setTimeout(() => {
+                const result = getBotResponse(message);
+                typingIndicator.classList.add('hidden');
+                appendMessage(result.text, 'bot');
+                const followEligible = ['overview','destinations','culture','transport','food','people','tribes','festivals','crafts','wildlife','waterfalls','hills','temples','history','climate','safety'];
+                if (followEligible.includes(result.category)) {
+                    appendMessage(translations[currentLanguage].followUp, 'bot');
+                }
+            }, 1000 + Math.random() * 500);
+        }
+
+        const sendMessage = () => {
+            const message = userInput.value.trim();
+            if (message === '') return;
+
+            appendMessage(message, 'user');
+            userInput.value = '';
+            
+            triggerBotResponse(message);
+        };
+
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Text-to-Speech Function
+        const speakText = (text) => {
+            if (speechSynthesis) {
+                // Stop any ongoing speech
+                speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                // Set voice based on current language
+                const voices = speechSynthesis.getVoices();
+                let selectedVoice = null;
+                
+                // Try to find a voice that matches the current language
+                for (let voice of voices) {
+                    if (currentLanguage === 'en' && voice.lang.startsWith('en')) {
+                        selectedVoice = voice;
+                        break;
+                    } else if (currentLanguage === 'hi' && voice.lang.startsWith('hi')) {
+                        selectedVoice = voice;
+                        break;
+                    } else if (currentLanguage === 'bn' && voice.lang.startsWith('bn')) {
+                        selectedVoice = voice;
+                        break;
+                    } else if (currentLanguage === 'ta' && voice.lang.startsWith('ta')) {
+                        selectedVoice = voice;
+                        break;
+                    } else if (currentLanguage === 'te' && voice.lang.startsWith('te')) {
+                        selectedVoice = voice;
+                        break;
+                    }
+                }
+                
+                if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+                
+                // Set speech properties
+                utterance.rate = 0.9;
+                utterance.pitch = 1.0;
+                utterance.volume = 0.8;
+                
+                // Start speaking animation
+                assistantMouth.classList.add('speaking');
+                
+                utterance.onstart = () => {
+                    console.log('Started speaking:', text);
+                };
+                
+                utterance.onend = () => {
+                    assistantMouth.classList.remove('speaking');
+                    console.log('Finished speaking');
+                };
+                
+                utterance.onerror = (event) => {
+                    console.error('Speech synthesis error:', event.error);
+                    assistantMouth.classList.remove('speaking');
+                };
+                
+                speechSynthesis.speak(utterance);
+            }
+        };
+
+        // Voice Assistant Functions
+        const showVoiceAssistant = () => {
+            voiceAssistant.classList.add('active');
+        };
+
+        const hideVoiceAssistant = () => {
+            voiceAssistant.classList.remove('active', 'listening');
+            speechBubble.classList.remove('show');
+            speechBubble.textContent = '';
+            assistantMouth.classList.remove('speaking');
+            // Stop any ongoing speech
+            if (speechSynthesis) {
+                speechSynthesis.cancel();
+            }
+        };
+
+        const showListeningState = () => {
+            voiceAssistant.classList.add('listening');
+            speechBubble.textContent = 'Listening...';
+            speechBubble.classList.add('show');
+        };
+
+        const showSpeakingState = (text) => {
+            voiceAssistant.classList.remove('listening');
+            speechBubble.textContent = text;
+            speechBubble.classList.add('show');
+            
+            // Speak the text back to the user
+            speakText(text);
+            
+            // Hide speech bubble after text is spoken
+            setTimeout(() => {
+                speechBubble.classList.remove('show');
+            }, text.length * 100 + 2000); // Duration based on text length
+        };
+
+        // Voice Recognition Setup
+        const initVoiceRecognition = () => {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = currentLanguage === 'en' ? 'en-US' : 
+                                 currentLanguage === 'hi' ? 'hi-IN' : 
+                                 currentLanguage === 'bn' ? 'bn-IN' : 
+                                 currentLanguage === 'ta' ? 'ta-IN' : 
+                                 currentLanguage === 'te' ? 'te-IN' : 'en-US';
+
+                recognition.onstart = () => {
+                    isListening = true;
+                    showVoiceAssistant();
+                    showListeningState();
+                    dictateBtn.classList.add('animate-pulse');
+                    dictateBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    `;
+                    dictateBtn.title = "Stop Listening";
+                };
+
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    userInput.value = transcript;
+                    showSpeakingState(transcript);
+                    
+                    // Automatically send the message after the assistant finishes speaking
+                    setTimeout(() => {
+                        sendMessage();
+                        hideVoiceAssistant();
+                    }, transcript.length * 150 + 2000); // Wait for speech to complete
+                };
+
+                recognition.onend = () => {
+                    isListening = false;
+                    dictateBtn.classList.remove('animate-pulse');
+                    dictateBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                        </svg>
+                    `;
+                    dictateBtn.title = "Start Dictation";
+                };
+
+                recognition.onerror = (event) => {
+                    console.error('Speech recognition error:', event.error);
+                    isListening = false;
+                    hideVoiceAssistant();
+                    dictateBtn.classList.remove('animate-pulse');
+                    dictateBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                        </svg>
+                    `;
+                    dictateBtn.title = "Start Dictation";
+                };
+            } else {
+                dictateBtn.style.display = 'none';
+                console.warn('Speech recognition not supported in this browser');
+            }
+        };
+
+
+        // Dictate Button Handler
+        const handleDictate = () => {
+            if (!recognition) {
+                initVoiceRecognition();
+            }
+            
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        };
+
+        // Event Listeners
+        dictateBtn.addEventListener('click', handleDictate);
+
+        // Load voices when page loads
+        const loadVoices = () => {
+            if (speechSynthesis) {
+                // Load voices
+                speechSynthesis.getVoices();
+                
+                // Some browsers need this event to load voices
+                speechSynthesis.addEventListener('voiceschanged', () => {
+                    console.log('Voices loaded:', speechSynthesis.getVoices().length);
+                });
+            }
+        };
+
+        window.addEventListener('load', () => {
+            setLanguage(currentLanguage);
+            initVoiceRecognition();
+            loadVoices();
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jharkhand Tourism Map</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="interactivemap.css">
+    <a href="https://www.google.com/maps" target="_blank" class="btn btn-outline">Open in Google Maps</a>
+</head>
+<body class="bg-gray-900 text-gray-100 p-4 sm:p-8">
+
+    <div id="map"></div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="legend-color bg-green-500"></div>Wildlife</div>
+        <div class="legend-item"><div class="legend-color bg-blue-500"></div>Waterfalls</div>
+        <div class="legend-item"><div class="legend-color bg-orange-500"></div>Temples & Pilgrimage</div>
+        <div class="legend-item"><div class="legend-color bg-violet-500" style="background-color: #7c3aed;"></div>Hill Stations</div>
+        <div class="legend-item"><div class="legend-color bg-yellow-500"></div>Other Attractions</div>
+    </div>
+
+    <script src="interactivemap.js"></script>
+</body>
+</html>

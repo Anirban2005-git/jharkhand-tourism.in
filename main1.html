@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discover Jharkhand | Eco-Cultural Tourism</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<style>
+/* main.css */
+:root {
+--primary: #10b981; /* Emerald Green */
+--secondary: #f97316; /* Orange */
+--accent: #a855f7; /* Purple */
+--forest: #18b956; /* Dark Green */
+--waterfall-blue: #3b82f6; /* Blue */
+--background: #ffffff;
+--foreground: #020817;
+--card: #ffffff;
+--card-foreground: #020817;
+--muted: #f1f5f9;
+--muted-foreground: #64748b;
+--border: #e2e8f0;
+--radius: 0.5rem;
+--shadow-elevated: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+body, html {
+margin: 0;
+padding: 0;
+font-family: 'Inter', sans-serif;
+background-color: #f8f9fa;
+color: #333;
+scroll-behavior: smooth;
+}
+.hero-section {
+position: relative;
+height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+color: white;
+overflow: hidden;
+}
+.hero-background {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 1;
+}
+.hero-overlay {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: linear-gradient(180deg, rgba(16, 185, 129, 0.3) 0%, rgba(2, 8, 23, 0.7) 100%);
+z-index: 2;
+}
+.hero-content {
+position: relative;
+z-index: 4;
+padding: 2rem;
+}
+.hero-title {
+font-size: 4.5rem;
+font-weight: 800;
+letter-spacing: -2px;
+margin-bottom: 1rem;
+}
+.hero-title-highlight {
+color: #2dd4bf; /* A vibrant teal color */
+}
+.hero-subtitle {
+font-size: 1.25rem;
+max-width: 650px;
+margin: 1.5rem auto;
+opacity: 0.9;
+line-height: 1.6;
+}
+.navigation {
+position: absolute;
+top: 2rem;
+left: 50%;
+transform: translateX(-50%);
+width: 90%;
+max-width: 1100px;
+z-index: 10;
+}
+.nav-container {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0.75rem 1rem;
+background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border: 1px solid rgba(255, 255, 255, 0.18);
+border-radius: 50px;
+box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+}
+.nav-logo {
+font-weight: 700;
+font-size: 1.25rem;
+color: white;
+text-decoration: none;
+padding: 0 1rem;
+}
+.nav-links {
+display: flex;
+gap: 0.5rem;
+list-style: none;
+}
+.nav-links a {
+color: white;
+text-decoration: none;
+padding: 0.75rem 1.5rem;
+border-radius: 30px;
+font-weight: 500;
+transition: background-color 0.3s ease, color 0.3s ease;
+}
+.nav-links a:hover {
+background-color: rgba(255, 255, 255, 0.2);
+}
+.dropdown {
+position: relative;
+}
+.dropdown-menu {
+display: none;
+position: absolute;
+top: 100%;
+left: 0;
+background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border: 1px solid rgba(255, 255, 255, 0.18);
+border-radius: 15px;
+box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+min-width: 200px;
+opacity: 0;
+transform: translateY(-10px);
+transition: opacity 0.3s ease, transform 0.3s ease;
+z-index: 20;
+padding: 0.5rem 0;
+}
+.dropdown-menu li {
+display: block;
+padding: 0;
+}
+.dropdown-menu li a {
+display: block;
+padding: 0.75rem 1rem;
+color: white;
+text-decoration: none;
+font-size: 0.95rem;
+border-radius: 8px;
+transition: background-color 0.3s ease, color 0.3s ease;
+}
+.dropdown-menu li a:hover {
+background-color: rgba(255, 255, 255, 0.2);
+color: #f4b400;
+}
+.dropdown:hover .dropdown-menu {
+display: block;
+opacity: 1;
+transform: translateY(0);
+}
+.btn {
+padding: 1rem 2rem;
+border-radius: 30px;
+font-weight: 600;
+border: none;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+gap: 0.5rem;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-primary {
+background-color: #10b981;
+color: white;
+}
+.btn-primary:hover {
+transform: translateY(-3px);
+box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+}
+.btn-outline {
+background: transparent;
+border: 2px solid white;
+color: white;
+}
+.btn-outline:hover {
+background: white;
+color: #111;
+transform: translateY(-3px);
+}
+.hero-buttons {
+margin-top: 2.5rem;
+display: flex;
+justify-content: center;
+gap: 1.5rem;
+}
+.hero-stats {
+display: flex;
+gap: 2rem;
+justify-content: center;
+margin-top: 4rem;
+flex-wrap: wrap;
+}
+.slideshow-container { position: relative; }
+.mySlides { display: none; }
+.fade {
+animation-name: fade;
+animation-duration: 2s;
+}
+@keyframes fade {
+from { opacity: .4 }
+to { opacity: 1 }
+}
+.container {
+max-width: 80rem;  /* 1280px */
+margin-left: auto;
+margin-right: auto;
+padding-left: 1rem;
+padding-right: 1rem;
+}
+.section-padding {
+padding-top: 5rem;  /* 80px */
+padding-bottom: 5rem;
+}
+.bg-gradient {
+background-image: linear-gradient(to bottom, var(--background), #f1f5f94d);
+}
+.bg-muted {
+background-color: var(--muted);
+}
+.grid {
+display: grid;
+gap: 2rem;  /* 32px */
+}
+.grid-cols-3 {
+grid-template-columns: repeat(1, 1fr);
+}
+.grid-cols-2 {
+grid-template-columns: repeat(1, 1fr);
+}
+.items-center {
+align-items: center;
+}
+.gap-large {
+gap: 3rem; /* 48px */
+}
+.section-header {
+text-align: center;
+margin-bottom: 4rem; /* 64px */
+}
+.section-title {
+font-size: 2.5rem; /* 40px */
+font-weight: 800;
+margin-bottom: 1.5rem;
+color: var(--foreground);
+}
+.section-description {
+font-size: 1.25rem; /* 20px */
+color: var(--muted-foreground);
+max-width: 42rem; /* 672px */
+margin: 0 auto;
+}
+.badge {
+display: inline-block;
+padding: 0.25rem 0.75rem;
+border-radius: 9999px;
+font-size: 0.875rem;
+font-weight: 500;
+margin-bottom: 1rem;
+background-color: #f973161a;
+color: var(--secondary);
+border: 1px solid #f9731633;
+}
+.btn {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 0.5rem;
+font-size: 1.125rem; /* 18px */
+font-weight: 600;
+padding: 0.9rem 2rem;
+border-radius: var(--radius);
+border: 1px solid transparent;
+cursor: pointer;
+transition: background-color 0.3s ease, color 0.3s ease;
+}
+.btn-primary {
+background-color: var(--primary);
+color: #fff;
+box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39);
+}
+.btn-primary:hover {
+background-color: #059669;
+}
+.btn-secondary {
+background-color: var(--secondary);
+color: #fff;
+}
+.btn-secondary:hover {
+background-color: #ea580c;
+}
+.btn-outline {
+border: 1px solid rgba(255, 255, 255, 0.3);
+color: #fff;
+background-color: transparent;
+}
+.btn-outline:hover {
+background-color: rgba(255, 255, 255, 0.1);
+}
+.card {
+background-color: var(--card);
+border: 1px solid var(--border);
+border-radius: 1rem;
+overflow: hidden;
+transition: box-shadow 0.5s ease, transform 0.5s ease;
+}
+.card:hover {
+box-shadow: var(--shadow-elevated);
+transform: translateY(-5px);
+}
+.card-image-container {
+position: relative;
+height: 16rem;
+overflow: hidden;
+}
+.card-image {
+width: 100%;
+height: 100%;
+object-fit: cover;
+transition: transform 0.7s ease;
+}
+.card:hover .card-image {
+transform: scale(1.1);
+}
+.badge-on-image {
+position: absolute;
+top: 1rem;
+left: 1rem;
+background-color: var(--badge-bg);
+color: var(--badge-color);
+border: none;
+}
+.card-header {
+padding: 1.5rem;
+}
+.card-title {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+font-size: 1.25rem;
+font-weight: 700;
+color: var(--card-foreground);
+margin-bottom: 0.5rem;
+}
+.card-description {
+color: var(--muted-foreground);
+}
+.card-content {
+padding: 0 1.5rem 1.5rem;
+}
+.card-footer {
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+.location-tag {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+font-size: 0.875rem;
+color: var(--muted-foreground);
+}
+.card-link {
+font-size: 0.875rem;
+font-weight: 600;
+color: var(--primary);
+text-decoration: none;
+transition: color 0.3s;
+}
+.card-link:hover {
+color: #059669;
+}
+.placeholder-image {
+width: 100%;
+height: 100%;
+background-image: linear-gradient(to bottom right, var(--forest), var(--accent));
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+color: white;
+text-align: center;
+}
+.placeholder-image .placeholder-icon {
+opacity: 0.8;
+margin-bottom: 1rem;
+}
+.placeholder-image h3 {
+font-size: 1.25rem;
+font-weight: 600;
+}
+.marketplace-content {
+display: flex;
+flex-direction: column;
+gap: 2rem;
+}
+.feature-list-item {
+display: flex;
+align-items: flex-start;
+gap: 1rem;
+}
+.icon-wrapper {
+flex-shrink: 0;
+width: 3rem;
+height: 3rem;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+background-color: var(--icon-bg);
+}
+.icon-wrapper svg {
+width: 1.5rem;
+height: 1.5rem;
+color: var(--icon-color);
+}
+.feature-title {
+font-size: 1.25rem;
+font-weight: 600;
+margin-bottom: 0.5rem;
+color: var(--card-foreground);
+}
+.feature-description {
+color: var(--muted-foreground);
+}
+.marketplace-btn {
+align-self: flex-start;
+}
+.marketplace-image-container {
+position: relative;
+}
+.marketplace-image {
+width: 100%;
+border-radius: 1rem;
+box-shadow: var(--shadow-elevated);
+}
+.feature-card-link {
+text-decoration: none;
+color: inherit;
+}
+.feature-card {
+cursor: pointer;
+}
+.feature-card .card-image-container {
+height: 12rem;
+}
+.feature-card-header {
+display: flex;
+align-items: center;
+gap: 0.75rem;
+margin-bottom: 0.75rem;
+}
+.feature-card-header .card-title {
+margin-bottom: 0;
+}
+.btn-feature {
+width: 100%;
+background-color: #f1f5f9;
+color: var(--muted-foreground);
+border: none;
+padding-top: 0.75rem;
+padding-bottom: 0.75rem;
+font-size: 0.875rem;
+transition: background-color 0.3s, color 0.3s;
+}
+.feature-card:hover .btn-feature {
+background-color: var(--secondary);
+color: #fff;
+}
+@media (min-width: 640px) { /* sm breakpoint */
+.hero-buttons, .cta-buttons {
+flex-direction: row;
+}
+}
+@media (min-width: 768px) { /* md breakpoint */
+.hero-title {
+font-size: 4.5rem;
+}
+.section-title {
+font-size: 3rem;
+}
+.grid-cols-3 {
+grid-template-columns: repeat(2, 1fr);
+}
+}
+@media (min-width: 1024px) { /* lg breakpoint */
+.grid-cols-3 {
+grid-template-columns: repeat(3, 1fr);
+}
+.grid-cols-2 {
+grid-template-columns: repeat(2, 1fr);
+}
+}
+@media (min-width: 1280px) { /* xl breakpoint */
+.hero-title {
+font-size: 5rem;
+}
+.section-title {
+font-size: 3.5rem;
+}
+}
+@media (min-width: 1536px) { /* 2xl breakpoint */
+.container {
+max-width: 90rem; /* 1440px */
+}
+}
+.cta-section {
+position: relative;
+padding: 120px 2rem; /* Generous padding for a spacious feel */
+text-align: center;
+color: white;
+/* The background image with parallax effect */
+background-image: url('https://images.unsplash.com/photo-1623156902251-canko1317a78?q=80&w=1932&auto=format&fit=crop');
+background-size: cover;
+background-position: center;
+background-attachment: fixed; /* This creates the premium parallax effect */
+overflow: hidden; /* Ensures overlay doesn't spill out */
+}
+.cta-overlay {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+/* A premium gradient from dark navy-slate to a deep emerald green. */
+background: linear-gradient(135deg, #c95f0e 0%, #FFF7ED 50%, #2ebe59 100%);
+backdrop-filter: blur(4px);
+box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+z-index: 1;
+}
+.cta-content {
+position: relative;
+z-index: 2;
+max-width: 800px;
+margin: 0 auto;
+}
+.cta-title {
+font-size: 3rem;
+font-weight: 800;
+letter-spacing: -1px;
+margin-bottom: 1rem;
+text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+color: #073bd7;
+}
+.cta-description {
+font-size: 1.125rem;
+line-height: 1.7;
+opacity: 0.9;
+margin-bottom: 2.5rem;
+max-width: 600px;
+margin-left: auto;
+margin-right: auto;
+}
+.cta-buttons {
+display: flex;
+justify-content: center;
+gap: 1.5rem; /* Increased space between buttons */
+flex-wrap: wrap; /* Allows buttons to stack on smaller screens */
+}
+.btn {
+padding: 1rem 2.5rem; /* Larger padding for a substantial feel */
+border-radius: 50px; /* Modern pill shape */
+font-weight: 600;
+font-size: 1rem;
+border: 2px solid transparent;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+gap: 0.75rem;
+text-decoration: none;
+/* Smooth transitions for all animations */
+transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.btn-secondary {
+background-color: #ffffff;
+color: #10b981;
+box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.btn-secondary:hover {
+background-color: #f0fdf4;
+transform: translateY(-5px);
+box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+.btn-outline {
+background-color: transparent;
+border-color: #ffffff;
+color: #ffffff;
+}
+.btn-outline:hover {
+background-color: #ffffff;
+color: #10b981;
+transform: translateY(-5px);
+box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+body {
+background-color: var(--muted);
+}
+.grid-cols-4 {
+grid-template-columns: repeat(1, 1fr);
+}
+@media (min-width: 640px) {
+.grid-cols-4 {
+grid-template-columns: repeat(2, 1fr);
+}
+}
+@media (min-width: 1024px) {
+.grid-cols-4 {
+grid-template-columns: repeat(4, 1fr);
+}
+}
+.dashboard-grid {
+display: grid;
+gap: 2rem;
+grid-template-columns: 1fr;
+}
+@media (min-width: 1024px) {
+.dashboard-grid {
+grid-template-columns: repeat(5, 1fr);
+}
+.grid-span-3 {
+grid-column: span 3 / span 3;
+}
+.grid-span-2 {
+grid-column: span 2 / span 2;
+}
+.grid-span-5 {
+grid-column: span 5 / span 5;
+}
+}
+.metric-card .card-content {
+display: flex;
+align-items: flex-start;
+gap: 1rem; /* Ensures a consistent gap */
+padding: 1.5rem; /* Uniform padding for a balanced look */
+}
+.metric-card .metric-info {
+flex-grow: 1; /* Allows text block to fill available space */
+}
+.metric-card .metric-value {
+font-size: 2.25rem;
+font-weight: 700;
+color: var(--foreground);
+}
+.metric-card .metric-label {
+font-size: 1rem;
+color: var(--muted-foreground);
+margin-bottom: 0.5rem;
+}
+.metric-card .metric-change {
+display: flex;
+align-items: center;
+font-weight: 500;
+margin-top: 0.5rem;
+}
+.metric-change svg {
+width: 1rem;
+height: 1rem;
+margin-right: 0.25rem;
+}
+.metric-change.positive { color: var(--primary); }
+.metric-change.negative { color: #ef4444; }
+.metric-change.neutral { color: var(--muted-foreground); }
+.feedback-form .form-group {
+margin-bottom: 1rem;
+}
+.feedback-form label {
+display: block;
+margin-bottom: 0.5rem;
+font-weight: 500;
+color: var(--muted-foreground);
+}
+.feedback-form input,
+.feedback-form textarea {
+width: 100%;
+padding: 0.75rem 1rem;
+border: 1px solid var(--border);
+border-radius: var(--radius);
+font-family: 'Inter', sans-serif;
+font-size: 1rem;
+}
+.feedback-form input:focus,
+.feedback-form textarea:focus {
+outline: none;
+border-color: var(--secondary);
+box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+}
+.feedback-form .btn { width: 100%; }
+.feedback-feed {
+max-height: 28rem;
+overflow-y: auto;
+padding-right: 0.5rem;
+}
+.feedback-item {
+padding: 1rem;
+border: 1px solid var(--border);
+border-left-width: 4px;
+border-radius: var(--radius);
+margin-bottom: 1rem;
+background-color: var(--background);
+}
+.feedback-item.positive { border-left-color: var(--primary); }
+.feedback-item.negative { border-left-color: #ef4444; }
+.feedback-item.neutral { border-left-color: var(--muted-foreground); }
+.feedback-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 0.75rem;
+}
+.feedback-user { font-weight: 600; }
+.feedback-source { font-size: 0.875rem; color: var(--muted-foreground); }
+.feedback-sentiment { font-size: 0.875rem; font-weight: 600; }
+.feedback-comment { color: var(--muted-foreground); }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #aaa; }
+.footer {
+background-color: #020817; /* Dark background from hero overlay */
+color: #f1f5f9; /* Light text for contrast */
+padding: 4rem 1rem 2rem;
+font-family: 'Inter', sans-serif;
+border-top: 5px solid #10b981; /* Primary color accent line */
+}
+.footer-container {
+max-width: 1280px;
+margin: 0 auto;
+display: grid;
+grid-template-columns: 1fr;
+gap: 2.5rem; /* Increased gap for better spacing */
+}
+@media (min-width: 768px) {
+.footer-container {
+grid-template-columns: repeat(2, 1fr);
+}
+}
+@media (min-width: 1024px) {
+.footer-container {
+grid-template-columns: repeat(4, 1fr);
+}
+}
+.footer-section {
+padding: 0 1rem;
+}
+.footer-logo {
+font-size: 1.5rem;
+font-weight: 700;
+color: #2dd4bf; /* Highlight color from hero section */
+margin-bottom: 1rem;
+}
+.footer-description {
+font-size: 0.95rem;
+line-height: 1.6;
+opacity: 0.8;
+}
+.social-icons {
+margin-top: 1.5rem;
+display: flex;
+gap: 1rem;
+}
+.social-icons a {
+color: #f1f5f9;
+transition: color 0.3s ease, transform 0.3s ease;
+}
+.social-icons a:hover {
+color: #10b981; /* Primary color on hover */
+transform: translateY(-3px);
+}
+.footer-section h4 {
+font-size: 1.1rem;
+font-weight: 600;
+margin-bottom: 1.5rem;
+position: relative;
+padding-bottom: 0.5rem;
+}
+.footer-section h4::after {
+content: '';
+position: absolute;
+left: 0;
+bottom: 0;
+width: 40px;
+height: 3px;
+background-color: #f97316; /* Secondary color */
+border-radius: 2px;
+}
+.footer-links ul {
+list-style: none;
+}
+.footer-links li {
+margin-bottom: 0.75rem;
+}
+.footer-links a {
+color: #f1f5f9;
+text-decoration: none;
+font-size: 0.95rem;
+opacity: 0.8;
+transition: opacity 0.3s ease, color 0.3s ease;
+}
+.footer-links a:hover {
+opacity: 1;
+color: #f97316; /* Secondary color on hover */
+}
+.footer-contact p {
+font-size: 0.95rem;
+line-height: 1.8;
+margin-bottom: 0.5rem;
+opacity: 0.8;
+}
+.footer-contact strong {
+color: #ffffff;
+}
+.footer-bottom {
+text-align: center;
+border-top: 1px solid rgba(255, 255, 255, 0.1);
+padding-top: 2rem;
+margin-top: 2rem;
+}
+.footer-bottom p {
+font-size: 0.8rem;
+opacity: 0.6;
+}
+/* style.css */
+.nav-item {
+position: relative;
+display: flex;
+align-items: center;
+}
+.dropdown {
+display: none;
+position: absolute;
+top: 100%;
+left: 50%;
+transform: translateX(-50%);
+background-color: #fff;
+min-width: 220px;
+box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+z-index: 100;
+border-radius: 0.5rem;
+padding: 0.5rem 0;
+margin-top: 1rem; /* Spacing from the nav item */
+opacity: 0;
+visibility: hidden;
+transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.dropdown a {
+color: var(--foreground);
+padding: 0.75rem 1.5rem;
+display: block;
+white-space: nowrap;
+}
+.dropdown a:hover {
+background-color: var(--muted);
+color: var(--primary);
+}
+.nav-item:hover .dropdown {
+display: block;
+opacity: 1;
+visibility: visible;
+}
+.modal {
+display: none; /* Hidden by default */
+position: fixed;
+z-index: 2000; /* Ensure it's on top of everything */
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+overflow: auto;
+background-color: rgba(0,0,0,0.6); /* Darker overlay for better focus */
+-webkit-backdrop-filter: blur(5px);
+backdrop-filter: blur(5px);
+}
+.modal-content {
+color: var(--foreground);
+background-color: #ffffff;
+margin: 15% auto;
+padding: 2.5rem;
+border: 1px solid var(--border);
+width: 90%;
+max-width: 500px;
+border-radius: var(--radius);
+text-align: center;
+position: relative;
+box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+animation: slideInUp 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.modal-content h2 {
+font-size: 2rem;
+margin-bottom: 1rem;
+}
+.modal-content p {
+color: var(--muted-foreground);
+font-size: 1.1rem;
+}
+.close-button {
+color: #aaa;
+position: absolute;
+top: 1rem;
+right: 1.5rem;
+font-size: 28px;
+font-weight: bold;
+transition: color 0.3s ease;
+}
+.close-button:hover,
+.close-button:focus {
+color: var(--foreground);
+text-decoration: none;
+cursor: pointer;
+}
+@keyframes slideInUp {
+from {
+transform: translateY(50px);
+opacity: 0;
+}
+to {
+transform: translateY(0);
+opacity: 1;
+}
+}
+
+    /* style1.css */
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+    .dark {
+        background-color: #0f172a; /* Dark Slate Blue */
+        color: #e2e8f0; /* Light Slate Gray */
+    }
+    .dark .bg-surface {
+        background-color: #1e293b;
+    }
+    .dark .text-heading {
+        color: #f1f5f9;
+    }
+    .dark .text-subheading {
+        color: #cbd5e1;
+    }
+    .light {
+        background-color: #f1f5f9; /* Light Gray */
+        color: #1e293b; /* Dark Blue */
+    }
+    .light .bg-surface {
+        background-color: #e2e8f0;
+    }
+    .light .text-heading {
+        color: #0f172a;
+    }
+    .light .text-subheading {
+        color: #475569;
+    }
+    .ar-vr-modal {
+        display: none;
+        position: fixed;
+        z-index: 100;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.8);
+        backdrop-filter: blur(8px);
+    }
+    body, .bg-surface, .text-heading, .text-subheading {
+        transition: background-color 0.5s ease, color 0.5s ease;
+    }
+</style>
+</head>
+<body>
+<div class="page-wrapper">
+<section class="hero-section">
+<nav class="navigation">
+<div class="nav-container">
+<a href="#home" class="nav-logo">Jharkhand Tourism</a>
+<ul class="nav-links">
+<li><a href="project.html.html" class="nav-link">Destinations</a></li>
+<li class="dropdown">
+<a href="#experiences" class="nav-link">Experiences <span style="font-size:1.1em;vertical-align:middle;">&#9662;</span></a>
+<ul class="dropdown-menu">
+<li><a href="cultural_events.html">Culture</a></li>
+<li><a href="#adventure">Adventure</a></li>
+<li><a href="#nature">Nature</a></li>
+<li><a href="cultural_events.html">Festivals</a></li>
+</ul>
+</li>
+<li><a href="#marketplace" class="nav-link">Marketplace</a></li>
+<li><a href="#plan-trip" class="nav-link">Plan Trip</a></li>
+<li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+<li><a href="#register" class="nav-link">Register</a></li>
+</ul>
+</div>
+</nav>
+
+        <div class="hero-background">
+            <div class="slideshow-container">
+                <div class="mySlides fade">
+                    <img src="jharkhand.webp" style="width:100%; height: 100vh; object-fit: cover;">
+                </div>
+                <div class="mySlides fade">
+                    <img src="jharkhand2.jpg" style="width:100%; height: 100vh; object-fit: cover;">
+                </div>
+                <div class="mySlides fade">
+                    <img src="jharkhand3.png" style="width:100%; height: 100vh; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Discover the Heart of <span class="hero-title-highlight">Jharkhand</span>
+            </h1>
+            <p class="hero-subtitle">
+                Immerse yourself in pristine forests, rich tribal heritage, and breathtaking landscapes. Connect with authentic communities and experience sustainable eco-cultural tourism.
+            </p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary">
+                    <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                    Explore Destinations
+                </button>
+                <button class="btn btn-outline">
+                    <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                    Plan Your Journey
+                </button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat" style="text-align: center;">
+                    <span class="stat-number" style="font-size: 2rem; font-weight: 700; color: #facc15;">10+</span><br>
+                    <span class="stat-label" style="color: White;">Registered Users</span>
+                </div>
+                <div class="stat" style="text-align: center;">
+                    <span class="stat-number" style="font-size: 2rem; font-weight: 700; color: #60a5fa;">195+</span><br>
+                    <span class="stat-label" style="color: White;">Site Visits</span>
+                </div>
+                <div class="stat" style="text-align: center;">
+                    <span class="stat-number" style="font-size: 2rem; font-weight: 700; color: #4ade80;">12+</span><br>
+                    <span class="stat-label" style="color: White;">Popular Destinations</span>
+                </div>
+                <div class="stat" style="text-align: center;">
+                    <span class="stat-number" style="font-size: 2rem; font-weight: 700; color: #f97316;">99%</span><br>
+                    <span class="stat-label" style="color: White;">Customer Satisfaction</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </div>
+    <section id="destinations" class="section-padding bg-gradient">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-header-flex">
+                    <div class="section-header-center">
+                        <span class="badge">Popular Destinations</span>
+                        <h2 class="section-title">Iconic Places to Visit</h2>
+                    </div>
+                    <a href="tribal1.html" class="btn btn-outline explore-more-btn" id="explore-more-destinations">Explore More &rarr;</a>
+                </div>
+                <p class="section-description">From cascading waterfalls to ancient tribal settlements, explore Jharkhand's most treasured destinations.</p>
+            </div>
+            <div class="grid grid-cols-3">
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="Hundru Falls.jpeg" alt="Hundru Falls" class="card-image">
+                        <span class="badge badge-on-image" style="--badge-bg: #3b82f6; --badge-color: #fff;">Natural Wonder</span>
+                    </div>
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            Hundru Falls
+                        </h3>
+                        <p class="card-description">Witness the magnificent 98-meter waterfall cascading down rocky cliffs, creating a mesmerizing natural spectacle.</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Ranchi District
+                            </div>
+                            <a href="#" class="card-link">Learn More &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="
+                        .jpeg" alt="Tribal Dance" class="card-image">
+                        <span class="badge badge-on-image" style="--badge-bg: #f97316; --badge-color: #fff;">Cultural Experience</span>
+                    </div>
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            Tribal Heritage Villages
+                        </h3>
+                        <p class="card-description">Experience authentic tribal culture through traditional dances, festivals, and community interactions.</p>
+                    </div>
+                    <div class="card-content">
+                         <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Multiple Villages
+                            </div>
+                            <a href="#" class="card-link">Explore &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="belta national park.jpeg" alt="Betla National Park" class="card-image">
+                        <span class="badge badge-on-image" style="--badge-bg: #166534; --badge-color: #fff;">Wildlife Sanctuary</span>
+                    </div>
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                            Betla National Park
+                        </h3>
+                        <p class="card-description">Discover diverse wildlife including tigers, elephants, and rare bird species in this pristine forest ecosystem.</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Palamu District
+                            </div>
+                            <a href="#" class="card-link">Visit &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="marketplace" class="section-padding bg-muted tribal-pattern">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-header-flex">
+                    <div class="section-header-center">
+                        <span class="badge">Local Marketplace</span>
+                        <h2 class="section-title">Authentic Tribal Crafts</h2>
+                    </div>
+                </div>
+                <p class="section-description">Support local artisans and take home genuine handicrafts that tell the story of Jharkhand's rich cultural heritage.</p>
+            </div>
+
+            <div class="grid grid-cols-2 items-center gap-large">
+                <div class="marketplace-content">
+                    <div class="feature-list-item">
+                        <div class="icon-wrapper" style="--icon-bg: #f973161a; --icon-color: #f97316;">
+                            <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 2.5l-3.5 3.5-3 3-2 10 10-2 3-3 3.5-3.5-7-7z"></path><path d="M12 7.5l7 7"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="feature-title">Handwoven Textiles</h3>
+                            <p class="feature-description">Traditional fabrics woven by skilled tribal artisans using ancient techniques passed down through generations.</p>
+                        </div>
+                    </div>
+                    <div class="feature-list-item">
+                        <div class="icon-wrapper" style="--icon-bg: #1665341a; --icon-color: #166534;">
+                            <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="feature-title">Bamboo Crafts</h3>
+                            <p class="feature-description">Sustainable bamboo products including baskets, furniture, and decorative items crafted by local communities.</p>
+                        </div>
+                    </div>
+                     <div class="feature-list-item">
+                        <div class="icon-wrapper" style="--icon-bg: #a855f71a; --icon-color: #a855f7;">
+                            <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="feature-title">Tribal Jewelry</h3>
+                            <p class="feature-description">Authentic silver and brass ornaments featuring traditional designs and spiritual significance.</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary marketplace-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 2.5l-3.5 3.5-3 3-2 10 10-2 3-3 3.5-3.5-7-7z"></path><path d="M12 7.5l7 7"></path></svg>
+                        <a href="tribal1.html" style="color:inherit;text-decoration:none;">Browse Marketplace</a>
+                    </button>
+                </div>
+                <div class="marketplace-image-container">
+                    <img src="crafts.jpeg" alt="Tribal Crafts" class="marketplace-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="experiences" class="section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge">Revolutionary Features</span>
+                <h2 class="section-title">AI-Powered Smart Tourism</h2>
+                <p class="section-description">Experience next-generation features that make Jharkhand tourism smarter, safer, and more rewarding.</p>
+            </div>
+
+            <div class="grid grid-cols-2">
+                <a href="planner.html" class="feature-card-link">
+                    <div class="card feature-card">
+                        <div class="card-image-container">
+                            <img src="ERC-twitter-post.png " alt="Eco Points Rewards" class="card-image">
+                        </div>
+                        <div class="card-header">
+                            <div class="feature-card-header">
+                                <div class="icon-wrapper" style="--icon-bg: #22c55e1a; --icon-color: #22c55e;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2"></path><path d="M18 8V6a2 2 0 0 0-2-2h-4"></path><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M10 14h4"></path></svg>
+                                </div>
+                                <h3 class="card-title">Itinerary Planner</h3>
+                            </div>
+                            <p class="card-description">Plan your perfect eco-friendly trip with personalized itineraries and local insights.</p>
+                        </div>
+                        <div class="card-content">
+                            <button class="btn btn-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                Explore Feature
+                            </button>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="ARVR.html" class="feature-card-link">
+                     <div class="card feature-card">
+                        <div class="card-image-container">
+                            <img src="AR pic.jpeg" alt="AR/VR Storytelling" class="card-image">
+                        </div>
+                        <div class="card-header">
+                            <div class="feature-card-header">
+                                <div class="icon-wrapper" style="--icon-bg: #a855f71a; --icon-color: #a855f7;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                                </div>
+                                <h3 class="card-title">AR/VR Storytelling</h3>
+                            </div>
+                            <p class="card-description">Experience tribal legends and folklore through immersive AR/VR technology at historical sites and cultural landmarks.</p>
+                        </div>
+                        <div class="card-content">
+                            <button class="btn btn-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                <a href="ARVR.html" style="color:inherit;text-decoration:none;">Explore Feature</a>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="cultural_events.html" class="feature-card-link">
+                     <div class="card feature-card">
+                        <div class="card-image-container">
+                            <img src="cc.jpg" alt="Cultural Calendar" class="card-image">
+                        </div>
+                        <div class="card-header">
+                            <div class="feature-card-header">
+                                <div class="icon-wrapper" style="--icon-bg: #f973161a; --icon-color: #f97316;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                </div>
+                                <h3 class="card-title">Cultural Calendar(Events)</h3>
+                            </div>
+                            <p class="card-description">Never miss authentic festivals and rituals with real-time updates on tribal celebrations and seasonal events.</p>
+                        </div>
+                        <div class="card-content">
+                            <button class="btn btn-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                <a href="cultural_events.html" style="color:inherit;text-decoration:none;">Explore Feature</a>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="digitalanother.html" class="feature-card-link">
+                     <div class="card feature-card">
+                        <div class="card-image-container">
+                            <img src="digital_certification.jpg" alt="Blockchain Enabled Guide Verification" class="card-image">
+                        </div>
+                        <div class="card-header">
+                            <div class="feature-card-header">
+                                <div class="icon-wrapper" style="--icon-bg: #10b9811a; --icon-color: #10b981;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M16 3v4a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V3"/><path d="M8 21h8"/></svg>
+                                </div>
+                                <h3 class="card-title">Blockchain Enabled Guide Verification</h3>
+                            </div>
+                            <p class="card-description">Verify guides and services with blockchain-backed digital certification for trust and transparency.</p>
+                        </div>
+                        <div class="card-content">
+                            <button class="btn btn-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                <a href="digitalanother.html" style="color:inherit;text-decoration:none;">Explore Feature</a>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+<main id="dashboard">
+    <section class="section-padding" style="padding-top: 120px;">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge">Analytics</span>
+                <h2 class="section-title">Executive Dashboard</h2>
+                <p class="section-description">A summary of tourism performance, key metrics, and visitor sentiment.</p>
+            </div>
+
+            <div class="grid grid-cols-4">
+                <div class="card metric-card">
+                    <div class="card-content">
+                        <div class="metric-info">
+                            <p class="metric-label">Total Visitors (30d)</p>
+                            <p class="metric-value">12,450</p>
+                            <div class="metric-change positive">
+                                <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                                <span>+12.5%</span>
+                            </div>
+                        </div>
+                        <div id="visitor-sparkline" style="width: 100px; height: 50px;"></div>
+                    </div>
+                </div>
+                <div class="card metric-card">
+                    <div class="card-content">
+                        <div class="metric-info">
+                            <p class="metric-label">Total Bookings</p>
+                            <p class="metric-value">3,120</p>
+                            <div class="metric-change positive">
+                                <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                                <span>+8.2%</span>
+                            </div>
+                        </div>
+                        <div id="booking-sparkline" style="width: 100px; height: 50px;"></div>
+                    </div>
+                </div>
+                 <div class="card metric-card">
+                    <div class="card-content">
+                        <div class="metric-info">
+                            <p class="metric-label">Total Revenue</p>
+                            <p class="metric-value">₹8.5L</p>
+                            <div class="metric-change negative">
+                                <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 7 17 17 7 17"></polyline><line x1="7" y1="7" x2="17" y2="17"></line></svg>
+                                <span>-1.5%</span>
+                            </div>
+                        </div>
+                        <div id="revenue-sparkline" style="width: 100px; height: 50px;"></div>
+                    </div>
+                </div>
+                 <div class="card metric-card">
+                    <div class="card-content">
+                        <div class="metric-info">
+                            <p class="metric-label">Avg. Satisfaction</p>
+                            <p class="metric-value">4.6 ★</p>
+                            <div class="metric-change neutral">
+                                <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                <span>Stable</span>
+                            </div>
+                        </div>
+                        <div id="satisfaction-sparkline" style="width: 100px; height: 50px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid" style="margin-top: 2rem;">
+                <div class="card grid-span-3">
+                    <div class="card-header"><h3 class="card-title">Tourist Traffic Trends</h3></div>
+                    <div class="card-content">
+                        <div id="tourist-traffic-chart"></div>
+                    </div>
+                </div>
+                <div class="card grid-span-2">
+                    <div class="card-header"><h3 class="card-title">Most Popular Destinations</h3></div>
+                     <div class="card-content">
+                        <div id="popular-destinations-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding bg-muted">
+         <div class="container">
+             <div class="section-header">
+                <span class="badge">Visitor Insights</span>
+                <h2 class="section-title">AI Feedback & Sentiment</h2>
+                <p class="section-description">Analyze aggregated feedback from platform reviews and social media to understand visitor experience.</p>
+            </div>
+
+             <div class="dashboard-grid">
+                <div class="card grid-span-2">
+                     <div class="card-header"><h3 class="card-title">Overall Sentiment</h3></div>
+                     <div class="card-content">
+                        <div id="sentiment-breakdown-chart"></div>
+                    </div>
+                </div>
+                <div class="card grid-span-3">
+                    <div class="card-header"><h3 class="card-title">Submit Manual Feedback</h3></div>
+                    <div class="card-content">
+                        <form class="feedback-form">
+                            <div class="form-group">
+                                <label for="userName">User Name (Optional)</label>
+                                <input type="text" id="userName" placeholder="e.g., Anjali P.">
+                            </div>
+                            <div class="form-group">
+                                <label for="feedbackText">Feedback</label>
+                                <textarea id="feedbackText" rows="4" placeholder="Enter feedback details..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-secondary">Submit Feedback</button>
+                        </form>
+                    </div>
+                </div>
+
+                 <div class="card grid-span-5">
+                     <div class="card-header"><h3 class="card-title">Recent Feedback Feed</h3></div>
+                     <div class="card-content">
+                         <div class="feedback-feed" id="feedback-feed">
+                             </div>
+                     </div>
+                 </div>
+            </div>
+        </div>
+    </section>
+</main>
+<section class="cta-section">
+<div class="cta-overlay"></div>
+<div class="container cta-content">
+<h2 class="section-title cta-title">Start Your Jharkhand Adventure Today</h2>
+<p class="section-description cta-description">Join thousands of travelers who have discovered the magic of sustainable eco-cultural tourism in Jharkhand.</p>
+<div class="cta-buttons">
+<a href="#interactive-map" class="btn btn-secondary">
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+Interactive maps
+</a>
+<a href="interactivemap.html" class="btn btn-secondary" style="margin-left: 10px;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+Open Interactive Map
+</a>
+<a href="#" class="btn btn-outline">
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+<a href="digitalanother.html" style="color:inherit;text-decoration:none;">Connect with Locals</a>
+</a>
+</div>
+</div>
+</section>
+
+<footer class="footer">
+<div class="container footer-container">
+<div class="footer-section footer-about">
+<h3 class="footer-logo">Jharkhand Tourism</h3>
+<p class="footer-description">
+Promoting sustainable eco-cultural tourism. Discover the true heart of India with our pristine forests, rich tribal heritage, and breathtaking landscapes.
+</p>
+<div class="social-icons">
+<a href="#" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+<a href="#" aria-label="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3.96v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+<a href="#" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+<a href="#" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+</div>
+</div>
+<div class="footer-section footer-links">
+<h4>Quick Links</h4>
+<ul>
+<li><a href="#destinations">Destinations</a></li>
+<li><a href="#experiences">Experiences</a></li>
+<li><a href="#marketplace">Marketplace</a></li>
+<li><a href="#plan-trip">Plan Your Trip</a></li>
+<li><a href="#">Contact Us</a></li>
+</ul>
+</div>
+<div class="footer-section footer-links">
+<h4>Support</h4>
+<ul>
+<li><a href="#">Help & FAQs</a></li>
+<li><a href="#">Privacy Policy</a></li>
+<li><a href="#">Terms of Service</a></li>
+<li><a href="#">Responsible Tourism</a></li>
+<li><a href="#">Sitemap</a></li>
+</ul>
+</div>
+<div class="footer-section footer-contact">
+<h4>Contact Info</h4>
+<p>123 Tourism Plaza, Ranchi, Jharkhand, India</p>
+<p><strong>Email:</strong> info@jharkhandtourism.gov</p>
+<p><strong>Phone:</strong> +91 98765 43210</p>
+</div>
+</div>
+<div class="footer-bottom">
+<p>&copy; 2025 Jharkhand Tourism. All rights reserved.</p>
+</div>
+</footer>
+
+<script>
+// slideshow.js
+let slideIndex = 0;
+showSlides();
+function showSlides() {
+let i;
+const slides = document.getElementsByClassName("mySlides");
+for (i = 0; i < slides.length; i++) {
+slides[i].style.display = "none";
+}
+slideIndex++;
+if (slideIndex > slides.length) {slideIndex = 1}
+if(slides[slideIndex-1]) slides[slideIndex-1].style.display = "block";
+setTimeout(showSlides, 3000); // Change image every 3 seconds
+}
+
+// script1.js
+document.addEventListener('DOMContentLoaded', () => {
+const themeToggleBtn = document.getElementById('theme-toggle');
+const html = document.documentElement;
+// ... (rest of script1.js)
+});
+
+// script.js
+document.addEventListener("DOMContentLoaded", () => {
+  // ... (rest of script.js without dot logic)
+});
+
+ // dashboard.js
+document.addEventListener("DOMContentLoaded", function() {
+        const mockFeedbackData = [
+            { source: 'Platform Review', user: 'Anjali P.', comment: 'The guide at Dassam Falls was incredibly knowledgeable. Made the trip memorable!', sentiment: 'Positive' },
+            { source: 'Twitter Mention', user: '@rohit_travels', comment: 'The road to Netarhat needs serious repairs. The journey was very uncomfortable.', sentiment: 'Negative' },
+            { source: 'Platform Review', user: 'Vikram S.', comment: 'Booking a homestay in a tribal village was a seamless experience. The family was so welcoming.', sentiment: 'Positive' },
+            { source: 'Facebook Comment', user: 'Priya Kumari', comment: 'Wish there were more dustbins near the Jonha Falls area. It was a bit littered.', sentiment: 'Negative' },
+            { source: 'Platform Review', user: 'Amit K.', comment: 'The accommodation was as described. Everything was clean and tidy. No complaints.', sentiment: 'Neutral' },
+            { source: 'Platform Review', user: 'Sunita M.', comment: 'The Sohrai art workshop was the highlight of our trip! An authentic and beautiful experience.', sentiment: 'Positive' }
+        ];
+        const feedbackFeedContainer = document.getElementById('feedback-feed');
+        if (feedbackFeedContainer) {
+          mockFeedbackData.forEach(item => {
+              let sentimentClass = item.sentiment.toLowerCase();
+              const feedbackItemHTML = `
+                  <div class="feedback-item ${sentimentClass}">
+                      <div class="feedback-header">
+                          <div>
+                              <p class="feedback-user">${item.user}</p>
+                              <p class="feedback-source">${item.source}</p>
+                          </div>
+                          <span class="feedback-sentiment ${sentimentClass}">${item.sentiment}</span>
+                      </div>
+                      <p class="feedback-comment">${item.comment}</p>
+                  </div>
+              `;
+              feedbackFeedContainer.innerHTML += feedbackItemHTML;
+          });
+        }
+        const commonChartOptions = {
+            chart: { toolbar: { show: false }, zoom: { enabled: false }, },
+            dataLabels: { enabled: false },
+            stroke: { curve: 'smooth', width: 2 },
+        };
+        const sparklineOptions = {
+            chart: { type: 'area', sparkline: { enabled: true } },
+            stroke: { curve: 'smooth', width: 2 },
+            fill: { opacity: 0.3 },
+            yaxis: { min: 0 },
+        };
+        if(document.querySelector("#visitor-sparkline"))
+          new ApexCharts(document.querySelector("#visitor-sparkline"), { ...sparklineOptions, series: [{ data: [30, 40, 35, 50, 49, 60, 70] }], colors: ['#3b82f6'] }).render();
+        if(document.querySelector("#booking-sparkline"))
+          new ApexCharts(document.querySelector("#booking-sparkline"), { ...sparklineOptions, series: [{ data: [10, 15, 12, 18, 17, 22, 25] }], colors: ['#10b981'] }).render();
+        if(document.querySelector("#revenue-sparkline"))
+          new ApexCharts(document.querySelector("#revenue-sparkline"), { ...sparklineOptions, series: [{ data: [50, 45, 48, 42, 40, 35, 33] }], colors: ['#ef4444'] }).render();
+        if(document.querySelector("#satisfaction-sparkline"))
+          new ApexCharts(document.querySelector("#satisfaction-sparkline"), { ...sparklineOptions, series: [{ data: [4.5, 4.6, 4.5, 4.7, 4.6, 4.6, 4.6] }], colors: ['#a855f7'], yaxis: { min: 4, max: 5 } }).render();
+        const trafficChartOptions = {
+            ...commonChartOptions,
+            chart: { ...commonChartOptions.chart, type: 'area', height: 350 },
+            series: [{ name: 'Visitors', data: [230, 280, 450, 380, 550, 500, 700, 720, 680, 850, 800, 950] }],
+            xaxis: { categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], labels: { style: { colors: '#64748b' } } },
+            yaxis: { labels: { style: { colors: '#64748b' } } },
+            fill: { type: "gradient", gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.1, stops: [0, 90, 100] } },
+            tooltip: { x: { format: 'MMM' } },
+            colors: ['#10b981']
+        };
+        if(document.querySelector("#tourist-traffic-chart"))
+          new ApexCharts(document.querySelector("#tourist-traffic-chart"), trafficChartOptions).render();
+        const destinationsChartOptions = {
+            ...commonChartOptions,
+            chart: { ...commonChartOptions.chart, type: 'bar', height: 350 },
+            series: [{ name: 'Visits', data: [4500, 3800, 3200, 2900, 2500, 2100] }],
+            xaxis: { categories: ['Ranchi', 'Netarhat', 'Betla', 'Deoghar', 'Parasnath', 'Hazaribagh'], labels: { style: { colors: '#64748b' } } },
+            yaxis: { labels: { style: { colors: '#64748b' } } },
+            plotOptions: { bar: { horizontal: false, borderRadius: 4, columnWidth: '45%' } },
+            colors: ['#f97316'],
+            tooltip: { y: { formatter: val => val + " visits" } }
+        };
+        if(document.querySelector("#popular-destinations-chart"))
+          new ApexCharts(document.querySelector("#popular-destinations-chart"), destinationsChartOptions).render();
+        const sentimentChartOptions = {
+            ...commonChartOptions,
+            chart: { ...commonChartOptions.chart, type: 'donut', height: 350 },
+            series: [75, 18, 7],
+            labels: ['Positive', 'Negative', 'Neutral'],
+            colors: ['#10b981', '#ef4444', '#94a3b8'],
+            legend: { position: 'bottom', fontSize: '14px', markers: { radius: 12 }, labels: { colors: '#64748b' } },
+            plotOptions: { pie: { donut: { labels: { show: true, total: { show: true, label: 'Total Reviews', color: '#64748b', formatter: w => w.globals.seriesTotals.reduce((a, b) => a + b, 0) } } } } }
+        };
+        if(document.querySelector("#sentiment-breakdown-chart"))
+          new ApexCharts(document.querySelector("#sentiment-breakdown-chart"), sentimentChartOptions).render();
+    });
+</script>
+
+</body>
+</html>

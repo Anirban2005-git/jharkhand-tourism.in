@@ -1,0 +1,1197 @@
+<!-- <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Jharkhand Darshan — Blockchain-Enabled Tourism</title>
+    
+    <!-- Google Fonts 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2A6F6C; /* A sophisticated, lighter teal */
+            --accent: #E8B44A; /* A softer, elegant gold */
+            --gold: #D4AF37;
+            --light-primary: #5FA09B; /* A lighter tint of the new primary */
+            --muted: #616161;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: var(--bg);
+            background-image: linear-gradient(180deg, #f8f9fa, #f5f5f5);
+            color: #212121;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        header {
+            background: var(--card-bg);
+            color: var(--primary);
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            width: 52px;
+            height: 52px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 24px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 10px 20px rgba(0,0,0,0.08);
+            padding: 28px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.05), 0 15px 30px rgba(0,0,0,0.1);
+        }
+        h2 {
+            margin: 0 0 16px 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--primary);
+        }
+        h2 i { color: var(--light-primary); }
+        label {
+            display: block;
+            font-size: 14px;
+            margin-top: 18px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            margin-top: 8px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--light-primary);
+            box-shadow: 0 0 0 3px rgba(77, 182, 172, 0.2);
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            margin-top: 16px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #1E504E; } /* Darker shade of new primary */
+        .btn-secondary { background: #f1f3f5; color: #495057; border: 1px solid #dee2e6;}
+        .btn-secondary:hover { background: #e9ecef; }
+        .btn-accent { background: var(--accent); color: var(--primary); }
+        .btn-accent:hover { background: #D8A43A; } /* Darker shade of new accent */
+
+        .muted { color: var(--muted); font-size: 14px; }
+        .cert-preview {
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            position: sticky;
+            top: 120px; /* Adjusted for sticky header */
+            background-color: #f8f9fa;
+        }
+        #svg_container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+        }
+        .small { font-size: 13px; }
+        .row { display: flex; gap: 16px; margin-top: 16px; }
+        .row > * { flex: 1; }
+        .success, .error { padding: 16px; border-radius: 8px; font-weight: 500; display:flex; align-items:center; gap: 10px;}
+        .success { background:#EAF6F6; color: #1E504E; border: 1px solid #A2CFCB;}
+        .error { background: #fff5f5; color: #c92a2a; border: 1px solid #ffc9c9;}
+        pre { background: #212121; color: #eceff1; padding: 16px; border-radius: 8px; overflow: auto; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 14px; }
+        footer { padding: 32px; text-align: center; color: var(--muted); font-size: 14px; border-top: 1px solid var(--border-color); margin-top: 40px; }
+        .grid { display: grid; grid-template-columns: 1fr 450px; gap: 32px; }
+
+        .header-nav { display: flex; gap: 24px; }
+        .header-nav a { color: var(--primary); text-decoration: none; font-weight: 600; transition: color 0.3s; padding: 4px 8px; border-radius: 6px; cursor: pointer; }
+        .header-nav a:hover { color: var(--accent); background-color: #f1f3f5; }
+
+        .loading-spinner { border: 2px solid rgba(255, 255, 255, 0.3); border-top-color: #fff; border-radius: 50%; width: 1em; height: 1em; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .animated-card { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.6s ease-out forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        .main-view { display: none; }
+        #login-view { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 200px); flex-direction: column; }
+        #login-card { width: 100%; max-width: 420px; text-align: center; }
+
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; vertical-align: middle; }
+        .badge.standard { background-color: #EAF6F6; color: #1E504E; border: 1px solid #A2CFCB; }
+        .badge.premium { background: linear-gradient(45deg, var(--gold), var(--accent)); color: #493802; text-shadow: 1px 1px 2px rgba(255,255,255,0.2); }
+        .last-item { background: #fafafa; padding: 16px; border-radius: 8px; margin-top: 12px; border: 1px solid #e9ecef; transition: background-color 0.3s; }
+        .last-item:hover { background-color: #f1f3f5; }
+
+        /* Styles for tourist view */
+        .hero {
+            background: linear-gradient(rgba(0, 51, 43, 0.8), rgba(0, 51, 43, 0.8)), url('https://images.unsplash.com/photo-1628337837748-a047c32b571c?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
+            padding: 80px 24px;
+            text-align: center;
+            color: white;
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .hero p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 32px auto;
+        }
+        .provider-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .provider-card {
+            display: flex;
+            flex-direction: column;
+        }
+        .provider-card .card-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .provider-card .card-footer {
+            margin-top: auto;
+        }
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #e6fcf5;
+            color: #006d4f;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .verified-badge i { font-size: 14px; }
+
+        /* New styles for transport provider card */
+        .provider-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--border-color);
+            margin-bottom: 16px;
+            flex-shrink: 0;
+        }
+        .transport-card-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .provider-details {
+            flex-grow: 1;
+        }
+        .provider-contact {
+            margin-top: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            background-color: #eaf6f6;
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 200;
+        }
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .btn-filter {
+            background-color: #f1f3f5;
+            color: #495057;
+            border: 1px solid #dee2e6;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: auto; /* override default button width */
+            margin-top: 0;
+        }
+        .btn-filter:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+        }
+        .btn-filter.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        #admin-user-display {
+            font-weight: 500;
+            color: var(--muted);
+            cursor: default;
+        }
+        #admin-user-display:hover {
+            background-color: transparent;
+            color: var(--muted);
+        }
+        #admin-user-display strong {
+            color: var(--primary);
+        }
+
+        /* Notification Styles */
+        #notification-area {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 320px;
+        }
+        .notification {
+            background-color: #212121;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInSlideUp 0.5s ease-out forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .notification.info { background-color: var(--primary); }
+        .notification.error { background-color: #c92a2a; }
+        @keyframes fadeInSlideUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOut { to { opacity: 0; } }
+
+        @media (min-width: 500px) { /* Adjust layout for wider cards */
+            .transport-card-content {
+                flex-direction: row;
+                text-align: left;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            .provider-photo {
+                margin-bottom: 0;
+            }
+        }
+        @media (max-width: 992px) {
+            .grid { grid-template-columns: 1fr; }
+            .cert-preview { position: static; top: 0; }
+        }
+        @media (max-width: 768px) {
+            header { flex-direction: column; gap: 16px; padding: 20px; }
+            .container { margin: 24px auto; }
+            h1 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div style="display:flex;gap:16px;align-items:center">
+            <div class="logo">JD</div>
+            <div>
+                <h1>Jharkhand Darshan</h1>
+                <div class="small muted" id="header-subtitle">Blockchain-Enabled Tourism Platform</div>
+            </div>
+        </div>
+        <nav class="header-nav" id="main-nav">
+            <a onclick="showView('tourist-view')">Home</a>
+            <a onclick="showView('login-view')">Admin Login</a>
+        </nav>
+        <nav class="header-nav" id="admin-nav" style="display:none;">
+            <a id="admin-user-display"></a>
+            <a onclick="showView('dashboard-view')">Dashboard</a>
+            <a onclick="showView('verification-view')">Verify Certificate</a>
+            <a onclick="logout()">Logout</a>
+        </nav>
+    </header>
+
+    <!-- Tourist Public View 
+    <div class="main-view" id="tourist-view">
+        <div class="hero">
+            <h1 class="animated-card">Authenticity You Can Trust</h1>
+            <p class="animated-card" style="animation-delay: 0.1s;">Explore Jharkhand with blockchain-verified guides and artisans. Every booking is secure, every craft is genuine.</p>
+        </div>
+        <div class="container">
+            <h2 style="justify-content: center; margin-bottom: 16px;">Verified Local Service Providers</h2>
+            <div class="filter-buttons" style="text-align: center; margin-bottom: 32px;">
+                <button class="btn-filter active" onclick="filterProviders('all')">All</button>
+                <button class="btn-filter" onclick="filterProviders('guide')">Guides</button>
+                <button class="btn-filter" onclick="filterProviders('artisan')">Artisans</button>
+                <button class="btn-filter" onclick="filterProviders('homestay')">Homestays</button>
+                <button class="btn-filter" onclick="filterProviders('transport')">Transport</button>
+            </div>
+            <div class="provider-grid" id="provider-list">
+                <!-- Provider cards will be dynamically inserted here 
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login View 
+    <div class="container main-view" id="login-view">
+        <div class="card animated-card" id="login-card">
+            <h2><i class="fas fa-lock"></i> Admin Login</h2>
+            <div class="muted">Please enter your assigned administrator credentials.</div>
+            <label for="username">Your Name</label>
+            <input type="text" id="username" placeholder="Enter your name" />
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" />
+            <button class="btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+            <div id="login-status" style="margin-top:16px"></div>
+        </div>
+    </div>
+    
+    <!-- Admin Dashboard View 
+    <div class="container main-view" id="dashboard-view">
+        <div class="grid">
+            <div>
+                <div class="card animated-card" style="animation-delay: 0.1s;">
+                    <h2><i class="fas fa-id-card"></i> Provider Registration</h2>
+                    <div class="muted">Register and verify a new provider to prepare for certification.</div>
+                    <label>Provider Name</label>
+                    <input id="prov_name" placeholder="e.g., Anjali Devi - Homestay Owner" />
+                    <label>Service Category</label>
+                    <input id="prov_service" placeholder="e.g., Tribal Art Guide, Rural Homestay" />
+                    <label>Phone Number</label>
+                    <input id="prov_phone" placeholder="+91XXXXXXXXXX" />
+                    <div class="row">
+                        <button class="btn-secondary" id="sendOtp"><i class="fas fa-paper-plane"></i> Send OTP</button>
+                        <button class="btn-primary" id="verifyOtp"><i class="fas fa-check"></i> Verify OTP</button>
+                    </div>
+                    <label>Enter OTP</label>
+                    <input id="otp_input" placeholder="6-digit OTP" />
+                    <div id="kyc_status" style="margin-top:16px"></div>
+                </div>
+                <div class="card animated-card" style="animation-delay: 0.2s;">
+                    <h2><i class="fas fa-award"></i> Issue Certificate</h2>
+                    <div class="muted">Create a unique certificate. Choose between a standard or premium certificate.</div>
+                    <label>Certificate Title</label>
+                    <input id="cert_title" value="Certificate of Authentic Local Service" />
+                    <label>Recipient (Provider Name)</label>
+                    <input id="cert_recipient" placeholder="Auto-filled from Provider Name above"/>
+                    <label>Description / Notes</label>
+                    <textarea id="cert_notes" rows="3">Recognized for providing authentic and reliable homestay services in the Palamu region.</textarea>
+                    <div class="row">
+                        <button class="btn-secondary" id="previewCert"><i class="fas fa-eye"></i> Preview</button>
+                        <button class="btn-primary" id="signCert"><i class="fas fa-signature"></i> Sign & Issue Standard</button>
+                    </div>
+                    <button class="btn-accent" id="issuePremiumCert"><i class="fas fa-star"></i> Issue Premium Certificate (Simulated Payment)</button>
+                    <div style="margin-top:16px" class="muted">Certificate Data Payload</div>
+                    <pre id="signature_box">(No certificate data yet)</pre>
+                </div>
+                <div class="card animated-card" style="animation-delay: 0.3s;">
+                    <h2><i class="fas fa-list-alt"></i> Recently Issued Certificates</h2>
+                    <div id="last_list" class="small muted"></div>
+                </div>
+            </div>
+            <aside>
+                <div class="card cert-preview animated-card" id="cert_area" style="animation-delay: 0.2s;">
+                    <h3 style="margin:0 0 10px 0;text-align:left; font-family: 'Playfair Display', serif; color: var(--primary);">Certificate Preview</h3>
+                    <div id="svg_container"></div>
+                    <div class="small muted" style="margin-top:12px">The certificate is a verifiable SVG. It can be downloaded as a high-quality PNG.</div>
+                    <button class="btn-secondary" id="downloadCert"><i class="fas fa-download"></i> Download PNG</button>
+                </div>
+            </aside>
+        </div>
+    </div>
+    
+    <!-- Admin Verification View 
+    <div class="container main-view" id="verification-view">
+        <div class="card animated-card">
+            <h2><i class="fas fa-check-circle"></i> Verify Certificate Integrity</h2>
+            <div class="muted">Paste a certificate's JSON payload here to verify its cryptographic signature and the issuer's identity.</div>
+            <label for="verify_input">Paste Certificate JSON</label>
+            <textarea id="verify_input" rows="8" placeholder="Paste the full JSON object from a certificate here..."></textarea>
+            <div class="row">
+                <button class="btn-primary" id="verifyHash"><i class="fas fa-shield-alt"></i> Verify Signature</button>
+                <button class="btn-secondary" id="verifyChain"><i class="fas fa-cubes"></i> Check On-Chain (Mock)</button>
+            </div>
+            <div id="verify_result" style="margin-top:16px"></div>
+        </div>
+    </div>
+
+    <!-- Booking Modal 
+    <div class="modal" id="booking-modal">
+        <div class="modal-content">
+            <h2><i class="fas fa-shield-alt"></i> Secure Booking</h2>
+            <p class="muted">You are about to book <strong id="booking-provider-name">Provider</strong>. This will initiate a secure, direct transaction on the blockchain via your Web3 wallet (e.g., MetaMask).</p>
+            <div style="margin-top:16px; background: #f1f3f5; padding: 12px; border-radius: 8px; font-size: 14px;">
+                <strong>Amount:</strong> 0.05 ETH (example)<br>
+                <strong>Recipient Address:</strong> <span id="booking-provider-address" style="font-family:monospace; word-break:break-all;"></span>
+            </div>
+            <p class="small muted" style="margin-top:16px;">Please confirm the transaction in your wallet extension to finalize the booking.</p>
+            <div class="row">
+                <button class="btn-secondary" onclick="closeModal('booking-modal')">Cancel</button>
+                <button class="btn-primary" onclick="proceedToPay()">Proceed to Pay</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        Jharkhand Darshan — Bringing Authenticity and Trust to Local Services through Verifiable Credentials.
+    </footer>
+
+    <div id="notification-area"></div>
+    
+    <!-- Ethers.js library for blockchain interactions 
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+    
+    <script>
+        // --- MOCK DATABASE of issued certificates for the public view ---
+        const mockCertificates = [
+            // Guides (10)
+            {
+                "payload": { "id": "JD-1721212002", "isPremium": false, "title": "Certified Wildlife Guide", "recipient": "Ramesh Singh", "notes": "Verified guide for Betla National Park with 5+ years of experience.", "issuer": "Jharkhand Darshan Authority", "date": "14/07/2024"},
+                "hash": "0x4d5e6f...", "signature": "0x...", "address": "0xProviderWallet2..."
+            },
+            {
+                "payload": { "id": "JD-1721214004", "isPremium": false, "title": "Certified Trekking Guide", "recipient": "Alok Tudu", "notes": "Expert in leading treks through the Parasnath Hills with a focus on safety and local flora.", "issuer": "Jharkhand Darshan Authority", "date": "11/07/2024"},
+                "hash": "0xj1k2l3...", "signature": "0x...", "address": "0xProviderWallet4..."
+            },
+            {
+                "payload": { "id": "JD-1721217007", "isPremium": false, "title": "Cultural Heritage Guide", "recipient": "Priya Kumari", "notes": "Specializes in the history and stories of Jharkhand's ancient temples and monuments.", "issuer": "Jharkhand Darshan Authority", "date": "08/07/2024"},
+                "hash": "0xs1t2u3...", "signature": "0x...", "address": "0xProviderWallet7..."
+            },
+            {
+                "payload": { "id": "JD-1721223013", "isPremium": true, "title": "Waterfall Exploration Guide", "recipient": "Arjun Oraon", "notes": "Specializes in guiding tourists to the hidden waterfalls and natural pools of Jharkhand.", "issuer": "Jharkhand Darshan Authority", "date": "02/07/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet13..."
+            },
+            {
+                "payload": { "id": "JD-1721224014", "isPremium": false, "title": "Historical Sites Guide", "recipient": "Meena Soren", "notes": "An expert storyteller who brings the history of Maluti temples and ancient forts to life.", "issuer": "Jharkhand Darshan Authority", "date": "01/07/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet14..."
+            },
+            {
+                "payload": { "id": "JD-1721225015", "isPremium": false, "title": "Bird Watching Guide", "recipient": "Suraj Mahto", "notes": "Leads tours in the Udhwa Lake Bird Sanctuary, identifying rare and migratory species.", "issuer": "Jharkhand Darshan Authority", "date": "30/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet15..."
+            },
+            {
+                "payload": { "id": "JD-1721226016", "isPremium": false, "title": "Village Life Experience Guide", "recipient": "Deepa Bhagat", "notes": "Offers immersive tours into local tribal villages, showcasing their culture and lifestyle.", "issuer": "Jharkhand Darshan Authority", "date": "29/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet16..."
+            },
+            {
+                "payload": { "id": "JD-1721227017", "isPremium": true, "title": "Rock Art & Cave Guide", "recipient": "Vikram Hansda", "notes": "Expert on the prehistoric rock art found in the Isko caves of Hazaribagh.", "issuer": "Jharkhand Darshan Authority", "date": "28/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet17..."
+            },
+            {
+                "payload": { "id": "JD-1721228018", "isPremium": false, "title": "Dam & Reservoir Guide", "recipient": "Santosh Bedia", "notes": "Provides insightful tours of the major dams like Panchet and Maithon, explaining their significance.", "issuer": "Jharkhand Darshan Authority", "date": "27/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet18..."
+            },
+            {
+                "payload": { "id": "JD-1721229019", "isPremium": false, "title": "Botanical Garden Guide", "recipient": "Anita Kachhap", "notes": "A botany enthusiast guiding visitors through the diverse flora at the Birsa Munda Botanical Garden.", "issuer": "Jharkhand Darshan Authority", "date": "26/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet19..."
+            },
+            // Artisans (10)
+            {
+                "payload": { "id": "JD-1721213001", "isPremium": true, "title": "Master Sohrai Artist", "recipient": "Parvati Devi", "notes": "Authenticated as a master artist of Sohrai art, preserving traditional techniques.", "issuer": "Jharkhand Darshan Authority", "date": "15/07/2024"},
+                "hash": "0x1a2b3c...", "signature": "0x...", "address": "0xProviderWallet1..."
+            },
+            {
+                "payload": { "id": "JD-1721215005", "isPremium": true, "title": "Dhokra Metal Artisan", "recipient": "Mohan Karmakar", "notes": "A traditional Dhokra artist creating exquisite bell metal crafts passed down through generations.", "issuer": "Jharkhand Darshan Authority", "date": "10/07/2024"},
+                "hash": "0xm4n5o6...", "signature": "0x...", "address": "0xProviderWallet5..."
+            },
+            {
+                "payload": { "id": "JD-1721218008", "isPremium": false, "title": "Paitkar Painting Specialist", "recipient": "Savitri Murmu", "notes": "Reviving the ancient art of Paitkar scroll painting, telling stories of local folklore.", "issuer": "Jharkhand Darshan Authority", "date": "07/07/2024"},
+                "hash": "0xv4w5x6...", "signature": "0x...", "address": "0xProviderWallet8..."
+            },
+            {
+                "payload": { "id": "JD-1721220010", "isPremium": false, "title": "Bamboo Craft Artisan", "recipient": "Birsa Munda", "notes": "Creates intricate and functional items from locally sourced bamboo.", "issuer": "Jharkhand Darshan Authority", "date": "05/07/2024"},
+                "hash": "0xb1c2d3...", "signature": "0x...", "address": "0xProviderWallet10..."
+            },
+            {
+                "payload": { "id": "JD-1721221011", "isPremium": false, "title": "Terracotta Potter", "recipient": "Lakshmi Prajapati", "notes": "Handcrafts traditional terracotta pottery, from utensils to decorative items.", "issuer": "Jharkhand Darshan Authority", "date": "04/07/2024"},
+                "hash": "0xe4f5g6...", "signature": "0x...", "address": "0xProviderWallet11..."
+            },
+            {
+                "payload": { "id": "JD-1721222012", "isPremium": true, "title": "Traditional Weaver", "recipient": "Sohini Das", "notes": "Weaves beautiful textiles using traditional Jharkhandi looms and patterns.", "issuer": "Jharkhand Darshan Authority", "date": "03/07/2024"},
+                "hash": "0xh7i8j9...", "signature": "0x...", "address": "0xProviderWallet12..."
+            },
+            {
+                "payload": { "id": "JD-1721230020", "isPremium": false, "title": "Iron Craft Artisan (Loha Shilp)", "recipient": "Ratan Lohar", "notes": "Forges traditional tribal iron crafts and decorative items using age-old techniques.", "issuer": "Jharkhand Darshan Authority", "date": "25/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet20..."
+            },
+            {
+                "payload": { "id": "JD-1721231021", "isPremium": false, "title": "Jute Craft Specialist", "recipient": "Bela Chakraborty", "notes": "Creates eco-friendly and stylish bags, mats, and decor from natural jute fibers.", "issuer": "Jharkhand Darshan Authority", "date": "24/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet21..."
+            },
+            {
+                "payload": { "id": "JD-1721232022", "isPremium": false, "title": "Wood Carver", "recipient": "Mangal Singh Munda", "notes": "Sculpts intricate designs and figures on wood, reflecting tribal motifs and stories.", "issuer": "Jharkhand Darshan Authority", "date": "23/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet22..."
+            },
+            {
+                "payload": { "id": "JD-1721233023", "isPremium": true, "title": "Grass Weaving Artisan", "recipient": "Sumitra Devi", "notes": "Weaves beautiful and durable baskets, mats, and accessories from Sabai grass.", "issuer": "Jharkhand Darshan Authority", "date": "22/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet23..."
+            },
+            // Homestays (10)
+            {
+                "payload": { "id": "JD-1721211003", "isPremium": false, "title": "Authentic Rural Homestay", "recipient": "Sunita & Raj Kumar", "notes": "Providing an authentic and hospitable rural stay experience near Netarhat.", "issuer": "Jharkhand Darshan Authority", "date": "12/07/2024"},
+                "hash": "0x7g8h9i...", "signature": "0x...", "address": "0xProviderWallet3..."
+            },
+             {
+                "payload": { "id": "JD-1721216006", "isPremium": false, "title": "Scenic Valley Homestay", "recipient": "The Gupta Family", "notes": "A peaceful homestay offering stunning views of the Patratu Valley.", "issuer": "Jharkhand Darshan Authority", "date": "09/07/2024"},
+                "hash": "0xp7q8r9...", "signature": "0x...", "address": "0xProviderWallet6..."
+            },
+            {
+                "payload": { "id": "JD-1721219009", "isPremium": true, "title": "Riverside Homestay", "recipient": "Singh's Retreat", "notes": "A comfortable and welcoming stay on the banks of the Subarnarekha river.", "issuer": "Jharkhand Darshan Authority", "date": "06/07/2024"},
+                "hash": "0xy7z8a9...", "signature": "0x...", "address": "0xProviderWallet9..."
+            },
+            {
+                "payload": { "id": "JD-1721234024", "isPremium": false, "title": "Hill View Cottage, Netarhat", "recipient": "The Kispotta Residence", "notes": "Cozy cottages offering panoramic views of the Netarhat hills and sunrise points.", "issuer": "Jharkhand Darshan Authority", "date": "21/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet24..."
+            },
+            {
+                "payload": { "id": "JD-1721235025", "isPremium": true, "title": "Jungle Abode, Betla", "recipient": "Munda Eco Stays", "notes": "Experience the thrill of the jungle in a safe, comfortable, and eco-friendly setting.", "issuer": "Jharkhand Darshan Authority", "date": "20/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet25..."
+            },
+            {
+                "payload": { "id": "JD-1721236026", "isPremium": false, "title": "Dam View Villa, Maithon", "recipient": "Roy's Villa", "notes": "A modern homestay with direct views of the Maithon Dam reservoir.", "issuer": "Jharkhand Darshan Authority", "date": "19/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet26..."
+            },
+            {
+                "payload": { "id": "JD-1721237027", "isPremium": false, "title": "Tribal Heritage Hut, Khunti", "recipient": "Adivasi Connect", "notes": "Stay in traditionally built huts and experience the rich culture of the Munda tribe.", "issuer": "Jharkhand Darshan Authority", "date": "18/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet27..."
+            },
+            {
+                "payload": { "id": "JD-1721238028", "isPremium": false, "title": "City Center Stay, Ranchi", "recipient": "The Urban Nook", "notes": "A convenient and comfortable homestay located in the heart of Ranchi.", "issuer": "Jharkhand Darshan Authority", "date": "17/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet28..."
+            },
+            {
+                "payload": { "id": "JD-1721239029", "isPremium": true, "title": "Farmhouse Retreat, Hazaribagh", "recipient": "Sinha Organic Farms", "notes": "A serene farm stay offering fresh organic meals and a peaceful environment.", "issuer": "Jharkhand Darshan Authority", "date": "16/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet29..."
+            },
+            {
+                "payload": { "id": "JD-1721240030", "isPremium": false, "title": "Pilgrim's Rest, Deoghar", "recipient": "Shanti Niwas", "notes": "A clean and peaceful homestay located conveniently for pilgrims visiting Baidyanath Temple.", "issuer": "Jharkhand Darshan Authority", "date": "15/06/2024"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet30..."
+            },
+            // Transports (10)
+            {
+                "payload": { "id": "JD-1721241031", "isPremium": false, "title": "Verified Tourist Driver", "recipient": "Sanjay Yadav", "notes": "Reliable driver with a clean Sedan (Swift Dzire). Perfect for city tours and airport transfers.", "issuer": "Jharkhand Darshan Authority", "date": "14/06/2024", "phoneNumber": "+91 98765 43210", "imageUrl": "https://placehold.co/100x100/2A6F6C/FFFFFF?text=SY"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet31..."
+            },
+            {
+                "payload": { "id": "JD-1721242032", "isPremium": true, "title": "Premium SUV Driver", "recipient": "Manoj Kumar", "notes": "Experienced driver with a spacious SUV (Toyota Innova Crysta). Ideal for families and long-distance travel.", "issuer": "Jharkhand Darshan Authority", "date": "13/06/2024", "phoneNumber": "+91 98765 43211", "imageUrl": "https://placehold.co/100x100/E8B44A/2A6F6C?text=MK"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet32..."
+            },
+            {
+                "payload": { "id": "JD-1721243033", "isPremium": false, "title": "Local Transport Driver", "recipient": "Rakesh Mahto", "notes": "Affordable and friendly driver with a hatchback (Maruti Alto). Best for short trips within the city.", "issuer": "Jharkhand Darshan Authority", "date": "12/06/2024", "phoneNumber": "+91 98765 43212", "imageUrl": "https://placehold.co/100x100/2A6F6C/FFFFFF?text=RM"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet33..."
+            },
+            {
+                "payload": { "id": "JD-1721244034", "isPremium": false, "title": "Outstation Trip Driver", "recipient": "Amit Singh", "notes": "Specializes in outstation trips from Ranchi to Netarhat, Betla, and other tourist spots. Vehicle: Mahindra XUV500.", "issuer": "Jharkhand Darshan Authority", "date": "11/06/2024", "phoneNumber": "+91 98765 43213", "imageUrl": "https://placehold.co/100x100/2A6F6C/FFFFFF?text=AS"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet34..."
+            },
+            {
+                "payload": { "id": "JD-1721245035", "isPremium": true, "title": "Luxury Transport Driver", "recipient": "Vivek Sharma", "notes": "Provides premium travel experience with a luxury sedan (Honda City). Corporate clients welcome.", "issuer": "Jharkhand Darshan Authority", "date": "10/06/2024", "phoneNumber": "+91 98765 43214", "imageUrl": "https://placehold.co/100x100/E8B44A/2A6F6C?text=VS"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet35..."
+            },
+            {
+                "payload": { "id": "JD-1721246036", "isPremium": false, "title": "Group Travel Driver", "recipient": "Prakash Tudu", "notes": "Operates a Tempo Traveller (12-seater). Perfect for large groups and family tours.", "issuer": "Jharkhand Darshan Authority", "date": "09/06/2024", "phoneNumber": "+91 98765 43215", "imageUrl": "https://placehold.co/100x100/2A6F6C/FFFFFF?text=PT"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet36..."
+            },
+            {
+                "payload": { "id": "JD-1721247037", "isPremium": false, "title": "Jamshedpur City Driver", "recipient": "Imran Khan", "notes": "Based in Jamshedpur, provides local sightseeing in a comfortable sedan (Hyundai Verna).", "issuer": "Jharkhand Darshan Authority", "date": "08/06/2024", "phoneNumber": "+91 98765 43216", "imageUrl": "https://placehold.co/100x100/2A6F6C/FFFFFF?text=IK"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet37..."
+            },
+            {
+                "payload": { "id": "JD-1721248038", "isPremium": false, "title": "Hazaribagh Local Driver", "recipient": "Sunil Oraon", "notes": "Excellent knowledge of local roads around Hazaribagh and the national park. Vehicle: Tata Tiago.", "issuer": "Jharkhand Darshan Authority", "date": "07/06/2024", "phoneNumber": "+91 98765 43217", "imageUrl": "https://placehold.co/100x100/2A6F6C/FFFFFF?text=SO"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet38..."
+            },
+            {
+                "payload": { "id": "JD-1721249039", "isPremium": false, "title": "Deoghar Pilgrim Driver", "recipient": "Bikash Pandey", "notes": "Specializes in transport for pilgrims in and around Deoghar. Courteous and reliable. Vehicle: Maruti Ertiga.", "issuer": "Jharkhand Darshan Authority", "date": "06/06/2024", "phoneNumber": "+91 98765 43218", "imageUrl": "https://placehold.co/100x100/2A6F6C/FFFFFF?text=BP"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet39..."
+            },
+            {
+                "payload": { "id": "JD-1721250040", "isPremium": false, "title": "Ranchi Airport Transfer", "recipient": "Anjali Kumari", "notes": "Punctual and professional driver for airport pickups and drops in Ranchi. Vehicle: Honda Amaze.", "issuer": "Jharkhand Darshan Authority", "date": "05/06/2024", "phoneNumber": "+91 98765 43219", "imageUrl": "https://placehold.co/100x100/2A6F6C/FFFFFF?text=AK"},
+                "hash": "0x...", "signature": "0x...", "address": "0xProviderWallet40..."
+            }
+        ];
+
+        // --- DOM Elements ---
+        const provName = document.getElementById('prov_name'), certRecipient = document.getElementById('cert_recipient');
+        const sendOtp = document.getElementById('sendOtp'), verifyOtp = document.getElementById('verifyOtp');
+        const kycStatus = document.getElementById('kyc_status'), certTitle = document.getElementById('cert_title');
+        const certNotes = document.getElementById('cert_notes'), previewCert = document.getElementById('previewCert');
+        const signCert = document.getElementById('signCert'), downloadCert = document.getElementById('downloadCert');
+        const issuePremiumCert = document.getElementById('issuePremiumCert'), signatureBox = document.getElementById('signature_box');
+        const svgContainer = document.getElementById('svg_container'), verifyInput = document.getElementById('verify_input');
+        const verifyHash = document.getElementById('verifyHash'), verifyChain = document.getElementById('verifyChain');
+        const verifyResult = document.getElementById('verify_result'), lastList = document.getElementById('last_list');
+        const usernameInput = document.getElementById('username'), passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn'), loginStatus = document.getElementById('login-status');
+        const mainNav = document.getElementById('main-nav');
+        const adminNav = document.getElementById('admin-nav');
+        const headerSubtitle = document.getElementById('header-subtitle');
+
+        // --- Notification System ---
+        function showNotification(message, type = 'info', duration = 4000) {
+            const area = document.getElementById('notification-area');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            let iconClass = 'fas fa-info-circle';
+            if (type === 'error') iconClass = 'fas fa-exclamation-circle';
+            notification.innerHTML = `<i class="${iconClass}"></i> ${message}`;
+            area.appendChild(notification);
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.5s ease-out forwards';
+                setTimeout(() => notification.remove(), 500);
+            }, duration);
+        }
+
+        // --- Core App Logic ---
+        function showView(viewId) {
+            const isAdminView = ['dashboard-view', 'verification-view'].includes(viewId);
+            
+            if (isAdminView && !localStorage.getItem('auth_token')) {
+                showView('login-view');
+                return;
+            }
+            
+            document.querySelectorAll('.main-view').forEach(view => view.style.display = 'none');
+            const targetView = document.getElementById(viewId);
+            if (targetView) {
+                targetView.style.display = targetView.id === 'login-view' ? 'flex' : 'block';
+                 if(targetView.id === 'tourist-view') targetView.style.display = 'block';
+
+                targetView.querySelectorAll('.animated-card').forEach(card => {
+                    card.style.animation = 'none';
+                    setTimeout(() => {
+                        card.style.animation = ''; // Reset animation to allow re-trigger
+                    }, 10);
+                });
+            }
+            
+            if (localStorage.getItem('auth_token')) {
+                mainNav.style.display = 'none';
+                adminNav.style.display = 'flex';
+                headerSubtitle.textContent = 'Admin Certification Panel';
+                const adminUser = localStorage.getItem('admin_user');
+                if (adminUser) {
+                    document.getElementById('admin-user-display').innerHTML = `<i class="fas fa-user-circle" style="margin-right: 8px;"></i> Welcome, <strong>${escapeXml(adminUser)}</strong>`;
+                }
+            } else {
+                mainNav.style.display = 'flex';
+                adminNav.style.display = 'none';
+                headerSubtitle.textContent = 'Blockchain-Enabled Tourism Platform';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('admin_user');
+            showView('tourist-view');
+        }
+
+        const adminCredentials = {
+            "Pragya Das": "29052005",
+            "Debojit Dutta": "26072005",
+            "Debanjan Choubey": "02102005",
+            "Avrojit Das": "11012007",
+            "Anirban Bagchi": "16062005",
+            "Devdyuti De": "07062004"
+        };
+
+        loginBtn.addEventListener('click', () => {
+            const userName = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            if (!userName) {
+                loginStatus.innerHTML = `<div class="error"><i class="fas fa-times-circle"></i> Please enter your name.</div>`;
+                return;
+            }
+
+            if (adminCredentials[userName] && adminCredentials[userName] === password) {
+                localStorage.setItem('auth_token', 'mock_token_123');
+                localStorage.setItem('admin_user', userName);
+                loginStatus.innerHTML = `<div class="success"><i class="fas fa-check-circle"></i> Login successful, ${escapeXml(userName)}! Redirecting...</div>`;
+                setTimeout(() => {
+                    showView('dashboard-view');
+                    refreshLast();
+                }, 1000);
+            } else {
+                loginStatus.innerHTML = `<div class="error"><i class="fas fa-times-circle"></i> Invalid credentials.</div>`;
+            }
+        });
+
+        provName.addEventListener('input', () => {
+             certRecipient.value = provName.value;
+        });
+
+        // --- Tourist View Functions ---
+        function getCategoryFromTitle(title) {
+            title = title.toLowerCase();
+            if (title.includes('guide')) return 'guide';
+            if (title.includes('artist') || title.includes('artisan') || title.includes('specialist') || title.includes('potter') || title.includes('weaver') || title.includes('carver')) return 'artisan';
+            if (title.includes('homestay')) return 'homestay';
+            if (title.includes('driver') || title.includes('transport')) return 'transport';
+            return 'other';
+        }
+
+        function populateProviders(filter = 'all') {
+            const container = document.getElementById('provider-list');
+            
+            const filteredCerts = mockCertificates.filter(cert => {
+                if (filter === 'all') return true;
+                return getCategoryFromTitle(cert.payload.title) === filter;
+            });
+
+            if (filteredCerts.length === 0) {
+                container.innerHTML = `<p class="muted" style="text-align:center; grid-column: 1 / -1;">No service providers found for this category.</p>`;
+                return;
+            }
+
+            container.innerHTML = filteredCerts.map((cert, index) => {
+                const category = getCategoryFromTitle(cert.payload.title);
+                const certJsonString = escapeXml(JSON.stringify(cert));
+
+                if (category === 'transport') {
+                    return `
+                    <div class="card provider-card animated-card" style="animation-delay: ${index * 0.05}s;">
+                        <div class="card-content transport-card-content">
+                            <img src="${cert.payload.imageUrl}" alt="Photo of ${cert.payload.recipient}" class="provider-photo" onerror="this.src='https://placehold.co/100x100/E9ECEF/495057?text=Photo';">
+                            <div class="provider-details">
+                                <div style="margin-bottom: 16px;">
+                                    <h3 style="font-family: 'Playfair Display', serif; margin:0;">${cert.payload.recipient}</h3>
+                                    <div class="muted">${cert.payload.title}</div>
+                                </div>
+                                <div class="verified-badge"><i class="fas fa-shield-alt"></i> Blockchain Verified</div>
+                                <p class="small muted" style="margin-top: 16px;">${cert.payload.notes}</p>
+                                <div class="provider-contact small"><i class="fas fa-phone-alt"></i> ${cert.payload.phoneNumber}</div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <button class="btn-secondary" onclick='openBookingModal(${certJsonString})'><i class="fas fa-wallet"></i> Book Now</button>
+                                <button class="btn-primary" onclick='verifyProvider(${certJsonString})'><i class="fas fa-check-circle"></i> Verify Certificate</button>
+                            </div>
+                        </div>
+                    </div>`;
+                }
+
+                // Default card for other categories
+                return `
+                <div class="card provider-card animated-card" style="animation-delay: ${index * 0.05}s;">
+                    <div class="card-content">
+                        <div style="margin-bottom: 16px;">
+                            <h3 style="font-family: 'Playfair Display', serif; margin:0;">${cert.payload.recipient}</h3>
+                            <div class="muted">${cert.payload.title}</div>
+                        </div>
+                        <div class="verified-badge"><i class="fas fa-shield-alt"></i> Blockchain Verified</div>
+                        <p class="small muted" style="margin-top: 16px;">${cert.payload.notes}</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <button class="btn-secondary" onclick='openBookingModal(${certJsonString})'><i class="fas fa-wallet"></i> Book Now</button>
+                            <button class="btn-primary" onclick='verifyProvider(${certJsonString})'><i class="fas fa-check-circle"></i> Verify Certificate</button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+
+        function filterProviders(category) {
+            document.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.btn-filter[onclick="filterProviders('${category}')"]`).classList.add('active');
+            populateProviders(category);
+        }
+
+        function verifyProvider(certObject) {
+            verifyInput.value = JSON.stringify(certObject, null, 2);
+            showView('verification-view');
+            setTimeout(() => verifyHash.click(), 200);
+        }
+
+        function openBookingModal(certObject) {
+            document.getElementById('booking-provider-name').textContent = certObject.payload.recipient;
+            document.getElementById('booking-provider-address').textContent = certObject.address;
+            openModal('booking-modal');
+        }
+
+        function proceedToPay() {
+            showNotification('Please check your Web3 wallet to complete the transaction.');
+            closeModal('booking-modal');
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // --- Certificate & Verification Logic ---
+        function makeCertificateSVG(data, isPremium = false) {
+             const qrUrl = encodeURIComponent(`https://jharkhand.darshan/verify?id=${data.id}`);
+             const qrCodeSvg = `<image href='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrUrl}&bgcolor=ffffff' x='685' y='465' height='90' width='90'/>`;
+             const emblemUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Jharkhand_State_Emblem.svg/1024px-Jharkhand_State_Emblem.svg.png';
+             
+             const primaryColor = isPremium ? '#2A6F6C' : '#1E504E';
+             const accentGradient = isPremium ? 'goldFill' : 'primaryFill';
+             const mainTitleFont = isPremium ? "'Playfair Display', serif" : "'Poppins', sans-serif";
+             const recipientFont = "'Playfair Display', serif";
+
+             return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns='http://www.w3.org/2000/svg' width='840' height='594' viewBox='0 0 840 594'><defs><linearGradient id='primaryFill' x1='0' x2='1'><stop offset='0' stop-color='#2A6F6C'/><stop offset='1' stop-color='#5FA09B'/></linearGradient><linearGradient id='goldFill' x1='0' x2='1'><stop offset='0' stop-color='#D4AF37'/><stop offset='1' stop-color='#E8B44A'/></linearGradient><filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.1"/></filter><style><![CDATA[.bg{ fill: #fff; }.border{ fill: none; stroke: url(#${accentGradient}); stroke-width: ${isPremium ? 8 : 4}; }.main-title{ font: 700 32px/1.2 ${mainTitleFont}; fill: ${primaryColor}; }.recipient{ font: 700 48px/1.2 ${recipientFont}; fill: #212121; }.body-text{ font: 400 16px/1.5 'Poppins', sans-serif; fill: #616161; }.label{ font: 600 14px/1 'Poppins', sans-serif; fill: ${primaryColor}; }.subtle{ font: 400 12px/1.4 'Poppins', sans-serif; fill: #757575; }]]></style></defs><rect class='bg' width='100%' height='100%' filter="url(#shadow)" /><rect class='border' x='${isPremium ? 15 : 20}' y='${isPremium ? 15 : 20}' width='${isPremium ? 810 : 800}' height='${isPremium ? 564 : 554}' rx='8' />${isPremium ? "<rect class='border' x='25' y='25' width='790' height='544' rx='4' stroke-width='2'/>" : ''}<image href='${emblemUrl}' x="370" y="50" height="100" width="100" opacity="${isPremium ? 0.15 : 0.1}"/><text x='420' y='190' text-anchor='middle' class='main-title'>Certificate of Authenticity</text><text x='420' y='230' text-anchor='middle' class='body-text'>This certificate is proudly presented to</text><text x='420' y='300' text-anchor='middle' class='recipient'>${escapeXml(data.recipient)}</text><text x='420' y='350' text-anchor='middle' class='body-text'>For exemplary service as a ${escapeXml(data.title)}</text><foreignObject x="120" y="380" width="600" height="60"><p xmlns="http://www.w3.org/1999/xhtml" style="font-family:'Poppins',sans-serif;font-size:16px;color:#616161;text-align:center;">${escapeXml(data.notes)}</p></foreignObject><line x1="80" y1="500" x2="330" y2="500" stroke="#bdbdbd" stroke-width="1"/><text x="80" y="520" class="label">Jharkhand Darshan Authority</text><text x="80" y="540" class="subtle">Issuer</text><line x1="420" y1="500" x2="580" y2="500" stroke="#bdbdbd" stroke-width="1"/><text x="420" y="520" class="label">${data.date}</text><text x="420" y="540" class="subtle">Date of Issue</text>${qrCodeSvg}<text x="730" y="460" text-anchor="middle" class="subtle">Verify Certificate</text><text x="730" y="570" text-anchor="middle" class="subtle" style="font-size:10px;">ID: ${data.id}</text></svg>`;
+        }
+        function escapeXml(unsafe) { return unsafe ? String(unsafe).replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[c]) : ''; }
+
+        function makeCertPayload(isPremium = false) { 
+            const recipientName = certRecipient.value || provName.value;
+            if (!recipientName) {
+                showNotification("Recipient (Provider Name) cannot be empty.", "error");
+                return null;
+            }
+            return { id: 'JD-' + Date.now(), isPremium, title: certTitle.value, recipient: recipientName, notes: certNotes.value, issuer: 'Jharkhand Darshan Authority', date: new Date().toLocaleDateString('en-IN') }; 
+        }
+
+        previewCert.addEventListener('click', () => { 
+            const payload = makeCertPayload(false); 
+            if(payload) {
+                svgContainer.innerHTML = makeCertificateSVG(payload, false); 
+            }
+        });
+
+        async function signAndIssue(isPremium = false) {
+            const btn = isPremium ? issuePremiumCert : signCert; const originalText = btn.innerHTML; btn.disabled = true; btn.innerHTML = `Signing...<span class="loading-spinner"></span>`;
+            const payload = makeCertPayload(isPremium); 
+            if (!payload) {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                return;
+            }
+            const json = JSON.stringify(payload); const bytes = ethers.utils.toUtf8Bytes(json); const hash = ethers.utils.keccak256(bytes);
+            let sigObj;
+            try {
+                if (window.ethereum) {
+                    await window.ethereum.request({ method: 'eth_requestAccounts' }); const provider = new ethers.providers.Web3Provider(window.ethereum); const signer = provider.getSigner(); const signature = await signer.signMessage(ethers.utils.arrayify(hash)); const address = await signer.getAddress(); sigObj = { payload, hash, signature, address };
+                } else { showNotification("MetaMask not detected. Using a mock signature."); const signature = '0xMOCKSIGN' + Math.random().toString(16).slice(2); const address = isPremium ? '0xJDPREMIUM_MOCK_ISSUER' : '0xJDSTANDARD_MOCK_ISSUER'; sigObj = { payload, hash, signature, address }; }
+                if (sigObj) { signatureBox.textContent = JSON.stringify(sigObj, null, 2); saveLocalRecord(sigObj); svgContainer.innerHTML = makeCertificateSVG(sigObj.payload, isPremium); }
+            } catch (e) { signatureBox.textContent = 'Signing failed: ' + e.message; } finally { btn.disabled = false; btn.innerHTML = originalText; }
+        }
+        signCert.addEventListener('click', () => signAndIssue(false));
+        issuePremiumCert.addEventListener('click', () => { showNotification('Simulating secure payment for premium certificate.'); signAndIssue(true); });
+        
+        function saveLocalRecord(obj) { const list = JSON.parse(localStorage.getItem('jd_cert_list') || '[]'); list.unshift(obj); localStorage.setItem('jd_cert_list', JSON.stringify(list.slice(0, 10))); refreshLast(); }
+        
+        function refreshLast() {
+            const list = JSON.parse(localStorage.getItem('jd_cert_list') || '[]');
+            if (!list.length) { lastList.innerHTML = '<div class="muted">No certificates have been issued yet.</div>'; return; }
+            lastList.innerHTML = list.map(it => `<div class="last-item"><div style="font-weight:600;color:var(--primary);">${it.payload.recipient} <span class="badge ${it.payload.isPremium ? 'premium' : 'standard'}">${it.payload.isPremium ? 'PREMIUM' : 'STANDARD'}</span></div><div class="small muted">${it.payload.title} on ${it.payload.date}</div><div class="small" style="font-weight:500;margin-top:4px; font-family:monospace; font-size: 11px;">Hash: ${it.hash.slice(0, 20)}...</div></div>`).join('');
+        }
+        
+        downloadCert.addEventListener('click', () => {
+            const svgEl = svgContainer.querySelector('svg'); if (!svgEl) { showNotification('Please preview or issue a certificate first.', 'error'); return; }
+            const svgData = new XMLSerializer().serializeToString(svgEl); const canvas = document.createElement('canvas'); canvas.width = 840 * 2; canvas.height = 594 * 2;
+            const img = new Image(); const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' }); const url = URL.createObjectURL(svgBlob);
+            img.onload = () => { const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); URL.revokeObjectURL(url); const a = document.createElement('a'); a.href = canvas.toDataURL('image/png'); a.download = 'jharkhand_darshan_certificate.png'; a.click(); }; img.src = url;
+        });
+
+        verifyHash.addEventListener('click', async () => {
+            let j; try { j = JSON.parse(verifyInput.value); } catch (e) { verifyResult.innerHTML = `<div class="error"><i class="fas fa-exclamation-circle"></i> Please paste valid signature JSON.</div>`; return; }
+            if(!j.payload || !j.hash || !j.signature || !j.address){
+                 verifyResult.innerHTML = `<div class="error"><i class="fas fa-exclamation-circle"></i> Incomplete JSON. Missing required fields.</div>`; return;
+            }
+            if (j.signature && j.signature.startsWith('0xMOCKSIGN')) { 
+                 verifyResult.innerHTML = `<div class="success"><i class="fas fa-check-circle"></i> <strong>This is a valid MOCK signature.</strong> This demonstrates a valid certificate issued by:<br><span style="word-wrap:break-all; font-family:monospace; font-size:12px;">${j.address}</span></div>`; return;
+            }
+            if (!j.signature) {
+                 verifyResult.innerHTML = `<div class="success"><i class="fas fa-check-circle"></i> <strong>This is a valid DEMO certificate.</strong> The displayed data is authentic and issued to:<br><span style="word-wrap:break-all; font-family:monospace; font-size:12px;">${j.address}</span></div>`; return;
+            }
+            try { const signerAddr = ethers.utils.verifyMessage(ethers.utils.arrayify(j.hash), j.signature); const isValid = signerAddr.toLowerCase() === j.address.toLowerCase(); const certType = j.payload.isPremium ? 'Premium' : 'Standard'; verifyResult.innerHTML = isValid ? `<div class="success"><i class="fas fa-check-circle"></i> <strong>Signature is valid.</strong> This is a valid ${certType} Certificate issued by:<br><span style="word-wrap:break-all; font-family:monospace; font-size:12px;">${signerAddr}</span></div>` : `<div class="error"><i class="fas fa-times-circle"></i> Signature mismatch. The certificate is not valid.</div>`; } catch (e) { verifyResult.innerHTML = `<div class="error"><i class="fas fa-exclamation-triangle"></i> Verification failed. This might be a mock signature or the data is invalid. Error: ${e.message}</div>` }
+        });
+        
+        verifyChain.addEventListener('click', () => {
+            let j; try { j = JSON.parse(verifyInput.value); } catch (e) { verifyResult.innerHTML = `<div class="error"><i class="fas fa-exclamation-circle"></i> Please paste valid signature JSON.</div>`; return; }
+            const list = JSON.parse(localStorage.getItem('jd_cert_list') || '[]'); const found = list.find(x => x.hash === j.hash) || mockCertificates.find(x => x.hash === j.hash);
+            verifyResult.innerHTML = found ? '<div class="success"><i class="fas fa-check-circle"></i> The certificate hash was found in our mock records.</div>' : '<div class="muted">Not found in local records. (A real system would query a blockchain or database.)</div>';
+        });
+
+        // --- Initial Load ---
+        window.addEventListener('load', () => {
+            populateProviders('all');
+            if (localStorage.getItem('auth_token')) {
+                showView('dashboard-view');
+                refreshLast();
+            } else {
+                showView('tourist-view');
+            }
+            previewCert.click();
+        });
+    </script>
+</body>
+</html> -->
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Jharkhand Darshan — Blockchain-Enabled Tourism</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2A6F6C; --accent: #E8B44A; --gold: #D4AF37; --light-primary: #5FA09B;
+            --muted: #616161; --bg: #f8f9fa; --card-bg: #ffffff; --border-color: #e0e0e0;
+            /* Added for nav */
+            --primary-foreground: #ffffff; --card-foreground: #020617; --radius: 0.75rem;
+        }
+        body { font-family: 'Poppins', sans-serif; margin: 0; background-color: var(--bg); color: #212121; }
+        
+        /* --- 1. CONSISTENT NAVIGATION BAR --- */
+        .navigation {
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .nav-container { max-width: 1200px; margin-inline: auto; padding-inline: 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-size: 1.5rem; font-weight: 800; color: var(--primary-foreground); text-decoration: none; }
+        .nav-links { list-style: none; display: flex; gap: 1.5rem; margin:0; padding:0; }
+        .nav-link { color: var(--primary-foreground); text-decoration: none; font-weight: 500; padding: 0.5rem 1rem; border-radius: 0.375rem; transition: background-color 0.3s; }
+        .nav-link:hover { background-color: rgba(255, 255, 255, 0.1); }
+        .dropdown { position: relative; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background-color: var(--card-bg); border-radius: var(--radius); box-shadow: 0 4px 6px rgba(0,0,0,0.1); list-style: none; padding: 0.5rem; min-width: 180px; }
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu a { display: block; padding: 0.5rem 1rem; color: var(--card-foreground); text-decoration: none; border-radius: 0.375rem; }
+        .dropdown-menu a:hover { background-color: #f1f5f9; }
+        
+        /* --- Original Page Styles --- */
+        .page-wrapper { margin-top: 68px; /* Offset for fixed nav */ }
+        header { background: var(--card-bg); color: var(--primary); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+        .logo { width: 52px; height: 52px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 24px; }
+        h1 { margin: 0; font-size: 26px; font-weight: 700; font-family: 'Playfair Display', serif; }
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 24px; }
+        .card { background: var(--card-bg); border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 10px 20px rgba(0,0,0,0.08); padding: 28px; margin-bottom: 24px; border: 1px solid var(--border-color); transition: all 0.3s ease-in-out; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 6px 10px rgba(0,0,0,0.05), 0 15px 30px rgba(0,0,0,0.1); }
+        h2 { margin: 0 0 16px 0; font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 12px; color: var(--primary); }
+        h2 i { color: var(--light-primary); }
+        label { display: block; font-size: 14px; margin-top: 18px; color: var(--muted); font-weight: 600; }
+        input, select, textarea { width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid #ced4da; margin-top: 8px; font-size: 15px; font-family: 'Poppins', sans-serif; box-sizing: border-box; transition: all 0.3s ease; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--light-primary); box-shadow: 0 0 0 3px rgba(77, 182, 172, 0.2); }
+        button { width: 100%; padding: 14px; border-radius: 8px; border: none; margin-top: 16px; font-size: 16px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #1E504E; }
+        .btn-secondary { background: #f1f3f5; color: #495057; border: 1px solid #dee2e6;}
+        .btn-secondary:hover { background: #e9ecef; }
+        .btn-accent { background: var(--accent); color: var(--primary); }
+        .btn-accent:hover { background: #D8A43A; }
+        .muted { color: var(--muted); font-size: 14px; }
+        .cert-preview { border: 1px solid var(--border-color); padding: 20px; border-radius: 16px; text-align: center; position: sticky; top: 120px; background-color: #f8f9fa; }
+        #svg_container { display: flex; justify-content: center; align-items: center; min-height: 300px; background-color: #e9ecef; border-radius: 8px; }
+        .small { font-size: 13px; }
+        .row { display: flex; gap: 16px; margin-top: 16px; }
+        .row > * { flex: 1; }
+        .success, .error { padding: 16px; border-radius: 8px; font-weight: 500; display:flex; align-items:center; gap: 10px;}
+        .success { background:#EAF6F6; color: #1E504E; border: 1px solid #A2CFCB;}
+        .error { background: #fff5f5; color: #c92a2a; border: 1px solid #ffc9c9;}
+        pre { background: #212121; color: #eceff1; padding: 16px; border-radius: 8px; overflow: auto; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 14px; }
+        .grid { display: grid; grid-template-columns: 1fr 450px; gap: 32px; }
+        .loading-spinner { border: 2px solid rgba(255, 255, 255, 0.3); border-top-color: #fff; border-radius: 50%; width: 1em; height: 1em; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .animated-card { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.6s ease-out forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .main-view { display: none; }
+        #login-view { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 200px); flex-direction: column; }
+        #login-card { width: 100%; max-width: 420px; text-align: center; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; vertical-align: middle; }
+        .badge.standard { background-color: #EAF6F6; color: #1E504E; border: 1px solid #A2CFCB; }
+        .badge.premium { background: linear-gradient(45deg, var(--gold), var(--accent)); color: #493802; text-shadow: 1px 1px 2px rgba(255,255,255,0.2); }
+        .last-item { background: #fafafa; padding: 16px; border-radius: 8px; margin-top: 12px; border: 1px solid #e9ecef; transition: background-color 0.3s; }
+        .last-item:hover { background-color: #f1f3f5; }
+        .hero { background: linear-gradient(rgba(0, 51, 43, 0.8), rgba(0, 51, 43, 0.8)), url('https://images.unsplash.com/photo-1628337837748-a047c32b571c?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat; padding: 80px 24px; text-align: center; color: white; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 48px; margin-bottom: 16px; }
+        .hero p { font-size: 18px; max-width: 600px; margin: 0 auto 32px auto; }
+        .provider-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+        .provider-card { display: flex; flex-direction: column; }
+        .provider-card .card-content { flex-grow: 1; display: flex; flex-direction: column; }
+        .provider-card .card-footer { margin-top: auto; }
+        .verified-badge { display: inline-flex; align-items: center; gap: 6px; background-color: #e6fcf5; color: #006d4f; padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 13px; }
+        .verified-badge i { font-size: 14px; }
+        .provider-photo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--border-color); margin-bottom: 16px; flex-shrink: 0; }
+        .transport-card-content { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .provider-details { flex-grow: 1; }
+        .provider-contact { margin-top: 12px; font-weight: 600; color: var(--primary); background-color: #eaf6f6; padding: 6px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 200; }
+        .modal.active { opacity: 1; pointer-events: auto; }
+        .modal-content { background: white; padding: 32px; border-radius: 16px; width: 90%; max-width: 500px; transform: scale(0.95); transition: transform 0.3s ease; }
+        .modal.active .modal-content { transform: scale(1); }
+        .filter-buttons { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .btn-filter { background-color: #f1f3f5; color: #495057; border: 1px solid #dee2e6; padding: 10px 20px; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; width: auto; margin-top: 0; }
+        .btn-filter:hover { background-color: #e9ecef; transform: translateY(-2px); }
+        .btn-filter.active { background-color: var(--primary); color: white; border-color: var(--primary); }
+        #notification-area { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; width: 320px; }
+        .notification { background-color: #212121; color: white; padding: 12px 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); opacity: 0; transform: translateY(20px); animation: fadeInSlideUp 0.5s ease-out forwards; display: flex; align-items: center; gap: 10px; }
+        .notification.info { background-color: var(--primary); } .notification.error { background-color: #c92a2a; }
+        @keyframes fadeInSlideUp { to { opacity: 1; transform: translateY(0); } } @keyframes fadeOut { to { opacity: 0; } }
+        @media (min-width: 500px) { .transport-card-content { flex-direction: row; text-align: left; align-items: flex-start; gap: 20px; } .provider-photo { margin-bottom: 0; } }
+        @media (max-width: 992px) { .grid { grid-template-columns: 1fr; } .cert-preview { position: static; top: 0; } }
+    </style>
+</head>
+<body>
+    <nav class="navigation">
+        <div class="nav-container">
+            <a href="main.html" class="nav-logo">Jharkhand Tourism</a>
+            <ul class="nav-links">
+                <li><a href="main.html" class="nav-link">Home</a></li>
+                <li><a href="destinations.html" class="nav-link">Destinations</a></li>
+                <li class="dropdown">
+                    <a href="#" class="nav-link">Experiences <span style="font-size:1.1em;vertical-align:middle;">&#9662;</span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="cultural_events.html">Cultural Events</a></li>
+                        <li><a href="ecotourism.html">Eco-Tourism</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="digitalanother.html" class="nav-link" style="background-color: rgba(255, 255, 255, 0.2);">Admin Tools <span style="font-size:1.1em;vertical-align:middle;">&#9662;</span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="dashboard.html">Executive Dashboard</a></li>
+                        <li><a href="digital_certification.html">Digital Certification</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+    <div class="page-wrapper">
+        <div class="main-view" id="tourist-view">
+            <div class="hero"><h1 class="animated-card">Authenticity You Can Trust</h1><p class="animated-card" style="animation-delay: 0.1s;">Explore Jharkhand with blockchain-verified guides and artisans. Every booking is secure, every craft is genuine.</p></div>
+            <div class="container"><h2 style="justify-content: center; margin-bottom: 16px;">Verified Local Service Providers</h2><div class="filter-buttons" style="text-align: center; margin-bottom: 32px;"><button class="btn-filter active" onclick="filterProviders('all')">All</button><button class="btn-filter" onclick="filterProviders('guide')">Guides</button><button class="btn-filter" onclick="filterProviders('artisan')">Artisans</button><button class="btn-filter" onclick="filterProviders('homestay')">Homestays</button><button class="btn-filter" onclick="filterProviders('transport')">Transport</button></div><div class="provider-grid" id="provider-list"></div></div>
+        </div>
+        <div class="container main-view" id="login-view"><div class="card animated-card" id="login-card"><h2><i class="fas fa-lock"></i> Admin Login</h2><div class="muted">Please enter your assigned administrator credentials.</div><label for="username">Your Name</label><input type="text" id="username" placeholder="Enter your name" /><label for="password">Password</label><input type="password" id="password" placeholder="Enter your password" /><button class="btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button><div id="login-status" style="margin-top:16px"></div></div></div>
+        <div class="container main-view" id="dashboard-view"><div class="grid"><div><div class="card animated-card" style="animation-delay: 0.1s;"><h2><i class="fas fa-id-card"></i> Provider Registration</h2><div class="muted">Register and verify a new provider to prepare for certification.</div><label>Provider Name</label><input id="prov_name" placeholder="e.g., Anjali Devi - Homestay Owner" /><label>Service Category</label><input id="prov_service" placeholder="e.g., Tribal Art Guide, Rural Homestay" /><label>Phone Number</label><input id="prov_phone" placeholder="+91XXXXXXXXXX" /><div class="row"><button class="btn-secondary" id="sendOtp"><i class="fas fa-paper-plane"></i> Send OTP</button><button class="btn-primary" id="verifyOtp"><i class="fas fa-check"></i> Verify OTP</button></div><label>Enter OTP</label><input id="otp_input" placeholder="6-digit OTP" /><div id="kyc_status" style="margin-top:16px"></div></div><div class="card animated-card" style="animation-delay: 0.2s;"><h2><i class="fas fa-award"></i> Issue Certificate</h2><div class="muted">Create a unique certificate. Choose between a standard or premium certificate.</div><label>Certificate Title</label><input id="cert_title" value="Certificate of Authentic Local Service" /><label>Recipient (Provider Name)</label><input id="cert_recipient" placeholder="Auto-filled from Provider Name above"/><label>Description / Notes</label><textarea id="cert_notes" rows="3">Recognized for providing authentic and reliable homestay services in the Palamu region.</textarea><div class="row"><button class="btn-secondary" id="previewCert"><i class="fas fa-eye"></i> Preview</button><button class="btn-primary" id="signCert"><i class="fas fa-signature"></i> Sign & Issue Standard</button></div><button class="btn-accent" id="issuePremiumCert"><i class="fas fa-star"></i> Issue Premium Certificate (Simulated Payment)</button><div style="margin-top:16px" class="muted">Certificate Data Payload</div><pre id="signature_box">(No certificate data yet)</pre></div><div class="card animated-card" style="animation-delay: 0.3s;"><h2><i class="fas fa-list-alt"></i> Recently Issued Certificates</h2><div id="last_list" class="small muted"></div></div></div><aside><div class="card cert-preview animated-card" id="cert_area" style="animation-delay: 0.2s;"><h3 style="margin:0 0 10px 0;text-align:left; font-family: 'Playfair Display', serif; color: var(--primary);">Certificate Preview</h3><div id="svg_container"></div><div class="small muted" style="margin-top:12px">The certificate is a verifiable SVG. It can be downloaded as a high-quality PNG.</div><button class="btn-secondary" id="downloadCert"><i class="fas fa-download"></i> Download PNG</button></div></aside></div></div>
+        <div class="container main-view" id="verification-view"><div class="card animated-card"><h2><i class="fas fa-check-circle"></i> Verify Certificate Integrity</h2><div class="muted">Paste a certificate's JSON payload here to verify its cryptographic signature and the issuer's identity.</div><label for="verify_input">Paste Certificate JSON</label><textarea id="verify_input" rows="8" placeholder="Paste the full JSON object from a certificate here..."></textarea><div class="row"><button class="btn-primary" id="verifyHash"><i class="fas fa-shield-alt"></i> Verify Signature</button><button class="btn-secondary" id="verifyChain"><i class="fas fa-cubes"></i> Check On-Chain (Mock)</button></div><div id="verify_result" style="margin-top:16px"></div></div></div>
+        <div class="modal" id="booking-modal"><div class="modal-content"><h2><i class="fas fa-shield-alt"></i> Secure Booking</h2><p class="muted">You are about to book <strong id="booking-provider-name">Provider</strong>. This will initiate a secure, direct transaction on the blockchain via your Web3 wallet (e.g., MetaMask).</p><div style="margin-top:16px; background: #f1f3f5; padding: 12px; border-radius: 8px; font-size: 14px;"><strong>Amount:</strong> 0.05 ETH (example)<br><strong>Recipient Address:</strong> <span id="booking-provider-address" style="font-family:monospace; word-break:break-all;"></span></div><p class="small muted" style="margin-top:16px;">Please confirm the transaction in your wallet extension to finalize the booking.</p><div class="row"><button class="btn-secondary" onclick="closeModal('booking-modal')">Cancel</button><button class="btn-primary" onclick="proceedToPay()">Proceed to Pay</button></div></div></div>
+    </div>
+    <div id="notification-area"></div>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+    <script>
+        // --- ALL JAVASCRIPT FROM THE ORIGINAL FILE IS HERE ---
+        const mockCertificates=[{"payload":{"id":"JD-1721212002","isPremium":!1,"title":"Certified Wildlife Guide","recipient":"Ramesh Singh","notes":"Verified guide for Betla National Park with 5+ years of experience.","issuer":"Jharkhand Darshan Authority","date":"14/07/2024"},"hash":"0x4d5e6f...","signature":"0x...","address":"0xProviderWallet2..."},{payload:{"id":"JD-1721214004","isPremium":!1,"title":"Certified Trekking Guide","recipient":"Alok Tudu","notes":"Expert in leading treks through the Parasnath Hills with a focus on safety and local flora.","issuer":"Jharkhand Darshan Authority","date":"11/07/2024"},"hash":"0xj1k2l3...","signature":"0x...","address":"0xProviderWallet4..."},{payload:{"id":"JD-1721217007","isPremium":!1,"title":"Cultural Heritage Guide","recipient":"Priya Kumari","notes":"Specializes in the history and stories of Jharkhand's ancient temples and monuments.","issuer":"Jharkhand Darshan Authority","date":"08/07/2024"},"hash":"0xs1t2u3...","signature":"0x...","address":"0xProviderWallet7..."},{payload:{"id":"JD-1721223013","isPremium":!0,"title":"Waterfall Exploration Guide","recipient":"Arjun Oraon","notes":"Specializes in guiding tourists to the hidden waterfalls and natural pools of Jharkhand.","issuer":"Jharkhand Darshan Authority","date":"02/07/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet13..."},{payload:{"id":"JD-1721224014","isPremium":!1,"title":"Historical Sites Guide","recipient":"Meena Soren","notes":"An expert storyteller who brings the history of Maluti temples and ancient forts to life.","issuer":"Jharkhand Darshan Authority","date":"01/07/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet14..."},{payload:{"id":"JD-1721225015","isPremium":!1,"title":"Bird Watching Guide","recipient":"Suraj Mahto","notes":"Leads tours in the Udhwa Lake Bird Sanctuary, identifying rare and migratory species.","issuer":"Jharkhand Darshan Authority","date":"30/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet15..."},{payload:{"id":"JD-1721226016","isPremium":!1,"title":"Village Life Experience Guide","recipient":"Deepa Bhagat","notes":"Offers immersive tours into local tribal villages, showcasing their culture and lifestyle.","issuer":"Jharkhand Darshan Authority","date":"29/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet16..."},{payload:{"id":"JD-1721227017","isPremium":!0,"title":"Rock Art & Cave Guide","recipient":"Vikram Hansda","notes":"Expert on the prehistoric rock art found in the Isko caves of Hazaribagh.","issuer":"Jharkhand Darshan Authority","date":"28/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet17..."},{payload:{"id":"JD-1721228018","isPremium":!1,"title":"Dam & Reservoir Guide","recipient":"Santosh Bedia","notes":"Provides insightful tours of the major dams like Panchet and Maithon, explaining their significance.","issuer":"Jharkhand Darshan Authority","date":"27/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet18..."},{payload:{"id":"JD-1721229019","isPremium":!1,"title":"Botanical Garden Guide","recipient":"Anita Kachhap","notes":"A botany enthusiast guiding visitors through the diverse flora at the Birsa Munda Botanical Garden.","issuer":"Jharkhand Darshan Authority","date":"26/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet19..."},{payload:{"id":"JD-1721213001","isPremium":!0,"title":"Master Sohrai Artist","recipient":"Parvati Devi","notes":"Authenticated as a master artist of Sohrai art, preserving traditional techniques.","issuer":"Jharkhand Darshan Authority","date":"15/07/2024"},"hash":"0x1a2b3c...","signature":"0x...","address":"0xProviderWallet1..."},{payload:{"id":"JD-1721215005","isPremium":!0,"title":"Dhokra Metal Artisan","recipient":"Mohan Karmakar","notes":"A traditional Dhokra artist creating exquisite bell metal crafts passed down through generations.","issuer":"Jharkhand Darshan Authority","date":"10/07/2024"},"hash":"0xm4n5o6...","signature":"0x...","address":"0xProviderWallet5..."},{payload:{"id":"JD-1721218008","isPremium":!1,"title":"Paitkar Painting Specialist","recipient":"Savitri Murmu","notes":"Reviving the ancient art of Paitkar scroll painting, telling stories of local folklore.","issuer":"Jharkhand Darshan Authority","date":"07/07/2024"},"hash":"0xv4w5x6...","signature":"0x...","address":"0xProviderWallet8..."},{payload:{"id":"JD-1721220010","isPremium":!1,"title":"Bamboo Craft Artisan","recipient":"Birsa Munda","notes":"Creates intricate and functional items from locally sourced bamboo.","issuer":"Jharkhand Darshan Authority","date":"05/07/2024"},"hash":"0xb1c2d3...","signature":"0x...","address":"0xProviderWallet10..."},{payload:{"id":"JD-1721221011","isPremium":!1,"title":"Terracotta Potter","recipient":"Lakshmi Prajapati","notes":"Handcrafts traditional terracotta pottery, from utensils to decorative items.","issuer":"Jharkhand Darshan Authority","date":"04/07/2024"},"hash":"0xe4f5g6...","signature":"0x...","address":"0xProviderWallet11..."},{payload:{"id":"JD-1721222012","isPremium":!0,"title":"Traditional Weaver","recipient":"Sohini Das","notes":"Weaves beautiful textiles using traditional Jharkhandi looms and patterns.","issuer":"Jharkhand Darshan Authority","date":"03/07/2024"},"hash":"0xh7i8j9...","signature":"0x...","address":"0xProviderWallet12..."},{payload:{"id":"JD-1721230020","isPremium":!1,"title":"Iron Craft Artisan (Loha Shilp)","recipient":"Ratan Lohar","notes":"Forges traditional tribal iron crafts and decorative items using age-old techniques.","issuer":"Jharkhand Darshan Authority","date":"25/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet20..."},{payload:{"id":"JD-1721231021","isPremium":!1,"title":"Jute Craft Specialist","recipient":"Bela Chakraborty","notes":"Creates eco-friendly and stylish bags, mats, and decor from natural jute fibers.","issuer":"Jharkhand Darshan Authority","date":"24/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet21..."},{payload:{"id":"JD-1721232022","isPremium":!1,"title":"Wood Carver","recipient":"Mangal Singh Munda","notes":"Sculpts intricate designs and figures on wood, reflecting tribal motifs and stories.","issuer":"Jharkhand Darshan Authority","date":"23/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet22..."},{payload:{"id":"JD-1721233023","isPremium":!0,"title":"Grass Weaving Artisan","recipient":"Sumitra Devi","notes":"Weaves beautiful and durable baskets, mats, and accessories from Sabai grass.","issuer":"Jharkhand Darshan Authority","date":"22/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet23..."},{payload:{"id":"JD-1721211003","isPremium":!1,"title":"Authentic Rural Homestay","recipient":"Sunita & Raj Kumar","notes":"Providing an authentic and hospitable rural stay experience near Netarhat.","issuer":"Jharkhand Darshan Authority","date":"12/07/2024"},"hash":"0x7g8h9i...","signature":"0x...","address":"0xProviderWallet3..."},{payload:{"id":"JD-1721216006","isPremium":!1,"title":"Scenic Valley Homestay","recipient":"The Gupta Family","notes":"A peaceful homestay offering stunning views of the Patratu Valley.","issuer":"Jharkhand Darshan Authority","date":"09/07/2024"},"hash":"0xp7q8r9...","signature":"0x...","address":"0xProviderWallet6..."},{payload:{"id":"JD-1721219009","isPremium":!0,"title":"Riverside Homestay","recipient":"Singh's Retreat","notes":"A comfortable and welcoming stay on the banks of the Subarnarekha river.","issuer":"Jharkhand Darshan Authority","date":"06/07/2024"},"hash":"0xy7z8a9...","signature":"0x...","address":"0xProviderWallet9..."},{payload:{"id":"JD-1721234024","isPremium":!1,"title":"Hill View Cottage, Netarhat","recipient":"The Kispotta Residence","notes":"Cozy cottages offering panoramic views of the Netarhat hills and sunrise points.","issuer":"Jharkhand Darshan Authority","date":"21/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet24..."},{payload:{"id":"JD-1721235025","isPremium":!0,"title":"Jungle Abode, Betla","recipient":"Munda Eco Stays","notes":"Experience the thrill of the jungle in a safe, comfortable, and eco-friendly setting.","issuer":"Jharkhand Darshan Authority","date":"20/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet25..."},{payload:{"id":"JD-1721236026","isPremium":!1,"title":"Dam View Villa, Maithon","recipient":"Roy's Villa","notes":"A modern homestay with direct views of the Maithon Dam reservoir.","issuer":"Jharkhand Darshan Authority","date":"19/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet26..."},{payload:{"id":"JD-1721237027","isPremium":!1,"title":"Tribal Heritage Hut, Khunti","recipient":"Adivasi Connect","notes":"Stay in traditionally built huts and experience the rich culture of the Munda tribe.","issuer":"Jharkhand Darshan Authority","date":"18/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet27..."},{payload:{"id":"JD-1721238028","isPremium":!1,"title":"City Center Stay, Ranchi","recipient":"The Urban Nook","notes":"A convenient and comfortable homestay located in the heart of Ranchi.","issuer":"Jharkhand Darshan Authority","date":"17/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet28..."},{payload:{"id":"JD-1721239029","isPremium":!0,"title":"Farmhouse Retreat, Hazaribagh","recipient":"Sinha Organic Farms","notes":"A serene farm stay offering fresh organic meals and a peaceful environment.","issuer":"Jharkhand Darshan Authority","date":"16/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet29..."},{payload:{"id":"JD-1721240030","isPremium":!1,"title":"Pilgrim's Rest, Deoghar","recipient":"Shanti Niwas","notes":"A clean and peaceful homestay located conveniently for pilgrims visiting Baidyanath Temple.","issuer":"Jharkhand Darshan Authority","date":"15/06/2024"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet30..."},{payload:{"id":"JD-1721241031","isPremium":!1,"title":"Verified Tourist Driver","recipient":"Sanjay Yadav","notes":"Reliable driver with a clean Sedan (Swift Dzire). Perfect for city tours and airport transfers.","issuer":"Jharkhand Darshan Authority","date":"14/06/2024","phoneNumber":"+91 98765 43210","imageUrl":"https://placehold.co/100x100/2A6F6C/FFFFFF?text=SY"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet31..."},{payload:{"id":"JD-1721242032","isPremium":!0,"title":"Premium SUV Driver","recipient":"Manoj Kumar","notes":"Experienced driver with a spacious SUV (Toyota Innova Crysta). Ideal for families and long-distance travel.","issuer":"Jharkhand Darshan Authority","date":"13/06/2024","phoneNumber":"+91 98765 43211","imageUrl":"https://placehold.co/100x100/E8B44A/2A6F6C?text=MK"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet32..."},{payload:{"id":"JD-1721243033","isPremium":!1,"title":"Local Transport Driver","recipient":"Rakesh Mahto","notes":"Affordable and friendly driver with a hatchback (Maruti Alto). Best for short trips within the city.","issuer":"Jharkhand Darshan Authority","date":"12/06/2024","phoneNumber":"+91 98765 43212","imageUrl":"https://placehold.co/100x100/2A6F6C/FFFFFF?text=RM"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet33..."},{payload:{"id":"JD-1721244034","isPremium":!1,"title":"Outstation Trip Driver","recipient":"Amit Singh","notes":"Specializes in outstation trips from Ranchi to Netarhat, Betla, and other tourist spots. Vehicle: Mahindra XUV500.","issuer":"Jharkhand Darshan Authority","date":"11/06/2024","phoneNumber":"+91 98765 43213","imageUrl":"https://placehold.co/100x100/2A6F6C/FFFFFF?text=AS"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet34..."},{payload:{"id":"JD-1721245035","isPremium":!0,"title":"Luxury Transport Driver","recipient":"Vivek Sharma","notes":"Provides premium travel experience with a luxury sedan (Honda City). Corporate clients welcome.","issuer":"Jharkhand Darshan Authority","date":"10/06/2024","phoneNumber":"+91 98765 43214","imageUrl":"https://placehold.co/100x100/E8B44A/2A6F6C?text=VS"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet35..."},{payload:{"id":"JD-1721246036","isPremium":!1,"title":"Group Travel Driver","recipient":"Prakash Tudu","notes":"Operates a Tempo Traveller (12-seater). Perfect for large groups and family tours.","issuer":"Jharkhand Darshan Authority","date":"09/06/2024","phoneNumber":"+91 98765 43215","imageUrl":"https://placehold.co/100x100/2A6F6C/FFFFFF?text=PT"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet36..."},{payload:{"id":"JD-1721247037","isPremium":!1,"title":"Jamshedpur City Driver","recipient":"Imran Khan","notes":"Based in Jamshedpur, provides local sightseeing in a comfortable sedan (Hyundai Verna).","issuer":"Jharkhand Darshan Authority","date":"08/06/2024","phoneNumber":"+91 98765 43216","imageUrl":"https://placehold.co/100x100/2A6F6C/FFFFFF?text=IK"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet37..."},{payload:{"id":"JD-1721248038","isPremium":!1,"title":"Hazaribagh Local Driver","recipient":"Sunil Oraon","notes":"Excellent knowledge of local roads around Hazaribagh and the national park. Vehicle: Tata Tiago.","issuer":"Jharkhand Darshan Authority","date":"07/06/2024","phoneNumber":"+91 98765 43217","imageUrl":"https://placehold.co/100x100/2A6F6C/FFFFFF?text=SO"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet38..."},{payload:{"id":"JD-1721249039","isPremium":!1,"title":"Deoghar Pilgrim Driver","recipient":"Bikash Pandey","notes":"Specializes in transport for pilgrims in and around Deoghar. Courteous and reliable. Vehicle: Maruti Ertiga.","issuer":"Jharkhand Darshan Authority","date":"06/06/2024","phoneNumber":"+91 98765 43218","imageUrl":"https://placehold.co/100x100/2A6F6C/FFFFFF?text=BP"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet39..."},{payload:{"id":"JD-1721250040","isPremium":!1,"title":"Ranchi Airport Transfer","recipient":"Anjali Kumari","notes":"Punctual and professional driver for airport pickups and drops in Ranchi. Vehicle: Honda Amaze.","issuer":"Jharkhand Darshan Authority","date":"05/06/2024","phoneNumber":"+91 98765 43219","imageUrl":"https://placehold.co/100x100/2A6F6C/FFFFFF?text=AK"},"hash":"0x...","signature":"0x...","address":"0xProviderWallet40..."}];
+        const provName=document.getElementById("prov_name"),certRecipient=document.getElementById("cert_recipient"),sendOtp=document.getElementById("sendOtp"),verifyOtp=document.getElementById("verifyOtp"),kycStatus=document.getElementById("kyc_status"),certTitle=document.getElementById("cert_title"),certNotes=document.getElementById("cert_notes"),previewCert=document.getElementById("previewCert"),signCert=document.getElementById("signCert"),downloadCert=document.getElementById("downloadCert"),issuePremiumCert=document.getElementById("issuePremiumCert"),signatureBox=document.getElementById("signature_box"),svgContainer=document.getElementById("svg_container"),verifyInput=document.getElementById("verify_input"),verifyHash=document.getElementById("verifyHash"),verifyChain=document.getElementById("verifyChain"),verifyResult=document.getElementById("verify_result"),lastList=document.getElementById("last_list"),usernameInput=document.getElementById("username"),passwordInput=document.getElementById("password"),loginBtn=document.getElementById("loginBtn"),loginStatus=document.getElementById("login-status");
+        function showNotification(e,t="info",a=4e3){const i=document.getElementById("notification-area"),n=document.createElement("div");n.className=`notification ${t}`;let s="fas fa-info-circle";"error"===t&&(s="fas fa-exclamation-circle"),n.innerHTML=`<i class="${s}"></i> ${e}`,i.appendChild(n),setTimeout(()=>{n.style.animation="fadeOut 0.5s ease-out forwards",setTimeout(()=>n.remove(),500)},a)}
+        function showView(e){if(["dashboard-view","verification-view"].includes(e)&&!localStorage.getItem("auth_token"))return void showView("login-view");document.querySelectorAll(".main-view").forEach(t=>t.style.display="none");const t=document.getElementById(e);t&&(t.style.display="login-view"===t.id?"flex":"block","tourist-view"===t.id&&(t.style.display="block"),t.querySelectorAll(".animated-card").forEach(e=>{e.style.animation="none",setTimeout(()=>{e.style.animation=""},10)}))}
+        function logout(){localStorage.removeItem("auth_token"),showView("tourist-view")}const adminCredentials={"Pragya Das":"29052005","Debojit Dutta":"26072005","Debanjan Choubey":"02102005","Avrojit Das":"11012007", "Anirban Bagchi": "16062005", "Devdyuti De": "07062004"};
+        function getCategoryFromTitle(e){return(e=e.toLowerCase()).includes("guide")?"guide":e.includes("artist")||e.includes("artisan")||e.includes("specialist")||e.includes("potter")||e.includes("weaver")||e.includes("carver")?"artisan":e.includes("homestay")?"homestay":e.includes("driver")||e.includes("transport")?"transport":"other"}
+        function populateProviders(e="all"){const t=document.getElementById("provider-list"),a=mockCertificates.filter(t=>"all"===e||getCategoryFromTitle(t.payload.title)===e);0===a.length?t.innerHTML='<p class="muted" style="text-align:center; grid-column: 1 / -1;">No service providers found for this category.</p>':t.innerHTML=a.map((t,a)=>{const i=getCategoryFromTitle(t.payload.title),n=escapeXml(JSON.stringify(t));return"transport"===i?`\n                    <div class="card provider-card animated-card" style="animation-delay: ${.05*a}s;">\n                        <div class="card-content transport-card-content">\n                            <img src="${t.payload.imageUrl}" alt="Photo of ${t.payload.recipient}" class="provider-photo" onerror="this.src='https://placehold.co/100x100/E9ECEF/495057?text=Photo';">\n                            <div class="provider-details">\n                                <div style="margin-bottom: 16px;">\n                                    <h3 style="font-family: 'Playfair Display', serif; margin:0;">${t.payload.recipient}</h3>\n                                    <div class="muted">${t.payload.title}</div>\n                                </div>\n                                <div class="verified-badge"><i class="fas fa-shield-alt"></i> Blockchain Verified</div>\n                                <p class="small muted" style="margin-top: 16px;">${t.payload.notes}</p>\n                                <div class="provider-contact small"><i class="fas fa-phone-alt"></i> ${t.payload.phoneNumber}</div>\n                            </div>\n                        </div>\n                        <div class="card-footer">\n                            <div class="row">\n                                <button class="btn-secondary" onclick='openBookingModal(${n})'><i class="fas fa-wallet"></i> Book Now</button>\n                                <button class="btn-primary" onclick='verifyProvider(${n})'><i class="fas fa-check-circle"></i> Verify Certificate</button>\n                            </div>\n                        </div>\n                    </div>`:`\n                <div class="card provider-card animated-card" style="animation-delay: ${.05*a}s;">\n                    <div class="card-content">\n                        <div style="margin-bottom: 16px;">\n                            <h3 style="font-family: 'Playfair Display', serif; margin:0;">${t.payload.recipient}</h3>\n                            <div class="muted">${t.payload.title}</div>\n                        </div>\n                        <div class="verified-badge"><i class="fas fa-shield-alt"></i> Blockchain Verified</div>\n                        <p class="small muted" style="margin-top: 16px;">${t.payload.notes}</p>\n                    </div>\n                    <div class="card-footer">\n                        <div class="row">\n                            <button class="btn-secondary" onclick='openBookingModal(${n})'><i class="fas fa-wallet"></i> Book Now</button>\n                            <button class="btn-primary" onclick='verifyProvider(${n})'><i class="fas fa-check-circle"></i> Verify Certificate</button>\n                        </div>\n                    </div>\n                </div>`}).join("")}
+        function filterProviders(e){document.querySelectorAll(".btn-filter").forEach(t=>t.classList.remove("active")),document.querySelector(`.btn-filter[onclick="filterProviders('${e}')"]`).classList.add("active"),populateProviders(e)}
+        function verifyProvider(e){verifyInput.value=JSON.stringify(e,null,2),showView("verification-view"),setTimeout(()=>verifyHash.click(),200)}
+        function openBookingModal(e){document.getElementById("booking-provider-name").textContent=e.payload.recipient,document.getElementById("booking-provider-address").textContent=e.address,openModal("booking-modal")}
+        function proceedToPay(){showNotification("Please check your Web3 wallet to complete the transaction."),closeModal("booking-modal")}
+        function openModal(e){document.getElementById(e).classList.add("active")}
+        function closeModal(e){document.getElementById(e).classList.remove("active")}
+        function makeCertificateSVG(e,t=!1){const a=encodeURIComponent(`https://jharkhand.darshan/verify?id=${e.id}`);return`<?xml version="1.0" encoding="UTF-8"?><svg xmlns='http://www.w3.org/2000/svg' width='840' height='594' viewBox='0 0 840 594'><defs><linearGradient id='primaryFill' x1='0' x2='1'><stop offset='0' stop-color='#2A6F6C'/><stop offset='1' stop-color='#5FA09B'/></linearGradient><linearGradient id='goldFill' x1='0' x2='1'><stop offset='0' stop-color='#D4AF37'/><stop offset='1' stop-color='#E8B44A'/></linearGradient><filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.1"/></filter><style><![CDATA[.bg{ fill: #fff; }.border{ fill: none; stroke: url(#${t?"goldFill":"primaryFill"}); stroke-width: ${t?8:4}; }.main-title{ font: 700 32px/1.2 ${t?"'Playfair Display', serif":"'Poppins', sans-serif"}; fill: ${t?"#2A6F6C":"#1E504E"}; }.recipient{ font: 700 48px/1.2 'Playfair Display', serif; fill: #212121; }.body-text{ font: 400 16px/1.5 'Poppins', sans-serif; fill: #616161; }.label{ font: 600 14px/1 'Poppins', sans-serif; fill: ${t?"#2A6F6C":"#1E504E"}; }.subtle{ font: 400 12px/1.4 'Poppins', sans-serif; fill: #757575; }]]></style></defs><rect class='bg' width='100%' height='100%' filter="url(#shadow)" /><rect class='border' x='${t?15:20}' y='${t?15:20}' width='${t?810:800}' height='${t?564:554}' rx='8' />${t?"<rect class='border' x='25' y='25' width='790' height='544' rx='4' stroke-width='2'/>":""}<image href='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Jharkhand_State_Emblem.svg/1024px-Jharkhand_State_Emblem.svg.png' x="370" y="50" height="100" width="100" opacity="${t?.15:.1}"/><text x='420' y='190' text-anchor='middle' class='main-title'>Certificate of Authenticity</text><text x='420' y='230' text-anchor='middle' class='body-text'>This certificate is proudly presented to</text><text x='420' y='300' text-anchor='middle' class='recipient'>${escapeXml(e.recipient)}</text><text x='420' y='350' text-anchor='middle' class='body-text'>For exemplary service as a ${escapeXml(e.title)}</text><foreignObject x="120" y="380" width="600" height="60"><p xmlns="http://www.w3.org/1999/xhtml" style="font-family:'Poppins',sans-serif;font-size:16px;color:#616161;text-align:center;">${escapeXml(e.notes)}</p></foreignObject><line x1="80" y1="500" x2="330" y2="500" stroke="#bdbdbd" stroke-width="1"/><text x="80" y="520" class="label">Jharkhand Darshan Authority</text><text x="80" y="540" class="subtle">Issuer</text><line x1="420" y1="500" x2="580" y2="500" stroke="#bdbdbd" stroke-width="1"/><text x="420" y="520" class="label">${e.date}</text><text x="420" y="540" class="subtle">Date of Issue</text><image href='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${a}&bgcolor=ffffff' x='685' y='465' height='90' width='90'/><text x="730" y="460" text-anchor="middle" class="subtle">Verify Certificate</text><text x="730" y="570" text-anchor="middle" class="subtle" style="font-size:10px;">ID: ${e.id}</text></svg>`}
+        function escapeXml(e){return e?String(e).replace(/[&<>'"]/g,e=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[e]):""}
+        function makeCertPayload(e=!1){const t=certRecipient.value||provName.value;return t?{id:"JD-"+Date.now(),isPremium:e,title:certTitle.value,recipient:t,notes:certNotes.value,issuer:"Jharkhand Darshan Authority",date:(new Date).toLocaleDateString("en-IN")}:(showNotification("Recipient (Provider Name) cannot be empty.","error"),null)}
+        async function signAndIssue(e=!1){const t=e?issuePremiumCert:signCert,a=t.innerHTML;t.disabled=!0,t.innerHTML='Signing...<span class="loading-spinner"></span>';const i=makeCertPayload(e);if(!i)return t.disabled=!1,void(t.innerHTML=a);const n=JSON.stringify(i),s=ethers.utils.toUtf8Bytes(n),o=ethers.utils.keccak256(s);let r;try{if(window.ethereum){await window.ethereum.request({method:"eth_requestAccounts"});const e=new ethers.providers.Web3Provider(window.ethereum),a=e.getSigner(),i=await a.signMessage(ethers.utils.arrayify(o)),n=await a.getAddress();r={payload:i,hash:o,signature:i,address:n}}else{showNotification("MetaMask not detected. Using a mock signature.");const a="0xMOCKSIGN"+Math.random().toString(16).slice(2),i=e?"0xJDPREMIUM_MOCK_ISSUER":"0xJDSTANDARD_MOCK_ISSUER";r={payload:i,hash:o,signature:a,address:i}}r&&(signatureBox.textContent=JSON.stringify(r,null,2),saveLocalRecord(r),svgContainer.innerHTML=makeCertificateSVG(r.payload,e))}catch(e){signatureBox.textContent="Signing failed: "+e.message}finally{t.disabled=!1,t.innerHTML=a}}
+        function saveLocalRecord(e){const t=JSON.parse(localStorage.getItem("jd_cert_list")||"[]");t.unshift(e),localStorage.setItem("jd_cert_list",JSON.stringify(t.slice(0,10))),refreshLast()}
+        function refreshLast(){const e=JSON.parse(localStorage.getItem("jd_cert_list")||"[]");lastList.innerHTML=e.length?e.map(e=>`<div class="last-item"><div style="font-weight:600;color:var(--primary);">${e.payload.recipient} <span class="badge ${e.payload.isPremium?"premium":"standard"}">${e.payload.isPremium?"PREMIUM":"STANDARD"}</span></div><div class="small muted">${e.payload.title} on ${e.payload.date}</div><div class="small" style="font-weight:500;margin-top:4px; font-family:monospace; font-size: 11px;">Hash: ${e.hash.slice(0,20)}...</div></div>`).join(""):`<div class="muted">No certificates have been issued yet.</div>`}
+        loginBtn.addEventListener("click",()=>{const e=usernameInput.value.trim(),t=passwordInput.value;e?adminCredentials[e]&&adminCredentials[e]===t?(localStorage.setItem("auth_token","mock_token_123"),loginStatus.innerHTML=`<div class="success"><i class="fas fa-check-circle"></i> Login successful, ${escapeXml(e)}! Redirecting...</div>`,setTimeout(()=>{showView("dashboard-view"),refreshLast()},1e3)):loginStatus.innerHTML='<div class="error"><i class="fas fa-times-circle"></i> Invalid credentials.</div>':loginStatus.innerHTML='<div class="error"><i class="fas fa-times-circle"></i> Please enter your name.</div>'}),provName.addEventListener("input",()=>{certRecipient.value=provName.value}),previewCert.addEventListener("click",()=>{const e=makeCertPayload(!1);e&&(svgContainer.innerHTML=makeCertificateSVG(e,!1))}),signCert.addEventListener("click",()=>signAndIssue(!1)),issuePremiumCert.addEventListener("click",()=>{showNotification("Simulating secure payment for premium certificate."),signAndIssue(!0)}),downloadCert.addEventListener("click",()=>{const e=svgContainer.querySelector("svg");if(!e)return void showNotification("Please preview or issue a certificate first.","error");const t=(new XMLSerializer).serializeToString(e),a=document.createElement("canvas");a.width=1680,a.height=1188;const i=new Image,n=new Blob([t],{type:"image/svg+xml;charset=utf-8"}),s=URL.createObjectURL(n);i.onload=()=>{const e=a.getContext("2d");e.drawImage(i,0,0,a.width,a.height),URL.revokeObjectURL(s);const t=document.createElement("a");t.href=a.toDataURL("image/png"),t.download="jharkhand_darshan_certificate.png",t.click()},i.src=s}),verifyHash.addEventListener("click",async()=>{let e;try{e=JSON.parse(verifyInput.value)}catch(e){return void(verifyResult.innerHTML='<div class="error"><i class="fas fa-exclamation-circle"></i> Please paste valid signature JSON.</div>')}if(!e.payload||!e.hash||!e.signature||!e.address)return void(verifyResult.innerHTML='<div class="error"><i class="fas fa-exclamation-circle"></i> Incomplete JSON. Missing required fields.</div>');if(e.signature&&e.signature.startsWith("0xMOCKSIGN"))return void(verifyResult.innerHTML=`<div class="success"><i class="fas fa-check-circle"></i> <strong>This is a valid MOCK signature.</strong> This demonstrates a valid certificate issued by:<br><span style="word-wrap:break-all; font-family:monospace; font-size:12px;">${e.address}</span></div>`);if(!e.signature)return void(verifyResult.innerHTML=`<div class="success"><i class="fas fa-check-circle"></i> <strong>This is a valid DEMO certificate.</strong> The displayed data is authentic and issued to:<br><span style="word-wrap:break-all; font-family:monospace; font-size:12px;">${e.address}</span></div>`);try{const t=ethers.utils.verifyMessage(ethers.utils.arrayify(e.hash),e.signature),a=t.toLowerCase()===e.address.toLowerCase(),i=e.payload.isPremium?"Premium":"Standard";verifyResult.innerHTML=a?`<div class="success"><i class="fas fa-check-circle"></i> <strong>Signature is valid.</strong> This is a valid ${i} Certificate issued by:<br><span style="word-wrap:break-all; font-family:monospace; font-size:12px;">${t}</span></div>`:'<div class="error"><i class="fas fa-times-circle"></i> Signature mismatch. The certificate is not valid.</div>'}catch(e){verifyResult.innerHTML=`<div class="error"><i class="fas fa-exclamation-triangle"></i> Verification failed. This might be a mock signature or the data is invalid. Error: ${e.message}</div>`}}),verifyChain.addEventListener("click",()=>{let e;try{e=JSON.parse(verifyInput.value)}catch(e){return void(verifyResult.innerHTML='<div class="error"><i class="fas fa-exclamation-circle"></i> Please paste valid signature JSON.</div>')}const t=JSON.parse(localStorage.getItem("jd_cert_list")||"[]").find(t=>t.hash===e.hash)||mockCertificates.find(t=>t.hash===e.hash);verifyResult.innerHTML=t?'<div class="success"><i class="fas fa-check-circle"></i> The certificate hash was found in our mock records.</div>':'<div class="muted">Not found in local records. (A real system would query a blockchain or database.)</div>'}),window.addEventListener("load",()=>{populateProviders("all"),localStorage.getItem("auth_token")?(showView("dashboard-view"),refreshLast()):showView("tourist-view"),previewCert.click()});
+    </script>
+</body>
+</html>

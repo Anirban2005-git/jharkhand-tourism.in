@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jharkhand Marketplace</title>
+    <!-- The link to the external stylesheet is removed as the styles are now embedded -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 1. Base Styles & Variables */
+        :root {
+            /* Define colors and variables used in your card styles */
+            --card: #ffffff;
+            --border: #e5e7eb;
+            --card-foreground: #1f2937;
+            --muted-foreground: #6b7280;
+            --primary: #059669; /* A nice teal/green for links */
+            --secondary-accent: #f59e0b; /* A warm gold/yellow */
+            --shadow-elevated: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .section-padding {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+
+        /* 2. Section Header Styles */
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.375rem 1rem;
+            background-color: #fee2e2;
+            color: #b91c1c;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin: 0 0 0.75rem 0;
+            color: #111827;
+        }
+
+        .section-description {
+            font-size: 1.125rem;
+            color: #4b5563;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 3. Grid Layout */
+        .grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        /* 4. Card Styles */
+        .card {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-elevated);
+            transform: translateY(-5px);
+        }
+
+        .card-image-container {
+            position: relative;
+            height: 16rem;
+            overflow: hidden;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .card:hover .card-image {
+            transform: scale(1.1);
+        }
+
+        .badge-on-image {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: var(--badge-bg);
+            color: var(--badge-color);
+            border: none;
+            padding: 0.375rem 1rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; 
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--card-foreground);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .card-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .stars {
+            display: flex;
+            color: #facc15;
+        }
+
+        .stars svg {
+            width: 1rem; 
+            height: 1rem;
+        }
+
+        .stars .empty {
+            color: #d1d5db;
+        }
+
+        .rating-text {
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+            font-weight: 500;
+        }
+
+        .card-description {
+            color: var(--muted-foreground);
+            margin: 0;
+            line-height: 1.6;
+            flex-grow: 1; 
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.5rem; 
+        }
+
+        .location-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+        }
+
+        .card-link {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: var(--primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            transition: background-color 0.3s, transform 0.2s ease-in-out, box-shadow 0.3s;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px -1px rgba(0,0,0,.1);
+            cursor: pointer;
+        }
+
+        .card-link:hover {
+            background-color: #047857;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1);
+        }
+        
+        /* --- Premium Modal Styles --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 8% auto;
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            width: 90%;
+            max-width: 600px;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 8px 10px -6px rgba(0,0,0,.1);
+            animation: fadeIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-30px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 32px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--card-foreground);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        #modal-details h2 {
+            margin-top: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--card-foreground);
+        }
+
+        #modal-details hr {
+            border: 0;
+            height: 1px;
+            background-color: var(--border);
+            margin: 1.5rem 0;
+        }
+        
+        .modal-details-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .detail-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            color: var(--primary);
+            margin-top: 2px;
+        }
+        
+        .detail-text strong {
+            display: block;
+            color: var(--card-foreground);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .detail-text span {
+            color: var(--muted-foreground);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* Enhanced CTA button with hover scale, glow, ripple and loader */
+        .modal-cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .6rem;
+            width: 100%;
+            text-align: center;
+            margin-top: 2.25rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0f172a;
+            background-color: var(--secondary-accent);
+            text-decoration: none;
+            padding: 0.95rem 1rem;
+            border-radius: 0.75rem;
+            transition: transform 0.18s cubic-bezier(.2,.9,.2,1), box-shadow 0.18s ease, background-color 0.18s ease;
+            box-shadow: 0 8px 20px rgba(245,158,11,0.12);
+            box-sizing: border-box;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .modal-cta-button:focus { outline: none; box-shadow: 0 10px 30px rgba(245,158,11,0.18); }
+
+        .modal-cta-button:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 36px rgba(245,158,11,0.16); }
+
+        /* Ripple effect */
+        .modal-cta-button .ripple {
+            position: absolute; border-radius: 999px; transform: scale(0); background: rgba(255,255,255,0.35);
+            animation: ripple 600ms linear; pointer-events: none; mix-blend-mode: overlay;
+        }
+        @keyframes ripple { to { transform: scale(6); opacity: 0; } }
+
+        /* Spinner */
+        .btn-spinner {
+            width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.08); border-top-color: rgba(0,0,0,0.35);
+            animation: spin 0.9s linear infinite; display:inline-block; vertical-align:middle;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Success glow for a brief moment after sending */
+        .send-success-glow {
+            box-shadow: 0 8px 28px rgba(22,163,74,0.18), 0 2px 6px rgba(16,185,129,0.08) !important;
+            transform: translateY(-2px) scale(1.01) !important;
+        }
+
+        /* WhatsApp auto-reply toast (simulated) */
+        .wa-toast {
+            position: fixed; right: 20px; bottom: 24px; z-index: 6000; background: linear-gradient(180deg,#ffffff,#f7fff7);
+            border-left: 4px solid #16a34a; padding: 12px 14px; border-radius: 12px; box-shadow: 0 8px 30px rgba(2,6,23,0.12);
+            max-width: 320px; color:#064e3b; font-size:0.95rem;
+            opacity: 0; transform: translateY(10px); transition: opacity 320ms ease, transform 320ms cubic-bezier(.2,.9,.2,1);
+        }
+        .wa-toast.show { opacity: 1; transform: translateY(0); }
+        .wa-toast .title { font-weight:700; margin-bottom:6px; }
+        .wa-toast .body { color:#475569; font-size:0.9rem }
+
+        /* Slide-up contact form (optional) - expanded eco style */
+        .slideup-form {
+            position: fixed; right: 16px; left: 16px; bottom: -120%; z-index: 3000; max-width: 920px; margin: 0 auto; border-radius: 14px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,245,0.98));
+            box-shadow: 0 30px 80px rgba(2,6,23,0.28);
+            padding: 1rem; transition: bottom 420ms cubic-bezier(.2,.9,.2,1), transform 320ms ease;
+            border: 1px solid rgba(14, 74, 49, 0.06);
+            backdrop-filter: blur(6px) saturate(1.03);
+        }
+        .slideup-form.open { bottom: 24px; }
+        .slideup-inner { display:flex; gap:1rem; align-items:stretch; }
+        .slideup-left { flex:1; padding:0.8rem; }
+        .slideup-right { width:320px; background: linear-gradient(180deg,#f7fbf8,#ffffff); border-radius:10px; padding:0.9rem; box-shadow: 0 8px 30px rgba(8,52,26,0.04); display:flex; flex-direction:column; gap:0.6rem; }
+        .slideup-header { display:flex; align-items:center; justify-content:space-between; gap:.6rem; }
+        .slideup-header h3 { margin:0; font-size:1.1rem; color:#064e3b; }
+        .slideup-header p { margin:0; color:#475569; font-size:0.93rem; }
+        .slideup-row { display:grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: .8rem; }
+        .slideup-row .col { display:flex; flex-direction:column; gap:.35rem; }
+        .slideup-form label { font-size:0.85rem; color:#374151; margin-bottom:0.15rem; }
+        .field { display:flex; align-items:center; gap:0.6rem; background: #fff; padding:0.45rem 0.6rem; border-radius:10px; border:1px solid #eef2ee; box-shadow: 0 4px 14px rgba(6,95,70,0.02); }
+        .field input, .field select, .field textarea { border:0; outline:0; font-size:0.95rem; width:100%; background:transparent; }
+        .field:focus-within { box-shadow: 0 6px 26px rgba(21,128,61,0.08); border-color: rgba(21,128,61,0.12); }
+        .icon-sm { width:22px; height:22px; color:#16a34a; flex-shrink:0; }
+        .notes-area { min-height:84px; padding:0.6rem; resize:vertical; }
+
+        /* character counter */
+        .char-counter { font-size:0.78rem; color:#6b7280; text-align:right; margin-top:0.25rem; }
+
+        /* guest stepper */
+        .stepper { display:flex; align-items:center; gap:0.5rem; }
+        .stepper button { background:#f1f7f2;border:1px solid #e6efe9;padding:6px 10px;border-radius:8px;cursor:pointer;color:#064e3b;font-weight:600 }
+        .stepper .value { min-width:28px; text-align:center; font-weight:700 }
+
+        /* upload zone */
+        .upload-zone { border:2px dashed rgba(21,128,61,0.08); padding:0.8rem; border-radius:10px; display:flex; align-items:center; gap:0.6rem; justify-content:center; background:linear-gradient(180deg,#fbfff9,#ffffff); cursor:pointer; transition:transform 180ms ease, box-shadow 180ms ease }
+        .upload-zone.dragover { border-color: rgba(21,128,61,0.22); box-shadow: 0 12px 30px rgba(16,185,129,0.06); transform:translateY(-3px); }
+
+        /* summary card */
+        .summary-card { display:flex; flex-direction:column; gap:0.6rem; }
+        .summary-card .line { display:flex; justify-content:space-between; color:#374151; font-weight:600 }
+        .summary-total { font-size:1.05rem; font-weight:800; color:#064e3b }
+
+        /* preview overlay */
+        .preview-overlay { position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:4000; }
+        .preview-overlay.show { display:flex; }
+        .preview-card { background: linear-gradient(180deg,#ffffff,#f7fbf8); padding:1.2rem 1.6rem; border-radius:14px; box-shadow:0 30px 80px rgba(2,6,23,0.28); width:min(720px,94%); text-align:center; }
+        .checkmark { width:86px; height:86px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#10b981,#059669); color:white; margin:0 auto 0.6rem auto; box-shadow: 0 12px 40px rgba(16,185,129,0.18); transform:scale(0.6); animation:popIn 420ms cubic-bezier(.2,.9,.2,1) forwards }
+        @keyframes popIn { to { transform:scale(1); } }
+
+        /* small confetti */
+        .confetti { position:absolute; pointer-events:none; }
+        .confetti .dot { position:absolute; width:8px;height:8px;border-radius:2px; opacity:0; animation:confettiFly 900ms ease-out forwards; }
+        @keyframes confettiFly { 0% { transform:translateY(0) scale(1); opacity:1 } 100% { transform:translateY(-140px) translateX(var(--tx,0)) rotate(420deg) scale(.8); opacity:0 } }
+
+        @media (max-width:900px){ .slideup-inner{flex-direction:column} .slideup-right{width:100%} }
+
+        /* Success Message Styles */
+        .success-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 2rem 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+            text-align: center;
+            z-index: 2000;
+            animation: successPop 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes successPop {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .success-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem auto;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: checkmark 0.6s ease-in-out 0.3s both;
+        }
+
+        @keyframes checkmark {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .success-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-text {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .success-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .success-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* 5. Responsive Design */
+        @media (max-width: 1024px) {
+            .grid-cols-3 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .grid-cols-3 {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+            }
+             .modal-content {
+                margin: 20% auto;
+                padding: 1.5rem;
+            }
+             #modal-details h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge">Home Stays</span>
+                <h2 class="section-title">Discover Jharkhand's Homestays</h2>
+                <p class="section-description">Experience the warmth of Jharkhand's hospitality in our curated homestays.</p>
+            </div>
+            <div class="grid grid-cols-3">
+                <!-- Cards remain the same -->
+                 <!-- Card 1: Dak Bungalow -->
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="dukBanglow.jpg" alt="View of a serene bungalow" class="card-image">
+                        <span class="badge badge-on-image" style="--badge-bg: #166534; --badge-color: #fff;">Homestay</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Dak Bungalow, Netarhat</h3>
+                        <div class="card-rating">
+                            <div class="stars" data-rating="4.4"></div>
+                            <span class="rating-text"></span>
+                        </div>
+                        <p class="card-description">A comfortable stay with moderate rates, perfect for enjoying the scenic beauty of Netarhat.</p>
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Netarhat, Latehar
+                            </div>
+                            <a class="card-link" data-homestay="dak">Book Now &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Forest Guest House -->
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="bunglow(forest_).jpg" alt="A simple house in the woods" class="card-image">
+                        <span class="badge badge-on-image" style="--badge-bg: #166534; --badge-color: #fff;">Homestay</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Forest Guest House</h3>
+                        <div class="card-rating">
+                            <div class="stars" data-rating="3.8"></div>
+                            <span class="rating-text"></span>
+                        </div>
+                        <p class="card-description">Basic amenities, perfect for nature lovers seeking a tranquil stay in the forest.</p>
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Netarhat, Latehar
+                            </div>
+                            <a class="card-link" data-homestay="forest">Book Now &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Mable Square Homestays -->
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="mablesquare.jpeg" alt="Exterior of a modern homestay" class="card-image">
+                        <span class="badge badge-on-image" style="--badge-bg: #166534; --badge-color: #fff;">Homestay</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Mable Square Homestays</h3>
+                         <div class="card-rating">
+                            <div class="stars" data-rating="4.9"></div>
+                            <span class="rating-text"></span>
+                        </div>
+                        <p class="card-description">Offers comfortable AC rooms, a kitchen, and other modern amenities for a pleasant stay in the city.</p>
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Ranchi
+                            </div>
+                            <a class="card-link" data-homestay="mable">Book Now &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 4: WildWood EcoResort -->
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="wildwoodecoresort.avif" alt="Cottages in a natural, green setting" class="card-image">
+                        <span class="badge badge-on-image" style="--badge-bg: #166534; --badge-color: #fff;">Homestay</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">WildWood EcoResort</h3>
+                        <div class="card-rating">
+                            <div class="stars" data-rating="4.7"></div>
+                            <span class="rating-text"></span>
+                        </div>
+                        <p class="card-description">An eco-resort style stay offering a unique experience close to nature with comfortable lodging.</p>
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                West Singhbhum
+                            </div>
+                            <a class="card-link" data-homestay="wildwood">Book Now &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5: Swiss Cottage Tent -->
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="swiss cottage.jpg" alt="A luxury camping tent exterior" class="card-image">
+                        <span class="badge badge-on-image" style="--badge-bg: #166534; --badge-color: #fff;">Homestay</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Swiss Cottage Tent</h3>
+                        <div class="card-rating">
+                            <div class="stars" data-rating="4.3"></div>
+                            <span class="rating-text"></span>
+                        </div>
+                        <p class="card-description">A unique glamping-style tent stay. Check for seasonal availability for this unique experience.</p>
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Netarhat, Latehar
+                            </div>
+                            <a class="card-link" data-homestay="swiss">Book Now &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6: Itki / R-Ranchi Homestays -->
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="itki, Ranchi area.webp" alt="A simple rural village homestay in India" class="card-image">
+                        <span class="badge badge-on-image" style="--badge-bg: #166534; --badge-color: #fff;">Homestay</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Itki / R-Ranchi Homestays</h3>
+                        <div class="card-rating">
+                           <div class="stars" data-rating="4.1"></div>
+                           <span class="rating-text"></span>
+                        </div>
+                        <p class="card-description">A simpler, more local style homestay experience. A great way to experience the local culture.</p>
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Itki, Ranchi area
+                            </div>
+                            <a class="card-link" data-homestay="itki">Book Now &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Browse Marketplace Button -->
+    <div style="text-align:center; margin: 2rem 0;">
+        <button class="btn btn-secondary marketplace-btn" style="font-size:1.1rem; padding:0.75rem 2rem; background:#059669; color:#fff; border:none; border-radius:0.5rem; cursor:pointer; display:inline-flex; align-items:center; gap:0.5rem;" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 2.5l-3.5 3.5-3 3-2 10 10-2 3-3 3.5-3.5-7-7z"></path><path d="M12 7.5l7 7"></path></svg>
+            Browse Marketplace
+        </button>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var btn = document.querySelector('.trbal-btn');
+        if (btn) {
+            btn.addEventListener('click', function(e) {
+                window.location.href = 'tribal.html'; // Change to 'tribal.html' if that's the correct file
+            });
+        }
+        
+        // Add functionality to Browse Marketplace button
+        var marketplaceBtn = document.querySelector('.marketplace-btn');
+        if (marketplaceBtn) {
+            marketplaceBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = 'Local Marketplace.html';
+            });
+        }
+    });
+    </script>
+
+    <!-- The Modal -->
+    <div id="bookingModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <div id="modal-details">
+          <!-- Details will be injected here by script -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Message -->
+    <div id="successMessage" class="success-message">
+        <div class="success-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20,6 9,17 4,12"></polyline>
+            </svg>
+        </div>
+        <div class="success-title">Successfully Booked!</div>
+        <div class="success-text">Your booking request has been sent. The homestay will contact you soon.</div>
+        <button class="success-button" onclick="closeSuccessMessage()">Great!</button>
+    </div>
+
+    <!-- Slide-up Contact & Booking Form -->
+    <div class="slideup-form" id="slideupForm" aria-hidden="true">
+        <div class="slideup-inner">
+            <div class="slideup-left">
+                <div class="slideup-header">
+                    <div>
+                        <h3>Complete Your Booking Details</h3>
+                        <p>This helps us personalize your stay.</p>
+                    </div>
+                    <div><button id="closeSlideup" aria-label="Close" style="background:none;border:none;font-size:20px;cursor:pointer;color:#6b7280">&times;</button></div>
+                </div>
+
+                <form id="contactForm" autocomplete="on">
+                    <div class="slideup-row">
+                        <div class="col">
+                            <label>Full Name</label>
+                            <div class="field"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5z" fill="#16a34a"></path><path d="M3 21c0-3.3 5.3-5 9-5s9 1.7 9 5v1H3v-1z" fill="#10b981"></path></svg><input name="name" placeholder="Your full name" required></div>
+                        </div>
+                        <div class="col">
+                            <label>Contact Number / Email</label>
+                            <div class="field"><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M21 2v4a2 2 0 0 1-2 2h-3" stroke="#16a34a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg><input name="contact" placeholder="Phone or email (preferred)" required></div>
+                        </div>
+                    </div>
+
+                    <div class="slideup-row">
+                        <div class="col">
+                            <label>Check-in</label>
+                            <div class="field"><svg class="icon-sm" viewBox="0 0 24 24"><path d="M7 11v6" stroke="#16a34a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg><input name="checkin" type="date"></div>
+                        </div>
+                        <div class="col">
+                            <label>Check-out</label>
+                            <div class="field"><svg class="icon-sm" viewBox="0 0 24 24"><path d="M17 11v6" stroke="#16a34a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg><input name="checkout" type="date"></div>
+                        </div>
+                    </div>
+
+                    <div class="slideup-row">
+                        <div class="col">
+                            <label>Number of Guests</label>
+                            <div class="field stepper"><svg class="icon-sm" viewBox="0 0 24 24"><path d="M12 2v20" stroke="#16a34a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                <button type="button" id="guestDec">-</button>
+                                <div class="value" id="guestValue">2</div>
+                                <button type="button" id="guestInc">+</button>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label>Special Requests / Notes</label>
+                            <div class="field"><svg class="icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h4" stroke="#16a34a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg><textarea class="notes-area" name="notes" maxlength="400" placeholder="Any preferences or accessibility needs"></textarea></div>
+                            <div class="char-counter" id="notesCounter">0 / 400</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:.8rem">
+                        <label>Upload ID Proof (optional)</label>
+                        <div class="upload-zone" id="uploadZone">
+                            <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4" stroke="#16a34a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><path d="M7 10l5-5 5 5" stroke="#16a34a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                            <div style="text-align:center;color:#6b7280">Drag & drop or click to upload an ID file (jpg, png, pdf)</div>
+                            <input type="file" id="uploadInput" accept="image/*,.pdf" style="display:none">
+                        </div>
+                        <div id="uploadPreview" style="margin-top:.6rem;color:#374151;font-size:.95rem"></div>
+                    </div>
+
+                    <div class="slideup-actions">
+                        <button type="button" class="modal-cta-button" id="previewBtn" style="background:linear-gradient(90deg,#16a34a,#10b981);color:#fff">Preview Booking</button>
+                        <button type="button" class="modal-cta-button" id="slideupCancel" style="background:#fff;border:1px solid #e6efe9;color:#064e3b">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <aside class="slideup-right">
+                <div style="display:flex;align-items:center;gap:.6rem"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 6 6 .5-4.5 3.5L19 21l-7-4-7 4 1.5-8.5L2 8.5 8 8 12 2z" fill="#f59e0b"></path></svg><div style="font-weight:700;color:#064e3b">Booking Summary</div></div>
+                <div class="summary-card" id="liveSummary">
+                    <div class="line"><div>Name</div><div id="sumName">—</div></div>
+                    <div class="line"><div>Dates</div><div id="sumDates">—</div></div>
+                    <div class="line"><div>Guests</div><div id="sumGuests">2</div></div>
+                    <div class="line"><div>Estimated Cost</div><div class="summary-total" id="sumCost">₹0</div></div>
+                </div>
+                <div style="margin-top:auto;font-size:0.85rem;color:#6b7280">Prices shown are estimates. Final price will be confirmed by the homestay.</div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Preview overlay (check + confetti) -->
+    <div class="preview-overlay" id="previewOverlay" aria-hidden="true">
+        <div class="preview-card">
+            <div class="checkmark">✔</div>
+            <h3 style="margin:0 0 .4rem 0;color:#064e3b">Preview Ready</h3>
+            <div id="previewText" style="color:#475569;margin-bottom:.8rem">A quick summary of your booking</div>
+            <div style="display:flex;gap:.6rem;justify-content:center"><button class="modal-cta-button" id="confirmFromPreview" style="background:linear-gradient(90deg,#f59e0b,#fb923c);color:#fff">Confirm & Send Request</button><button class="modal-cta-button" id="closePreview" style="background:#fff;border:1px solid #e6efe9;color:#064e3b">Back</button></div>
+            <div class="confetti" id="confettiRoot"></div>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Animate cards on scroll ---
+        const cards = document.querySelectorAll('.card');
+        const handleIntersection = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+        const observer = new IntersectionObserver(handleIntersection, { threshold: 0.1 });
+        cards.forEach((card, index) => {
+            card.style.transitionDelay = `${index * 100}ms`;
+            observer.observe(card);
+        });
+
+        // --- Generate random ratings ---
+        const ratingContainers = document.querySelectorAll('.card-rating');
+        const starSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
+
+        ratingContainers.forEach(container => {
+            const starsWrapper = container.querySelector('.stars');
+            const ratingTextElement = container.querySelector('.rating-text');
+            const ratingValue = parseFloat(starsWrapper.getAttribute('data-rating'));
+            const reviewCount = Math.floor(Math.random() * (350 - 50 + 1)) + 50;
+
+            let starsHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                starsHTML += i <= ratingValue ? starSVG : starSVG.replace('<svg', '<svg class="empty"');
+            }
+            starsWrapper.innerHTML = starsHTML;
+            ratingTextElement.textContent = `${ratingValue.toFixed(1)} (${reviewCount} reviews)`;
+        });
+
+        // --- Modal Logic ---
+        const modal = document.getElementById("bookingModal");
+        const modalDetails = document.getElementById("modal-details");
+        const closeModal = document.querySelector(".close-button");
+        const bookButtons = document.querySelectorAll(".card-link[data-homestay]");
+
+        const homestayData = {
+            dak: { name: "Dak Bungalow, Netarhat", location: "Netarhat, Latehar district", contact: "Latehar Tourism — https://latehartourism.com — Phone: +91 7439448495", cost: "Moderate guest house rates. Might be ₹800-1,500/night depending on season." },
+            forest: { name: "Forest Guest House, Netarhat", location: "Netarhat, Latehar", contact: "Latehar Tourism — https://latehartourism.com — Phone: +91 7439448495", cost: "Might be ₹800-1,500/night depending on season. Basic amenities, good for nature stay." },
+            mable: { name: "Mable Square Homestays", location: "Ranchi", contact: "Latehar Tourism — https://latehartourism.com — Phone: +91 7439448495", cost: "Likely higher end for Ranchi. Might be ₹1,200-3,000/night (estimate)." },
+            wildwood: { name: "WildWood EcoResort", location: "West Singhbhum, Jharkhand (Gutusa)", contact: "Latehar Tourism — https://latehartourism.com — Phone: +91 7439448495", cost: "Eco-resort style; rates likely on higher side for rural stay. May include meals, etc." },
+            swiss: { name: "Swiss Cottage Tent, Netarhat", location: "Netarhat, Latehar", contact: "Latehar Tourism — https://latehartourism.com — Phone: +91 7439448495", cost: "More glamping / tent style-stay. Check if it's seasonal. Could cost more than simple homestays." },
+            itki: { name: "Itki / R-Ranchi Homestays", location: "Itki, Ranchi area", contact: "Latehar Tourism — https://latehartourism.com — Phone: +91 7439448495", cost: "Probably simpler, more local style. ₹500-1,200 depending on amenities." }
+        };
+
+        bookButtons.forEach(button => {
+            button.addEventListener("click", (event) => {
+                const homestayKey = event.currentTarget.getAttribute('data-homestay');
+                const data = homestayData[homestayKey];
+
+                if (data) {
+                    modalDetails.innerHTML = `
+                        <h2>${data.name}</h2>
+                        <hr>
+                        <div class="modal-details-grid">
+                            <div class="detail-item">
+                                <div class="detail-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+                                <div class="detail-text"><strong>Location</strong><span>${data.location}</span></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
+                                <div class="detail-text"><strong>Contact / More Info</strong><span>${data.contact}</span></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                                <div class="detail-text"><strong>Estimated Cost / Notes</strong><span>${data.cost}</span></div>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:0.6rem;flex-direction:column;">
+                            <a href="#" class="modal-cta-button" id="contactToBookBtn">
+                                <span class="btn-label">Contact to Book</span>
+                                <span class="btn-spinner" style="display:none;" aria-hidden="true"></span>
+                            </a>
+                            <button type="button" class="modal-cta-button" style="background:#eef2ff;color:#0f172a;font-weight:600;box-shadow:none;margin-top:0.6rem;" id="openSlideFormBtn">Fill details (optional)</button>
+                        </div>
+                    `;
+                    modal.style.display = "block";
+                    
+                    // Add event listener to the "Contact to Book" button
+                    const contactBtn = document.getElementById('contactToBookBtn');
+                    contactBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        enhancedSendFlow(contactBtn, data);
+                    });
+                }
+            });
+        });
+
+        closeModal.onclick = () => { modal.style.display = "none"; };
+        window.onclick = (event) => { if (event.target == modal) { modal.style.display = "none"; } };
+    });
+
+    // Function to show success message
+    function showSuccessMessage() {
+        const successMessage = document.getElementById('successMessage');
+        const modal = document.getElementById('bookingModal');
+        
+        // Close the booking modal
+        modal.style.display = "none";
+        
+        // Show success message
+        successMessage.classList.add('show');
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            closeSuccessMessage();
+        }, 5000);
+    }
+
+    // Function to close success message
+    function closeSuccessMessage() {
+        const successMessage = document.getElementById('successMessage');
+        successMessage.classList.remove('show');
+    }
+</script>
+<!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+// Enhanced send flow: ripple, loader, simulated booking progress, then SweetAlert2 success dialog with WhatsApp option
+function createRipple(el, x, y) {
+    const rect = el.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    ripple.style.left = (x - rect.left) + 'px';
+    ripple.style.top = (y - rect.top) + 'px';
+    ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) + 'px';
+    el.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 650);
+}
+
+async function enhancedSendFlow(button, data) {
+    // visual: show spinner and small ripple
+    const label = button.querySelector('.btn-label');
+    const spinner = button.querySelector('.btn-spinner');
+    // ripple from center
+    createRipple(button, button.getBoundingClientRect().left + button.offsetWidth/2, button.getBoundingClientRect().top + button.offsetHeight/2);
+    // show 'Sending...' state
+    const prevLabel = label ? label.textContent : '';
+    if (label) { label.style.opacity = '0'; setTimeout(()=>{ label.textContent = 'Sending...'; label.style.opacity = '1'; if(spinner) spinner.style.display = 'inline-block'; }, 80); }
+    button.setAttribute('aria-busy', 'true');
+    button.classList.remove('send-success-glow');
+
+    // If data contains booking fields, POST to server so server can auto-reply via WhatsApp
+    let apiResult = null;
+    if (data && (data.contact || data.name || data.checkin)) {
+        try {
+            const apiUrl = window.BOOKING_API_URL || '/api/bookings';
+            const payload = {
+                name: data.name || data.title || 'Guest',
+                contact: data.contact || data.phone || document.querySelector('#contactForm input[name="contact"]')?.value || '',
+                checkin: data.checkin || '',
+                checkout: data.checkout || '',
+                guests: data.guests || document.getElementById('guestValue')?.textContent || 1,
+                notes: data.notes || ''
+            };
+            const r = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            apiResult = await r.json().catch(()=> ({}));
+            if (!r.ok) {
+                console.error('Booking API returned error', apiResult);
+            } else {
+                console.log('Booking posted to server', apiResult);
+            }
+        } catch (err) {
+            console.error('Failed to post booking to server', err);
+        }
+    }
+
+    // simulate sending UI (1.5s) - still show animation even if network call done
+    setTimeout(async () => {
+        // transform to success state
+        if (spinner) spinner.style.display = 'none';
+        if (label) label.textContent = '✅ Request Sent!';
+        button.classList.add('send-success-glow');
+        button.setAttribute('aria-busy', 'false');
+
+        // show SweetAlert2 confirmation popup with specified buttons
+        const swalResult = await Swal.fire({
+            title: '✅ Booking Request Sent Successfully!',
+            html: '<p style="color:#475569;margin:0.6rem 0 0 0;">Our team will contact you shortly to confirm your stay.</p>',
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonText: 'Okay, Got it',
+            cancelButtonText: '💬 Chat via WhatsApp',
+            customClass: { popup: 'swal-popup', confirmButton: 'swal-confirm', cancelButton: 'swal-cancel' },
+            buttonsStyling: false,
+            didOpen: () => {
+                const c = document.querySelector('.swal-confirm');
+                const k = document.querySelector('.swal-cancel');
+                if(c){ Object.assign(c.style, { background:'#f59e0b', border:'none', color:'#fff', padding:'8px 14px', borderRadius:'8px', fontWeight:'700' }); }
+                if(k){ Object.assign(k.style, { background:'#16a34a', border:'none', color:'#fff', padding:'8px 14px', borderRadius:'8px', fontWeight:'700' }); }
+            }
+        });
+
+        // if confirmed (Okay, Got it)
+        if (swalResult.isConfirmed) {
+            setTimeout(() => { if(label) label.textContent = prevLabel || 'Contact to Book'; }, 300);
+        } else {
+            // user chose Chat via WhatsApp (cancel button used as WhatsApp)
+            // helper: try to extract a phone number from freeform contact text
+            function extractPhoneFromContact(contact) {
+                if (!contact) return '917439448495';
+                // try to pick a sequence that looks like a phone
+                const m = contact.match(/(\+?\d[\d\-\s]{8,}\d)/);
+                if (m && m[1]) return m[1].replace(/[^\d+]/g, '');
+                const m2 = contact.match(/(\d{10,13})/);
+                if (m2 && m2[1]) return m2[1];
+                return '917439448495';
+            }
+
+            // default to the new provided number if no contact found
+            let rawPhone = (data && data.contact) ? extractPhoneFromContact(data.contact) : '917439448495';
+            // normalize to digits only
+            let digitsOnly = String(rawPhone).replace(/[^0-9]/g, '');
+            // drop leading 0s
+            while (digitsOnly.length > 0 && digitsOnly.startsWith('0')) digitsOnly = digitsOnly.slice(1);
+            // if local 10-digit provided, add country code 91
+            if (digitsOnly.length === 10) digitsOnly = '91' + digitsOnly;
+            // If it's 11 digits and starts with 1 (unlikely), still ensure 91 prefix
+            if (digitsOnly.length === 11 && !digitsOnly.startsWith('91')) digitsOnly = '91' + digitsOnly.slice(-10);
+            // alias known variants to Latehar Tourism number
+            const ALIASES = new Set(['917439448495', '7439448495', '+917439448495']);
+            if (ALIASES.has(rawPhone) || ALIASES.has(digitsOnly) || ALIASES.has('+' + digitsOnly)) {
+                digitsOnly = '917439448495';
+            }
+            // final phone string for URL
+            const phoneStr = digitsOnly || '917439448495';
+            // determine homestay name from data or from modal title (do not change visible data)
+            const modalTitle = document.querySelector('#modal-details h2');
+            const homestayName = (data && data.name) ? data.name : (modalTitle ? modalTitle.textContent.trim() : 'Dak Bungalow, Netarhat');
+
+            // use api.whatsapp.com URL format (keep same as original). Keep message and logging for debugging.
+            const cleanedPhone = phoneStr.replace(/^\+/, '').replace(/[^0-9]/g, '');
+            const message = `Hi, I want to book ${homestayName}.`;
+            const waUrl = `https://api.whatsapp.com/send?phone=${cleanedPhone}&text=${encodeURIComponent(message)}`;
+            console.log('Opening WhatsApp API URL:', waUrl);
+            window.open(waUrl, '_blank');
+            // show simulated auto-reply toast after a short delay
+            setTimeout(()=> showWhatsAppAutoReply(), 800);
+            setTimeout(() => { if(label) label.textContent = prevLabel || 'Contact to Book'; }, 300);
+        }
+
+    }, 1500);
+}
+
+// Simulated WhatsApp auto-reply (in-page toast)
+function showWhatsAppAutoReply(){
+    // remove existing
+    const existing = document.querySelector('.wa-toast'); if(existing) existing.remove();
+    const t = document.createElement('div'); t.className = 'wa-toast';
+    t.innerHTML = '<div class="title">🌿 Thank you for contacting Latehar Tourism!</div><div class="body">We’ve received your booking inquiry for Dak Bungalow, Netarhat. Our team will reach out shortly with availability and pricing details.</div>';
+    document.body.appendChild(t);
+    setTimeout(()=> t.style.opacity = '1', 40);
+    setTimeout(()=> { t.style.opacity = '0'; setTimeout(()=> t.remove(),400); }, 8000);
+}
+
+// Global delegation for ripple effect on modal-cta-button
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.modal-cta-button');
+    if (!btn) return;
+    // ripple will be created inside enhancedSendFlow or here for non-enhanced
+    // Prevent double-binding when slideup form's submit triggers
+});
+
+// Slide-up form open/close and handlers
+const slideup = document.getElementById('slideupForm');
+const closeSlideup = document.getElementById('closeSlideup');
+const slideupCancel = document.getElementById('slideupCancel');
+if (closeSlideup) closeSlideup.addEventListener('click', () => slideup.classList.remove('open'));
+if (slideupCancel) slideupCancel.addEventListener('click', () => slideup.classList.remove('open'));
+
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+    contactForm.addEventListener('submit', async (ev) => {
+        ev.preventDefault();
+        // Collect form data
+        const payload = {
+            name: contactForm.name.value,
+            contact: contactForm.contact.value,
+            checkin: contactForm.checkin.value,
+            checkout: contactForm.checkout.value,
+            guests: document.getElementById('guestValue').textContent || 1,
+            notes: contactForm.notes.value || ''
+        };
+
+        // Show a small inline spinner on the preview button while sending
+        const previewBtn = document.getElementById('previewBtn');
+        const oldTxt = previewBtn.textContent;
+        previewBtn.textContent = 'Sending...';
+        previewBtn.disabled = true;
+
+        try {
+            const apiUrl = window.BOOKING_API_URL || '/api/bookings';
+            const res = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data && data.error ? data.error : 'Booking failed');
+
+            // Trigger the same success flow (visual) as confirmFromPreview
+            // Create a fake button to reuse enhancedSendFlow visuals
+            const fakeBtn = document.createElement('button'); fakeBtn.className='modal-cta-button'; fakeBtn.innerHTML = '<span class="btn-label">Request Sent</span><span class="btn-spinner" style="display:none"></span>';
+            document.body.appendChild(fakeBtn);
+            enhancedSendFlow(fakeBtn, { name: payload.name });
+            setTimeout(()=>{ fakeBtn.remove(); }, 1400);
+
+            // Close slideup
+            setTimeout(() => { slideup.classList.remove('open'); }, 900);
+
+        } catch (err) {
+            console.error('Booking error', err);
+            Swal.fire({ icon: 'error', title: 'Failed to send', text: (err.message || 'Please try again later') });
+        } finally {
+            previewBtn.textContent = oldTxt;
+            previewBtn.disabled = false;
+        }
+    });
+}
+
+// Expose a helper to open slide-up form from anywhere (optional)
+function openContactForm() {
+    if (slideup) {
+        slideup.classList.add('open');
+        slideup.setAttribute('aria-hidden','false');
+        // small entrance transform for perceived performance
+        slideup.style.transform = 'translateY(6px)';
+        setTimeout(()=> slideup.style.transform = '', 300);
+        // focus first input (if available)
+        const first = slideup.querySelector('input, textarea, select');
+        if(first) { setTimeout(()=>{ first.focus && first.focus(); if(window.innerWidth < 700) slideup.scrollIntoView({behavior:'smooth'}); }, 120); }
+    }
+}
+
+// open slide-up form button inside modal
+const openSlideFormBtn = document.getElementById('openSlideFormBtn');
+if (openSlideFormBtn) openSlideFormBtn.addEventListener('click', (e) => { e.preventDefault(); openContactForm(); });
+
+// delegated handler to catch the dynamically inserted 'Fill details' button inside the modal
+document.addEventListener('click', function(e){
+    const el = e.target.closest && e.target.closest('#openSlideFormBtn');
+    if(el){ e.preventDefault(); openContactForm(); }
+});
+
+// Hook: allow users to open slide-up form from the SweetAlert2 cancel button (optional alternative)
+// For now, keep WhatsApp as the alternate action.
+</script>
+<script>
+// Live summary & interactions for slide-up form
+(() => {
+    const form = document.getElementById('contactForm');
+    if (!form) return;
+
+    const nameInput = form.elements['name'];
+    const contactInput = form.elements['contact'];
+    const checkin = form.elements['checkin'];
+    const checkout = form.elements['checkout'];
+    const notes = form.elements['notes'];
+    const guestValue = document.getElementById('guestValue');
+    const guestDec = document.getElementById('guestDec');
+    const guestInc = document.getElementById('guestInc');
+    const notesCounter = document.getElementById('notesCounter');
+    const sumName = document.getElementById('sumName');
+    const sumDates = document.getElementById('sumDates');
+    const sumGuests = document.getElementById('sumGuests');
+    const sumCost = document.getElementById('sumCost');
+    const uploadZone = document.getElementById('uploadZone');
+    const uploadInput = document.getElementById('uploadInput');
+    const uploadPreview = document.getElementById('uploadPreview');
+    const previewBtn = document.getElementById('previewBtn');
+    const previewOverlay = document.getElementById('previewOverlay');
+    const previewText = document.getElementById('previewText');
+    const closePreview = document.getElementById('closePreview');
+    const confirmFromPreview = document.getElementById('confirmFromPreview');
+    const confettiRoot = document.getElementById('confettiRoot');
+
+    let guests = 2;
+    function formatDates(a,b){ if(!a && !b) return '—'; if(!a) return 'From: ' + b; if(!b) return a; return new Date(a).toLocaleDateString('en-IN') + ' — ' + new Date(b).toLocaleDateString('en-IN'); }
+    function estimateCost(){ // simple estimate: ₹1200/night * nights * guests factor
+        const a = checkin.value ? new Date(checkin.value) : null;
+        const b = checkout.value ? new Date(checkout.value) : null;
+        if(!a || !b || b<=a) return '₹0';
+        const nights = Math.round((b - a) / (1000*60*60*24));
+        const base = 1200; // base per night
+        const total = base * nights * Math.min(guests,4);
+        return '₹' + total.toLocaleString('en-IN');
+    }
+
+    function refreshSummary(){
+        sumName.textContent = nameInput.value || '—';
+        sumDates.textContent = formatDates(checkin.value, checkout.value);
+        sumGuests.textContent = guests;
+        sumCost.textContent = estimateCost();
+    }
+
+    // Guest stepper events
+    guestDec.addEventListener('click', () => { guests = Math.max(1, guests-1); guestValue.textContent = guests; refreshSummary(); });
+    guestInc.addEventListener('click', () => { guests = Math.min(8, guests+1); guestValue.textContent = guests; refreshSummary(); });
+
+    // notes counter
+    notes.addEventListener('input', () => { notesCounter.textContent = notes.value.length + ' / 400'; });
+
+    // inputs update summary
+    [nameInput, checkin, checkout].forEach(el=> el.addEventListener('input', refreshSummary));
+
+    // upload drag/drop
+    uploadZone.addEventListener('click', () => uploadInput.click());
+    uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+    uploadZone.addEventListener('drop', (e) => {
+        e.preventDefault(); uploadZone.classList.remove('dragover');
+        const f = e.dataTransfer.files && e.dataTransfer.files[0];
+        if (f) handleFile(f);
+    });
+    uploadInput.addEventListener('change', (e) => { const f = e.target.files && e.target.files[0]; if(f) handleFile(f); });
+
+    function handleFile(file){ uploadPreview.textContent = file.name + ' (' + Math.round(file.size/1024) + ' KB)'; }
+
+    // preview overlay
+    previewBtn.addEventListener('click', (e) => {
+        e.preventDefault(); refreshSummary();
+        previewText.innerHTML = `<div style="font-weight:700;color:#064e3b">${nameInput.value||'Guest'}</div><div style='color:#475569;margin-top:.5rem'>${sumDates.textContent}</div><div style='margin-top:.4rem;color:#475569'>Guests: ${guests} • Est: ${sumCost.textContent}</div>`;
+        previewOverlay.classList.add('show'); previewOverlay.setAttribute('aria-hidden','false');
+        // small confetti burst
+        burstConfetti();
+    });
+
+    closePreview.addEventListener('click', () => { previewOverlay.classList.remove('show'); previewOverlay.setAttribute('aria-hidden','true'); });
+
+    function burstConfetti(){ confettiRoot.innerHTML=''; for(let i=0;i<14;i++){ const d=document.createElement('div'); d.className='dot'; d.style.left=(50+ (Math.random()*240-120))+'px'; d.style.top=(160)+'px'; d.style.background=['#f59e0b','#10b981','#60a5fa','#fde68a'][i%4]; d.style.setProperty('--tx', (Math.random()*320-160)+'px'); confettiRoot.appendChild(d); setTimeout(()=>d.remove(),1200);} }
+
+    // confirm from preview -> send request using existing enhancedSendFlow
+    confirmFromPreview.addEventListener('click', () => {
+        const fakeBtn = document.createElement('button'); fakeBtn.className='modal-cta-button'; fakeBtn.innerHTML = '<span class="btn-label">Send Request</span><span class="btn-spinner" style="display:none"></span>';
+        document.body.appendChild(fakeBtn);
+        enhancedSendFlow(fakeBtn, { name: nameInput.value });
+        // clean up and close overlay
+        setTimeout(()=>{ previewOverlay.classList.remove('show'); previewOverlay.setAttribute('aria-hidden','true'); fakeBtn.remove(); }, 1200);
+    });
+
+    // cancel / close handlers
+    const closeBtn = document.getElementById('closeSlideup');
+    const slideupCancel = document.getElementById('slideupCancel');
+    const slideupEl = document.getElementById('slideupForm');
+    function closeSlide(){ slideupEl.classList.remove('open'); slideupEl.setAttribute('aria-hidden','true'); }
+    if (closeBtn) closeBtn.addEventListener('click', closeSlide);
+    if (slideupCancel) slideupCancel.addEventListener('click', closeSlide);
+
+    // initialize values
+    guestValue.textContent = guests; refreshSummary();
+})();
+</script>
+</body>
+</html>
+

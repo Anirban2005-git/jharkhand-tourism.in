@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jharkhand Tourism | Executive Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="stylesheet" href="main.css">
+    <style>
+        /* Additional styles to support dashboard components while matching main.css */
+        body {
+            background-color: var(--muted);
+        }
+        
+        /* Dashboard-specific grid */
+        .grid-cols-4 {
+            grid-template-columns: repeat(1, 1fr);
+        }
+        @media (min-width: 640px) {
+            .grid-cols-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 1024px) {
+            .grid-cols-4 {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: 1fr;
+        }
+         @media (min-width: 1024px) {
+            .dashboard-grid {
+                 grid-template-columns: repeat(5, 1fr);
+            }
+            .grid-span-3 {
+                grid-column: span 3 / span 3;
+            }
+            .grid-span-2 {
+                grid-column: span 2 / span 2;
+            }
+             .grid-span-5 {
+                grid-column: span 5 / span 5;
+            }
+        }
+
+        /* Metric Card styling - ADJUSTED FOR PERFECT GAPPING */
+        .metric-card .card-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem; /* Ensures a consistent gap */
+            padding: 1.5rem; /* Uniform padding for a balanced look */
+        }
+        .metric-card .metric-info {
+            flex-grow: 1; /* Allows text block to fill available space */
+        }
+        .metric-card .metric-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--foreground);
+        }
+        .metric-card .metric-label {
+            font-size: 1rem;
+            color: var(--muted-foreground);
+            margin-bottom: 0.5rem;
+        }
+        .metric-card .metric-change {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+        .metric-change svg {
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.25rem;
+        }
+        .metric-change.positive { color: var(--primary); }
+        .metric-change.negative { color: #ef4444; }
+        .metric-change.neutral { color: var(--muted-foreground); }
+        
+        /* Feedback Form styling */
+        .feedback-form .form-group {
+            margin-bottom: 1rem;
+        }
+        .feedback-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--muted-foreground);
+        }
+        .feedback-form input,
+        .feedback-form textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+        .feedback-form input:focus,
+        .feedback-form textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+        }
+        .feedback-form .btn { width: 100%; }
+
+        /* Feedback Feed Styling */
+        .feedback-feed {
+            max-height: 28rem;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+        .feedback-item {
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-left-width: 4px;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            background-color: var(--background);
+        }
+        .feedback-item.positive { border-left-color: var(--primary); }
+        .feedback-item.negative { border-left-color: #ef4444; }
+        .feedback-item.neutral { border-left-color: var(--muted-foreground); }
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .feedback-user { font-weight: 600; }
+        .feedback-source { font-size: 0.875rem; color: var(--muted-foreground); }
+        .feedback-sentiment { font-size: 0.875rem; font-weight: 600; }
+        .feedback-comment { color: var(--muted-foreground); }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #aaa; }
+    </style>
+</head>
+<body>
+
+   
+
+        <main>
+            <section class="section-padding" style="padding-top: 120px;">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge">Analytics</span>
+                        <h2 class="section-title">Executive Dashboard</h2>
+                        <p class="section-description">A summary of tourism performance, key metrics, and visitor sentiment.</p>
+                    </div>
+
+                    <div class="grid grid-cols-4">
+                        <div class="card metric-card">
+                            <div class="card-content">
+                                <div class="metric-info">
+                                    <p class="metric-label">Total Visitors (30d)</p>
+                                    <p class="metric-value">12,450</p>
+                                    <div class="metric-change positive">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                                        <span>+12.5%</span>
+                                    </div>
+                                </div>
+                                <div id="visitor-sparkline" style="width: 100px; height: 50px;"></div>
+                            </div>
+                        </div>
+                        <div class="card metric-card">
+                            <div class="card-content">
+                                <div class="metric-info">
+                                    <p class="metric-label">Total Bookings</p>
+                                    <p class="metric-value">3,120</p>
+                                    <div class="metric-change positive">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                                        <span>+8.2%</span>
+                                    </div>
+                                </div>
+                                <div id="booking-sparkline" style="width: 100px; height: 50px;"></div>
+                            </div>
+                        </div>
+                         <div class="card metric-card">
+                            <div class="card-content">
+                                <div class="metric-info">
+                                    <p class="metric-label">Total Revenue</p>
+                                    <p class="metric-value">₹8.5L</p>
+                                    <div class="metric-change negative">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 7 17 17 7 17"></polyline><line x1="7" y1="7" x2="17" y2="17"></line></svg>
+                                        <span>-1.5%</span>
+                                    </div>
+                                </div>
+                                <div id="revenue-sparkline" style="width: 100px; height: 50px;"></div>
+                            </div>
+                        </div>
+                         <div class="card metric-card">
+                            <div class="card-content">
+                                <div class="metric-info">
+                                    <p class="metric-label">Avg. Satisfaction</p>
+                                    <p class="metric-value">4.6 ★</p>
+                                    <div class="metric-change neutral">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                        <span>Stable</span>
+                                    </div>
+                                </div>
+                                <div id="satisfaction-sparkline" style="width: 100px; height: 50px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid" style="margin-top: 2rem;">
+                        <div class="card grid-span-3">
+                            <div class="card-header"><h3 class="card-title">Tourist Traffic Trends</h3></div>
+                            <div class="card-content">
+                                <div id="tourist-traffic-chart"></div>
+                            </div>
+                        </div>
+                        <div class="card grid-span-2">
+                            <div class="card-header"><h3 class="card-title">Most Popular Destinations</h3></div>
+                             <div class="card-content">
+                                <div id="popular-destinations-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="section-padding bg-muted">
+                 <div class="container">
+                     <div class="section-header">
+                        <span class="badge">Visitor Insights</span>
+                        <h2 class="section-title">AI Feedback & Sentiment</h2>
+                        <p class="section-description">Analyze aggregated feedback from platform reviews and social media to understand visitor experience.</p>
+                    </div>
+
+                     <div class="dashboard-grid">
+                        <div class="card grid-span-2">
+                             <div class="card-header"><h3 class="card-title">Overall Sentiment</h3></div>
+                             <div class="card-content">
+                                <div id="sentiment-breakdown-chart"></div>
+                            </div>
+                        </div>
+                        <div class="card grid-span-3">
+                            <div class="card-header"><h3 class="card-title">Submit Manual Feedback</h3></div>
+                            <div class="card-content">
+                                <form class="feedback-form">
+                                    <div class="form-group">
+                                        <label for="userName">User Name (Optional)</label>
+                                        <input type="text" id="userName" placeholder="e.g., Anjali P.">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="feedbackText">Feedback</label>
+                                        <textarea id="feedbackText" rows="4" placeholder="Enter feedback details..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-secondary">Submit Feedback</button>
+                                </form>
+                            </div>
+                        </div>
+
+                         <div class="card grid-span-5">
+                             <div class="card-header"><h3 class="card-title">Recent Feedback Feed</h3></div>
+                             <div class="card-content">
+                                 <div class="feedback-feed" id="feedback-feed">
+                                     </div>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+       
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const mockFeedbackData = [
+                { source: 'Platform Review', user: 'Anjali P.', comment: 'The guide at Dassam Falls was incredibly knowledgeable. Made the trip memorable!', sentiment: 'Positive' },
+                { source: 'Twitter Mention', user: '@rohit_travels', comment: 'The road to Netarhat needs serious repairs. The journey was very uncomfortable.', sentiment: 'Negative' },
+                { source: 'Platform Review', user: 'Vikram S.', comment: 'Booking a homestay in a tribal village was a seamless experience. The family was so welcoming.', sentiment: 'Positive' },
+                { source: 'Facebook Comment', user: 'Priya Kumari', comment: 'Wish there were more dustbins near the Jonha Falls area. It was a bit littered.', sentiment: 'Negative' },
+                { source: 'Platform Review', user: 'Amit K.', comment: 'The accommodation was as described. Everything was clean and tidy. No complaints.', sentiment: 'Neutral' },
+                { source: 'Platform Review', user: 'Sunita M.', comment: 'The Sohrai art workshop was the highlight of our trip! An authentic and beautiful experience.', sentiment: 'Positive' }
+            ];
+
+            const feedbackFeedContainer = document.getElementById('feedback-feed');
+            mockFeedbackData.forEach(item => {
+                let sentimentClass = item.sentiment.toLowerCase();
+                const feedbackItemHTML = `
+                    <div class="feedback-item ${sentimentClass}">
+                        <div class="feedback-header">
+                            <div>
+                                <p class="feedback-user">${item.user}</p>
+                                <p class="feedback-source">${item.source}</p>
+                            </div>
+                            <span class="feedback-sentiment ${sentimentClass}">${item.sentiment}</span>
+                        </div>
+                        <p class="feedback-comment">${item.comment}</p>
+                    </div>
+                `;
+                feedbackFeedContainer.innerHTML += feedbackItemHTML;
+            });
+
+            const commonChartOptions = {
+                chart: { toolbar: { show: false }, zoom: { enabled: false }, },
+                dataLabels: { enabled: false },
+                stroke: { curve: 'smooth', width: 2 },
+            };
+            
+            const sparklineOptions = {
+                chart: { type: 'area', sparkline: { enabled: true } },
+                stroke: { curve: 'smooth', width: 2 },
+                fill: { opacity: 0.3 },
+                yaxis: { min: 0 },
+            };
+
+            new ApexCharts(document.querySelector("#visitor-sparkline"), { ...sparklineOptions, series: [{ data: [30, 40, 35, 50, 49, 60, 70] }], colors: ['#3b82f6'] }).render();
+            new ApexCharts(document.querySelector("#booking-sparkline"), { ...sparklineOptions, series: [{ data: [10, 15, 12, 18, 17, 22, 25] }], colors: ['#10b981'] }).render();
+            new ApexCharts(document.querySelector("#revenue-sparkline"), { ...sparklineOptions, series: [{ data: [50, 45, 48, 42, 40, 35, 33] }], colors: ['#ef4444'] }).render();
+            new ApexCharts(document.querySelector("#satisfaction-sparkline"), { ...sparklineOptions, series: [{ data: [4.5, 4.6, 4.5, 4.7, 4.6, 4.6, 4.6] }], colors: ['#a855f7'], yaxis: { min: 4, max: 5 } }).render();
+
+            const trafficChartOptions = {
+                ...commonChartOptions,
+                chart: { ...commonChartOptions.chart, type: 'area', height: 350 },
+                series: [{ name: 'Visitors', data: [230, 280, 450, 380, 550, 500, 700, 720, 680, 850, 800, 950] }],
+                xaxis: { categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], labels: { style: { colors: '#64748b' } } },
+                yaxis: { labels: { style: { colors: '#64748b' } } },
+                fill: { type: "gradient", gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.1, stops: [0, 90, 100] } },
+                tooltip: { x: { format: 'MMM' } },
+                colors: ['#10b981']
+            };
+            new ApexCharts(document.querySelector("#tourist-traffic-chart"), trafficChartOptions).render();
+
+            const destinationsChartOptions = {
+                ...commonChartOptions,
+                chart: { ...commonChartOptions.chart, type: 'bar', height: 350 },
+                series: [{ name: 'Visits', data: [4500, 3800, 3200, 2900, 2500, 2100] }],
+                xaxis: { categories: ['Ranchi', 'Netarhat', 'Betla', 'Deoghar', 'Parasnath', 'Hazaribagh'], labels: { style: { colors: '#64748b' } } },
+                yaxis: { labels: { style: { colors: '#64748b' } } },
+                plotOptions: { bar: { horizontal: false, borderRadius: 4, columnWidth: '45%' } },
+                colors: ['#f97316'],
+                tooltip: { y: { formatter: val => val + " visits" } }
+            };
+            new ApexCharts(document.querySelector("#popular-destinations-chart"), destinationsChartOptions).render();
+
+            const sentimentChartOptions = {
+                ...commonChartOptions,
+                chart: { ...commonChartOptions.chart, type: 'donut', height: 350 },
+                series: [75, 18, 7],
+                labels: ['Positive', 'Negative', 'Neutral'],
+                colors: ['#10b981', '#ef4444', '#94a3b8'],
+                legend: { position: 'bottom', fontSize: '14px', markers: { radius: 12 }, labels: { colors: '#64748b' } },
+                plotOptions: { pie: { donut: { labels: { show: true, total: { show: true, label: 'Total Reviews', color: '#64748b', formatter: w => w.globals.seriesTotals.reduce((a, b) => a + b, 0) } } } } }
+            };
+            new ApexCharts(document.querySelector("#sentiment-breakdown-chart"), sentimentChartOptions).render();
+        });
+        
+        // --- FEEDBACK FORM HANDLER ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const feedbackForm = document.querySelector('.feedback-form');
+            if (feedbackForm) {
+                feedbackForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const userName = document.getElementById('userName').value;
+                    const feedbackText = document.getElementById('feedbackText').value;
+                    
+                    if (!feedbackText.trim()) {
+                        alert('Please enter your feedback before submitting.');
+                        return;
+                    }
+                    
+                    try {
+                        const response = await fetch('/api/feedback', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                userName: userName || 'Anonymous',
+                                comment: feedbackText,
+                                source: 'manual'
+                            })
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            alert('Thank you for your feedback! It has been submitted successfully.');
+                            feedbackForm.reset();
+                            // Refresh the feedback feed
+                            loadFeedbackFeed();
+                        } else {
+                            alert('Failed to submit feedback. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Error submitting feedback:', error);
+                        alert('Failed to submit feedback. Please check your connection and try again.');
+                    }
+                });
+            }
+            
+            // Load feedback feed on page load
+            loadFeedbackFeed();
+        });
+        
+        // Function to load feedback from backend
+        async function loadFeedbackFeed() {
+            const feedbackFeedContainer = document.getElementById('feedback-feed');
+            if (!feedbackFeedContainer) return;
+            
+            try {
+                const response = await fetch('/api/feedback?limit=10');
+                const result = await response.json();
+                
+                if (result.success) {
+                    feedbackFeedContainer.innerHTML = '';
+                    result.data.forEach(item => {
+                        const sentimentClass = item.sentiment.toLowerCase();
+                        const feedbackItemHTML = `
+                            <div class="feedback-item ${sentimentClass}">
+                                <div class="feedback-header">
+                                    <div>
+                                        <p class="feedback-user">${item.userName}</p>
+                                        <p class="feedback-source">${item.source}</p>
+                                    </div>
+                                    <span class="feedback-sentiment ${sentimentClass}">${item.sentiment}</span>
+                                </div>
+                                <p class="feedback-comment">${item.comment}</p>
+                            </div>
+                        `;
+                        feedbackFeedContainer.innerHTML += feedbackItemHTML;
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading feedback:', error);
+                // Fallback to mock data if backend is not available
+                loadMockFeedback();
+            }
+        }
+        
+        // Fallback function for mock data
+        function loadMockFeedback() {
+            const feedbackFeedContainer = document.getElementById('feedback-feed');
+            if (!feedbackFeedContainer) return;
+            
+            const mockFeedbackData = [
+                { source: 'Platform Review', userName: 'Anjali P.', comment: 'The guide at Dassam Falls was incredibly knowledgeable. Made the trip memorable!', sentiment: 'positive' },
+                { source: 'Twitter Mention', userName: '@rohit_travels', comment: 'The road to Netarhat needs serious repairs. The journey was very uncomfortable.', sentiment: 'negative' },
+                { source: 'Platform Review', userName: 'Vikram S.', comment: 'Booking a homestay in a tribal village was a seamless experience. The family was so welcoming.', sentiment: 'positive' },
+                { source: 'Facebook Comment', userName: 'Priya Kumari', comment: 'Wish there were more dustbins near the Jonha Falls area. It was a bit littered.', sentiment: 'negative' },
+                { source: 'Platform Review', userName: 'Amit K.', comment: 'The accommodation was as described. Everything was clean and tidy. No complaints.', sentiment: 'neutral' },
+                { source: 'Platform Review', userName: 'Sunita M.', comment: 'The Sohrai art workshop was the highlight of our trip! An authentic and beautiful experience.', sentiment: 'positive' }
+            ];
+            
+            feedbackFeedContainer.innerHTML = '';
+            mockFeedbackData.forEach(item => {
+                const sentimentClass = item.sentiment.toLowerCase();
+                const feedbackItemHTML = `
+                    <div class="feedback-item ${sentimentClass}">
+                        <div class="feedback-header">
+                            <div>
+                                <p class="feedback-user">${item.userName}</p>
+                                <p class="feedback-source">${item.source}</p>
+                            </div>
+                            <span class="feedback-sentiment ${sentimentClass}">${item.sentiment}</span>
+                        </div>
+                        <p class="feedback-comment">${item.comment}</p>
+                    </div>
+                `;
+                feedbackFeedContainer.innerHTML += feedbackItemHTML;
+            });
+        }
+        // --- END: FEEDBACK FORM HANDLER ---
+    </script>
+</body>
+</html>

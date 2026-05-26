@@ -1,0 +1,51 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Dark Theme Styles */
+.dark {
+    background-color: #0f172a; /* Dark Slate Blue */
+    color: #e2e8f0; /* Light Slate Gray */
+}
+.dark .bg-surface {
+    background-color: #1e293b;
+}
+.dark .text-heading {
+    color: #f1f5f9;
+}
+.dark .text-subheading {
+    color: #cbd5e1;
+}
+
+/* Light Theme Styles */
+.light {
+    background-color: #f1f5f9; /* Light Gray */
+    color: #1e293b; /* Dark Blue */
+}
+.light .bg-surface {
+    background-color: #e2e8f0;
+}
+.light .text-heading {
+    color: #0f172a;
+}
+.light .text-subheading {
+    color: #475569;
+}
+
+.ar-vr-modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+}
+
+/* Transition for themes */
+body, .bg-surface, .text-heading, .text-subheading {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}

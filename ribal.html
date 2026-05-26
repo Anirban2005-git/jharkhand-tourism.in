@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jharkhand Marketplace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 1. Base Styles & Variables */
+        :root {
+            --card: #ffffff;
+            --border: #e5e7eb;
+            --card-foreground: #1f2937;
+            --muted-foreground: #6b7280;
+            --primary: #059669; /* A nice teal/green for links */
+            --shadow-elevated: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .section-padding {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+
+        /* 2. Section Header Styles */
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.375rem 1rem;
+            background-color: #fee2e2;
+            color: #b91c1c;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin: 0 0 0.75rem 0;
+            color: #111827;
+        }
+
+        .section-description {
+            font-size: 1.125rem;
+            color: #4b5563;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 3. Grid Layout */
+        .grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        /* 4. Card Styles */
+        .card {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: box-shadow 0.5s ease, transform 0.5s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-elevated);
+            transform: translateY(-5px);
+        }
+
+        .card-image-container {
+            position: relative;
+            height: 16rem;
+            overflow: hidden;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .card:hover .card-image {
+            transform: scale(1.1);
+        }
+
+        .badge-on-image {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: var(--badge-bg, #f97316);
+            color: var(--badge-color, #fff);
+            border: none;
+            padding: 0.375rem 1rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--card-foreground);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .card-description {
+            color: var(--muted-foreground);
+            margin: 0;
+            line-height: 1.6;
+            min-height: 50px; /* Give some consistent height */
+        }
+
+        .card-content {
+            padding: 0 1.5rem 1.5rem;
+            margin-top: auto; /* Pushes footer to the bottom */
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 1rem;
+        }
+
+        .location-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+        }
+
+        .location-tag svg {
+            flex-shrink: 0;
+        }
+
+        .card-link {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .card-link:hover {
+            color: #047857; /* Darker shade of primary */
+        }
+        
+        /* Add to Cart Button */
+        .add-to-cart-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .add-to-cart-btn:hover {
+            background-color: #047857;
+        }
+        
+        .add-to-cart-btn svg {
+            width: 1rem;
+            height: 1rem;
+        }
+        
+        /* Product quantity */
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+        
+        .quantity-label {
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+        }
+        
+        .quantity-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .quantity-btn {
+            width: 1.5rem;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f3f4f6;
+            border: 1px solid var(--border);
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        
+        .quantity-btn:hover {
+            background-color: #e5e7eb;
+        }
+        
+        .quantity-value {
+            font-size: 0.875rem;
+            font-weight: 600;
+            min-width: 1.5rem;
+            text-align: center;
+        }
+        
+        /* Cart notification */
+        .cart-notification {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background-color: #10b981;
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        
+        .cart-notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* 5. Modal Styles */
+        .modal-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            border-radius: 1rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: fadeIn 0.3s;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: var(--card-foreground);
+        }
+
+        .modal-close {
+            color: var(--muted-foreground);
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+
+        /* 6. Responsive Design */
+        @media (max-width: 1024px) {
+            .grid-cols-3 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .grid-cols-3 {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+            }
+            .section-padding {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+            .section-title {
+                font-size: 1.75rem;
+            }
+        }
+
+    </style>
+</head>
+<body class="bg-gray-50">
+        <!-- Cart Notification -->
+        <div class="cart-notification" id="cartNotification">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <span id="notificationText">✅ Item added to cart!</span>
+        </div>
+        
+        <!-- Header -->
+        <header class="bg-white shadow-sm">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <h1 class="text-xl font-bold text-gray-900">Jharkhand Marketplace</h1>
+                <nav class="flex items-center">
+                    <ul class="flex space-x-6 mr-4">
+                        <li><a href="#" class="text-gray-600 hover:text-gray-900">Home</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-gray-900">Products</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-gray-900">About</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-gray-900">Contact</a></li>
+                    </ul>
+                    <div class="relative">
+                        <button id="cartButton" class="flex items-center text-gray-600 hover:text-gray-900">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            <span id="cartCount" class="ml-1 bg-orange-500 text-white text-xs rounded-full px-2 py-0.5">0</span>
+                        </button>
+                        
+                        <!-- Cart Popup -->
+                        <div id="cartPopup" class="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-lg z-50 hidden" style="display: none;">
+                            <div class="p-3 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+                                <h3 class="font-medium text-gray-800">Your Cart</h3>
+                            </div>
+                            <div id="cartPopupItems" class="max-h-64 overflow-y-auto">
+                                <!-- Cart items will be dynamically added here -->
+                                <div class="text-center py-4 text-gray-500" id="emptyCartMessage">Your cart is empty</div>
+                            </div>
+                            <div class="p-3 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-medium">Total:</span>
+                                    <span class="font-semibold text-orange-500" id="cartPopupTotal">₹0</span>
+                                </div>
+                                <a href="cart.html" class="block w-full bg-orange-500 hover:bg-orange-600 text-white text-center py-2 rounded-md transition duration-200">
+                                    View Cart
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        
+        <section class="section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge">Tribal Handicrafts</span>
+                <h2 class="section-title">Discover Jharkhand's Artistic Heritage</h2>
+                <p class="section-description">Explore authentic tribal handicrafts, from intricate metalwork to vibrant handloom textiles.</p>
+            </div>
+            <div class="grid grid-cols-3">
+                
+                <!-- Card 1: Dhokra Art -->
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="dokra art.jpg" alt="Dhokra Art pieces" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/f97316/ffffff?text=Dhokra+Art';">
+                        <span class="badge badge-on-image">Handicraft</span>
+                    </div>
+                    <div class="card-header">
+                        <h3 class="card-title">Dhokra Art</h3>
+                        <p class="card-description">Lost-wax casting metalwork creating unique figurines, jewelry, and decorative items.<br><strong>Price: ₹300 - ₹5,000</strong></p>
+                    </div>
+                    <div class="card-content">
+                        <div class="quantity-control">
+                            <span class="quantity-label">Quantity</span>
+                            <div class="quantity-buttons">
+                                <button class="quantity-btn decrease" data-product="dhokra">-</button>
+                                <span class="quantity-value" id="dhokra-quantity">1</span>
+                                <button class="quantity-btn increase" data-product="dhokra">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn" data-product="Dhokra Art" data-price="3000">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            Add to Cart
+                        </button>
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Artisan Clusters
+                            </div>
+                            <a class="card-link">View &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 2: Textiles -->
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="silk saree.jpg" alt="Tussar Silk Sarees" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/a78bfa/ffffff?text=Tussar+Silk';">
+                        <span class="badge badge-on-image">Handicraft</span>
+                    </div>
+                    <div class="card-header">
+                        <h3 class="card-title">Tussar Silk & Handloom</h3>
+                        <p class="card-description">Hand-woven Tussar silk sarees and tribal weaves with unique motifs and natural dyes.<br><strong>Price: ₹1,200 - ₹12,000</strong></p>
+                    </div>
+                    <div class="card-content">
+                        <div class="quantity-control">
+                            <span class="quantity-label">Quantity</span>
+                            <div class="quantity-buttons">
+                                <button class="quantity-btn decrease" data-product="tussar">-</button>
+                                <span class="quantity-value" id="tussar-quantity">1</span>
+                                <button class="quantity-btn increase" data-product="tussar">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn" data-product="Tussar Silk & Handloom" data-price="5000">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            Add to Cart
+                        </button>
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Khunti, Ranchi
+                            </div>
+                            <a class="card-link">View &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Tribal Jewelry -->
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="tribal jwellery.jpg" alt="Tribal Jewelry" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/f43f5e/ffffff?text=Tribal+Jewelry';">
+                        <span class="badge badge-on-image">Handicraft</span>
+                    </div>
+                    <div class="card-header">
+                        <h3 class="card-title">Tribal Jewelry</h3>
+                        <p class="card-description">Traditional silver, brass, and beaded ornaments like chokers, bangles, and earrings.<br><strong>Price: ₹200 - ₹4,500</strong></p>
+                    </div>
+                    <div class="card-content">
+                        <div class="quantity-control">
+                            <span class="quantity-label">Quantity</span>
+                            <div class="quantity-buttons">
+                                <button class="quantity-btn decrease" data-product="jewelry">-</button>
+                                <span class="quantity-value" id="jewelry-quantity">1</span>
+                                <button class="quantity-btn increase" data-product="jewelry">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn" data-product="Tribal Jewelry" data-price="2500">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            Add to Cart
+                        </button>
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Ranchi, Godda
+                            </div>
+                            <a class="card-link">View &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Bamboo & Cane Crafts -->
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="bamboo crafts.jpg" alt="Bamboo Crafts" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/34d399/ffffff?text=Bamboo+Crafts';">
+                        <span class="badge badge-on-image">Handicraft</span>
+                    </div>
+                    <div class="card-header">
+                        <h3 class="card-title">Bamboo & Cane Crafts</h3>
+                        <p class="card-description">Lightweight and aesthetic baskets, trays, and decorative items made from bamboo and cane.<br><strong>Price: ₹100 - ₹2,000</strong></p>
+                    </div>
+                    <div class="card-content">
+                        <div class="quantity-control">
+                            <span class="quantity-label">Quantity</span>
+                            <div class="quantity-buttons">
+                                <button class="quantity-btn decrease" data-product="bamboo">-</button>
+                                <span class="quantity-value" id="bamboo-quantity">1</span>
+                                <button class="quantity-btn increase" data-product="bamboo">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn" data-product="Bamboo & Cane Crafts" data-price="1500">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            Add to Cart
+                        </button>
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Rural Jharkhand
+                            </div>
+                            <a class="card-link">View &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5: Terracotta -->
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="Terracotta and alay pottery.jpg" alt="Terracotta Pottery" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/fbbf24/ffffff?text=Terracotta+Pottery';">
+                        <span class="badge badge-on-image">Handicraft</span>
+                    </div>
+                    <div class="card-header">
+                        <h3 class="card-title">Terracotta & Clay Pottery</h3>
+                        <p class="card-description">Hand-moulded and fired clay figurines, idols, and pots, often with painted animal motifs.<br><strong>Price: ₹50 - ₹1,500</strong></p>
+                    </div>
+                    <div class="card-content">
+                        <div class="quantity-control">
+                            <span class="quantity-label">Quantity</span>
+                            <div class="quantity-buttons">
+                                <button class="quantity-btn decrease" data-product="terracotta">-</button>
+                                <span class="quantity-value" id="terracotta-quantity">1</span>
+                                <button class="quantity-btn increase" data-product="terracotta">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn" data-product="Terracotta & Clay Pottery" data-price="1200">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            Add to Cart
+                        </button>
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Rural Communities
+                            </div>
+                            <a class="card-link">View &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 6: Wood Carving -->
+                 <div class="card">
+                    <div class="card-image-container">
+                        <img src="wooden craft.jpg" alt="Wood Carving" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/964B00/ffffff?text=Wood+Carving';">
+                        <span class="badge badge-on-image">Handicraft</span>
+                    </div>
+                    <div class="card-header">
+                        <h3 class="card-title">Wood Carving</h3>
+                        <p class="card-description">Decorative carved wood with tribal motifs on panels, boxes, and toy figurines.<br><strong>Price: ₹200 - ₹3,500</strong></p>
+                    </div>
+                    <div class="card-content">
+                        <div class="quantity-control">
+                            <span class="quantity-label">Quantity</span>
+                            <div class="quantity-buttons">
+                                <button class="quantity-btn decrease" data-product="woodcarving">-</button>
+                                <span class="quantity-value" id="woodcarving-quantity">1</span>
+                                <button class="quantity-btn increase" data-product="woodcarving">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn" data-product="Wood Carving" data-price="3500">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            Add to Cart
+                        </button>
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Khunti District
+                            </div>
+                            <a class="card-link">View &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 7: Stone Carving -->
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="stone carving.jpg" alt="Stone Carving" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/6b7280/ffffff?text=Stone+Carving';">
+                        <span class="badge badge-on-image">Handicraft</span>
+                    </div>
+                    <div class="card-header">
+                        <h3 class="card-title">Stone Carving</h3>
+                        <p class="card-description">Carved stone plaques and figures with religious or tribal motifs, a traditional art form.<br><strong>Price: ₹400 - ₹10,000</strong></p>
+                    </div>
+                    <div class="card-content">
+                        <div class="quantity-control">
+                            <span class="quantity-label">Quantity</span>
+                            <div class="quantity-buttons">
+                                <button class="quantity-btn decrease" data-product="stonecarving">-</button>
+                                <span class="quantity-value" id="stonecarving-quantity">1</span>
+                                <button class="quantity-btn increase" data-product="stonecarving">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn" data-product="Stone Carving" data-price="4400">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            Add to Cart
+                        </button>
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Various Villages
+                            </div>
+                            <a class="card-link">View &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 8: Grass Crafts -->
+                <div class="card">
+                    <div class="card-image-container">
+                        <img src="sikki grass.jpg" alt="Sikki Grass Crafts" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/84cc16/ffffff?text=Sikki+Grass';">
+                        <span class="badge badge-on-image">Handicraft</span>
+                    </div>
+                    <div class="card-header">
+                        <h3 class="card-title">Sikki Grass & Fibre Works</h3>
+                        <p class="card-description">Weaving Sikki grass and other natural fibres to create mats, baskets, and wall hangings.<br><strong>Price: ₹150 - ₹1,800</strong></p>
+                    </div>
+                    <div class="card-content">
+                        <div class="quantity-control">
+                            <span class="quantity-label">Quantity</span>
+                            <div class="quantity-buttons">
+                                <button class="quantity-btn decrease" data-product="sikkigrass">-</button>
+                                <span class="quantity-value" id="sikkigrass-quantity">1</span>
+                                <button class="quantity-btn increase" data-product="sikkigrass">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn" data-product="Sikki Grass & Fibre Works" data-price="1500">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            Add to Cart
+                        </button>
+                        <div class="card-footer">
+                            <div class="location-tag">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                SHGs & Co-ops
+                            </div>
+                            <a class="card-link">View &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal HTML Structure -->
+    <div id="productModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle" class="modal-title">Product Title</h3>
+                <span id="modalClose" class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Product Image" class="modal-img">
+                <p id="modalDescription" class="card-description">Product description goes here.</p>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Get modal elements
+    const modal = document.getElementById('productModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalImage = document.getElementById('modalImage');
+    const modalDescription = document.getElementById('modalDescription');
+    const closeModal = document.getElementById('modalClose');
+
+    // Get all card links
+    const cardLinks = document.querySelectorAll('.card-link');
+
+    // Function to open the modal
+    function openModal(card) {
+        // Get data from the clicked card
+        const title = card.querySelector('.card-title').textContent;
+        const description = card.querySelector('.card-description').textContent;
+        const imageSrc = card.querySelector('.card-image').src;
+
+        // Populate modal with the data
+        modalTitle.textContent = title;
+        modalImage.src = imageSrc;
+        modalDescription.textContent = description;
+
+        // Show the modal
+        modal.style.display = 'flex';
+    }
+
+    // Add click event to each card link
+    cardLinks.forEach(link => {
+        link.addEventListener('click', function () {
+            const card = this.closest('.card');
+            openModal(card);
+        });
+    });
+
+    // Function to close the modal
+    function hideModal() {
+        modal.style.display = 'none';
+    }
+
+    // Close modal when the 'x' is clicked
+    closeModal.addEventListener('click', hideModal);
+
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', function (event) {
+        if (event.target == modal) {
+            hideModal();
+        }
+    });
+
+    // Close modal with the 'Escape' key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            hideModal();
+        }
+    });
+});
+</script>
+
+<!-- JavaScript for Cart Functionality -->
+        <style>
+            /* Animation for product flying to cart */
+            .product-fly {
+                position: fixed;
+                z-index: 1000;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background-size: cover;
+                background-position: center;
+                pointer-events: none;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            }
+        </style>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const cartNotification = document.getElementById('cartNotification');
+                const cartCount = document.getElementById('cartCount');
+                const notificationText = document.getElementById('notificationText');
+                const cartButton = document.getElementById('cartButton');
+                const cartPopup = document.getElementById('cartPopup');
+                const cartPopupItems = document.getElementById('cartPopupItems');
+                const cartPopupTotal = document.getElementById('cartPopupTotal');
+                const emptyCartMessage = document.getElementById('emptyCartMessage');
+                
+                // Initialize cart from localStorage
+                let cart = JSON.parse(localStorage.getItem('jharkhandCart')) || [];
+                updateCartCount();
+                updateCartPopup();
+                
+                // Add to cart functionality
+                const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+                addToCartButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        // Get product details
+                        const productName = this.getAttribute('data-product');
+                        const productPrice = parseInt(this.getAttribute('data-price'));
+                        const productId = this.closest('.card').querySelector('.quantity-btn').getAttribute('data-product');
+                        const quantity = parseInt(document.getElementById(`${productId}-quantity`).textContent);
+                        const productImage = this.closest('.card').querySelector('.card-image').src;
+                        
+                        // Create or update cart item
+                        const existingItemIndex = cart.findIndex(item => item.id === productId);
+                        
+                        if (existingItemIndex !== -1) {
+                            cart[existingItemIndex].quantity += quantity;
+                        } else {
+                            cart.push({
+                                id: productId,
+                                name: productName,
+                                price: productPrice,
+                                quantity: quantity,
+                                image: productImage
+                            });
+                        }
+                        
+                        // Save to localStorage
+                        localStorage.setItem('jharkhandCart', JSON.stringify(cart));
+                        
+                        // Update UI
+                        updateCartCount();
+                        updateCartPopup();
+                        showNotification(productName);
+                        
+                        // Animate product flying to cart
+                        flyProductToCart(this, productImage);
+                        
+                        // Show the cart popup
+                        showCartPopup();
+                    });
+                });
+                
+                // Quantity controls
+                const quantityButtons = document.querySelectorAll('.quantity-btn');
+                quantityButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const product = this.getAttribute('data-product');
+                        const quantityElement = document.getElementById(`${product}-quantity`);
+                        let quantity = parseInt(quantityElement.textContent);
+                        
+                        if (this.classList.contains('decrease') && quantity > 1) {
+                            quantity--;
+                        } else if (this.classList.contains('increase')) {
+                            quantity++;
+                        }
+                        
+                        quantityElement.textContent = quantity;
+                    });
+                });
+                
+                // Cart button hover handlers
+                cartButton.addEventListener('mouseenter', showCartPopup);
+                cartButton.addEventListener('mouseleave', function(e) {
+                    // Check if the mouse is moving to the popup
+                    const rect = cartPopup.getBoundingClientRect();
+                    if (
+                        e.clientX >= rect.left &&
+                        e.clientX <= rect.right &&
+                        e.clientY >= rect.top &&
+                        e.clientY <= rect.bottom
+                    ) {
+                        return;
+                    }
+                    hideCartPopup();
+                });
+                
+                // Add hover handlers to the popup itself
+                cartPopup.addEventListener('mouseenter', function() {
+                    clearTimeout(popupTimeout);
+                });
+                
+                cartPopup.addEventListener('mouseleave', hideCartPopup);
+                
+                // Cart button click - redirect to cart page
+                cartButton.addEventListener('click', function() {
+                    window.location.href = 'cart.html';
+                });
+                
+                let popupTimeout;
+                
+                // Show cart popup
+                function showCartPopup() {
+                    clearTimeout(popupTimeout);
+                    cartPopup.classList.remove('hidden');
+                    cartPopup.style.display = 'block';
+                }
+                
+                // Hide cart popup
+                function hideCartPopup() {
+                    popupTimeout = setTimeout(() => {
+                        cartPopup.style.display = 'none';
+                    }, 300);
+                }
+                
+                // Update cart popup
+                function updateCartPopup() {
+                    if (cart.length === 0) {
+                        emptyCartMessage.style.display = 'block';
+                        cartPopupItems.innerHTML = '';
+                        cartPopupItems.appendChild(emptyCartMessage);
+                        cartPopupTotal.textContent = '₹0';
+                        return;
+                    }
+                    
+                    emptyCartMessage.style.display = 'none';
+                    cartPopupItems.innerHTML = '';
+                    
+                    let total = 0;
+                    
+                    cart.forEach(item => {
+                        const itemTotal = item.price * item.quantity;
+                        total += itemTotal;
+                        
+                        const itemElement = document.createElement('div');
+                        itemElement.className = 'flex items-center p-2 border-b border-gray-100';
+                        itemElement.innerHTML = `
+                            <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded mr-3">
+                            <div class="flex-1">
+                                <h4 class="text-sm font-medium text-gray-800">${item.name}</h4>
+                                <div class="flex justify-between mt-1">
+                                    <span class="text-xs text-gray-500">${item.quantity} × ₹${item.price}</span>
+                                    <span class="text-xs font-medium">₹${itemTotal}</span>
+                                </div>
+                            </div>
+                        `;
+                        
+                        cartPopupItems.appendChild(itemElement);
+                    });
+                    
+                    cartPopupTotal.textContent = `₹${total}`;
+                }
+                
+                // Helper Functions
+                
+                // Update cart count
+                function updateCartCount() {
+                    const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+                    cartCount.textContent = totalItems;
+                }
+                
+                // Show notification
+                function showNotification(productName) {
+                    notificationText.textContent = `✅ ${productName} added to your cart!`;
+                    cartNotification.classList.add('show');
+                    setTimeout(() => {
+                        cartNotification.classList.remove('show');
+                    }, 3000);
+                }
+                
+                // Animate product flying to cart
+                function flyProductToCart(button, productImage) {
+                    // Create flying element
+                    const flyingImg = document.createElement('div');
+                    flyingImg.classList.add('product-fly');
+                    flyingImg.style.backgroundImage = `url(${productImage})`;
+                    
+                    // Get positions
+                    const buttonRect = button.getBoundingClientRect();
+                    const cartRect = cartButton.getBoundingClientRect();
+                    
+                    // Set initial position
+                    flyingImg.style.top = `${buttonRect.top}px`;
+                    flyingImg.style.left = `${buttonRect.left}px`;
+                    
+                    document.body.appendChild(flyingImg);
+                    
+                    // Trigger animation
+                    setTimeout(() => {
+                        flyingImg.style.top = `${cartRect.top}px`;
+                        flyingImg.style.left = `${cartRect.left}px`;
+                        flyingImg.style.opacity = '0';
+                        flyingImg.style.transform = 'scale(0.3)';
+                    }, 10);
+                    
+                    // Remove element after animation
+                    setTimeout(() => {
+                        flyingImg.remove();
+                    }, 800);
+                }
+                
+                // Add hover effects to product cards
+                const productCards = document.querySelectorAll('.card');
+                productCards.forEach(card => {
+                    card.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-5px)';
+                        this.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1)';
+                        this.style.transition = 'transform 0.3s, box-shadow 0.3s';
+                    });
+                    
+                    card.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0)';
+                        this.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
+
+
