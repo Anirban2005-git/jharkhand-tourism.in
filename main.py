@@ -7,6 +7,7 @@ from sqlalchemy import or_
 import razorpay
 import os
 
+
 # ================================
 # CONFIG
 # ================================
@@ -14,14 +15,13 @@ import os
 RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
 RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
 
-# Vercel-compatible SQLite path
 DATABASE_URL = "sqlite:////tmp/tourism.db"
 
 engine = create_engine(
     DATABASE_URL,
-    echo=True,
     connect_args={"check_same_thread": False}
 )
+
 
 # ================================
 # DB MODELS
@@ -101,6 +101,7 @@ def get_session():
 # ================================
 
 def seed_data():
+
     sample = [
         {
             "name": "Baba Baidyanath Temple, Deoghar",
@@ -117,11 +118,13 @@ def seed_data():
     ]
 
     with Session(engine) as session:
+
         existing = session.exec(
             select(Attraction)
         ).first()
 
         if not existing:
+
             for item in sample:
                 session.add(Attraction(**item))
 
@@ -135,8 +138,13 @@ def seed_data():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
 
-    SQLModel.metadata.create_all(engine)
-    seed_data()
+    try:
+        SQLModel.metadata.create_all(engine)
+        seed_data()
+        print("Database initialized")
+
+    except Exception as e:
+        print(f"Database startup error: {e}")
 
     yield
 
@@ -145,19 +153,22 @@ async def lifespan(app: FastAPI):
 # APP
 # ================================
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    title="Jharkhand Tourism API",
+    lifespan=lifespan
+)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
 
 
 # ================================
-# Razorpay Setup
+# Razorpay
 # ================================
 
 razorpay_client = None
@@ -176,8 +187,11 @@ if RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET:
 # ================================
 
 @app.get("/")
-def root():
-    return {"message": "Server is running"}
+async def root():
+    return {
+        "status": "ok",
+        "message": "Jharkhand Tourism API running"
+    }
 
 
 @app.get(
@@ -188,6 +202,7 @@ def get_attractions(
     q: Optional[str] = Query(None),
     db: Session = Depends(get_session)
 ):
+
     statement = select(Attraction)
 
     if q:
@@ -210,7 +225,7 @@ async def create_order(
     db: Session = Depends(get_session)
 ):
 
-    if not razorpay_client:
+    if razorpay_client is None:
         raise HTTPException(
             status_code=500,
             detail="Razorpay keys not configured"
@@ -243,7 +258,6 @@ async def create_order(
 
     db.add(booking)
     db.commit()
-    db.refresh(booking)
 
     return {
         "order_id": order["id"],
@@ -255,11 +269,10 @@ async def create_order(
 
 @app.post("/verify_payment")
 async def verify_payment(
-    request: Request,
-    db: Session = Depends(get_session)
+    request: Request
 ):
 
-    if not razorpay_client:
+    if razorpay_client is None:
         raise HTTPException(
             status_code=500,
             detail="Razorpay keys not configured"
