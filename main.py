@@ -10,10 +10,10 @@ import os
 # ================================
 # CONFIG
 # ================================
-RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID", "your_key_id")
-RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET", "your_key_secret")
+RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
 
-DATABASE_URL = "sqlite:///./tourism.db"
+DATABASE_URL = "sqlite:////tmp/tourism.db"
 
 engine = create_engine(DATABASE_URL, echo=True)
 
